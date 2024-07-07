@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { CaptainFlipRules } from './CaptainFlipRules'
+export { CaptainFlipOptionsSpec } from './CaptainFlipOptions'
+export { CaptainFlipSetup } from './CaptainFlipSetup'

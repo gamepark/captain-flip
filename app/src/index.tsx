@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
+import { CaptainFlipOptionsSpec } from '@gamepark/captain-flip/CaptainFlipOptions'
+import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
+import { CaptainFlipSetup } from '@gamepark/captain-flip/CaptainFlipSetup'
 import { GameProvider, MaterialGameAnimations, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -14,7 +14,7 @@ setupTranslation(translations, { debug: false })
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="game-template" Rules={GameTemplateRules} optionsSpec={GameTemplateOptionsSpec} GameSetup={GameTemplateSetup}
+    <GameProvider game="captain-flip" Rules={CaptainFlipRules} optionsSpec={CaptainFlipOptionsSpec} GameSetup={CaptainFlipSetup}
                   material={Material} locators={Locators} animations={new MaterialGameAnimations()}>
       <App/>
     </GameProvider>
