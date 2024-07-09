@@ -4,19 +4,25 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { RuleId } from './RuleId'
 
-export class PlaceTileRule extends PlayerTurnRule {
+export class PlayTileRule extends PlayerTurnRule {
   getPlayerMoves() {
     const hand = this.hand
     const moves: MaterialMove[] = []
+
     for (const [x, y] of this.availablePlaces.entries()) {
       moves.push(
         hand.moveItem({
           type: LocationType.AdventureBoardCharacterTile,
           player: this.player,
+          rotation: true,
           x: x,
           y: y
         })
       )
+    }
+
+    if (hand.rotation(true).length === 0) {
+      moves.push(hand.rotateItem(true))
     }
 
     return moves
