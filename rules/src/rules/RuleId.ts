@@ -1,3 +1,6 @@
 export enum RuleId {
-  PlayerTurn = 1
+  DrawCharacterTile = 1,
+  ChooseAction,
+  PlaceTile,
+  // TODO: Add tile effect
 }

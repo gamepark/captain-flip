@@ -2,7 +2,7 @@ import { MaterialGame, MaterialMove, MaterialRules, TimeLimit } from '@gamepark/
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
-import { PlayerTurn } from './rules/PlayerTurn'
+import { DrawCharacterTileRule } from './rules/DrawCharacterTileRule'
 import { RuleId } from './rules/RuleId'
 
 
@@ -13,7 +13,7 @@ import { RuleId } from './rules/RuleId'
 export class CaptainFlipRules extends MaterialRules<PlayerColor, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor> {
   rules = {
-    [RuleId.PlayerTurn]: PlayerTurn
+    [RuleId.DrawCharacterTile]: DrawCharacterTileRule
   }
 
   giveTime(): number {

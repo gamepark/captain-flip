@@ -16,6 +16,6 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerColor, MaterialTyp
   }
 
   start() {
-    this.startPlayerTurn(RuleId.PlayerTurn, this.game.players[0])
+    this.startPlayerTurn(RuleId.DrawCharacterTile, this.game.players[0])
   }
 }
