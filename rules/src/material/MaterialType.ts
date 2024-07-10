@@ -3,5 +3,4 @@ export enum MaterialType {
   CharacterTile,
   Coin,
   TreasureMapToken,
-  ClothBag
 }
