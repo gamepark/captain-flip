@@ -1,12 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { HandLocator, ItemContext } from '@gamepark/react-game'
+import { HandLocator, ItemContext, LocationContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
-import { PlayerHandDescription } from './descriptions/PlayerHandDescription'
+import { adventureBoardLocation } from './AdventureBoardLocator'
 
 export class PlayerHandLocator extends HandLocator {
-  locationDescription = new PlayerHandDescription()
   getCoordinates(location: Location, context: ItemContext) {
-    return this.locationDescription.getHandPosition(location, context)
+    return this.getHandPosition(location, context)
+  }
+
+  getHandPosition(location: Location, context: LocationContext){
+    const coordinates = adventureBoardLocation.getBoardPosition(location.player!, context)
+    coordinates.x += coordinates.x < 0? 15: -15
+    coordinates.z = 5
+    return coordinates
   }
 }
 

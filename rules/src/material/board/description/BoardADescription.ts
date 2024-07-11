@@ -1,4 +1,5 @@
 export const BoardADescription = {
+  columnCount: 5,
   places: [
     { x: 0, y: 0 },
     { x: 1, y: 0 },

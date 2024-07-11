@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { getRelativePlayerIndex, ItemContext, ItemLocator } from '@gamepark/react-game'
+import { getRelativePlayerIndex, ItemContext, ItemLocator, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 
 export class AdventureBoardLocator extends ItemLocator {
   getPosition(item: MaterialItem, context: ItemContext) {
-    const index = getRelativePlayerIndex(context, item.id)
-    return this.getBoardPosition(index)
+    return this.getBoardPosition(item.id, context)
   }
 
-  getBoardPosition(index: number) {
+  getBoardPosition(player: number, context: MaterialContext) {
+    const index = getRelativePlayerIndex(context, player)
     switch (index) {
       case 0:
         return { x: -35, y: 13, z: 0.05}

@@ -1,5 +1,15 @@
 export enum RuleId {
   DrawCharacterTile = 1,
   PlaceTile,
-  // TODO: Add tile effect
+  EndOfTurn,
+  Cartographer,
+  Navigator,
+  Parrot,
+  Cook,
+  Gunner,
+  Monkey,
+  CarpenterEndOfGame,
+  ParrotEndOfGame,
+  SwabbyEndOfGame,
+  LookoutEndOfGame,
 }

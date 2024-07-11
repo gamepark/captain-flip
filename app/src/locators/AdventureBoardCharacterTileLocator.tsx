@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
-import { ItemLocator, LocationDescription } from '@gamepark/react-game'
+import { ItemLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
-import { characterTileDescription } from '../material/CharacterTileDescription'
+import { AdventureBoardCharacterTileDescription } from './descriptions/AdventureBoardCharacterTileDescription'
 
 export class AdventureBoardCharacterTileLocator extends ItemLocator {
   parentItemType = MaterialType.AdventureBoard
@@ -21,13 +20,6 @@ export class AdventureBoardCharacterTileLocator extends ItemLocator {
       y: baseY - 17.2 * location.y!,
     }
   }
-}
-
-class AdventureBoardCharacterTileDescription extends LocationDescription {
-  height = characterTileDescription.height
-  width = characterTileDescription.width
-  borderRadius = 0.4
-
 }
 
 export const adventureBoardCharacterTileLocator = new AdventureBoardCharacterTileLocator()

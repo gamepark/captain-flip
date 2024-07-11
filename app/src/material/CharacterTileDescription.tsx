@@ -2,17 +2,18 @@
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { Character } from '@gamepark/captain-flip/material/tiles/Character'
-import { CardDescription } from '@gamepark/react-game'
-import Swabby from '../images/characters/Swabby.jpg'
-import Cartographer from '../images/characters/Cartographer.jpg'
-import Navigator from '../images/characters/Navigator.jpg'
+import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
+import { CardDescription, ItemContext } from '@gamepark/react-game'
+import { MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import Carpenter from '../images/characters/Carpenter.jpg'
+import Cartographer from '../images/characters/Cartographer.jpg'
 import Cook from '../images/characters/Cook.jpg'
-import Monkey from '../images/characters/Monkey.jpg'
 import Gunner from '../images/characters/Gunner.jpg'
-import Parrot from '../images/characters/Parrot.jpg'
 import Lookout from '../images/characters/Lookout.jpg'
-import { MaterialItem } from '@gamepark/rules-api'
+import Monkey from '../images/characters/Monkey.jpg'
+import Navigator from '../images/characters/Navigator.jpg'
+import Parrot from '../images/characters/Parrot.jpg'
+import Swabby from '../images/characters/Swabby.jpg'
 
 export class CharacterTileDescription extends CardDescription {
   height = 3.79
@@ -24,25 +25,11 @@ export class CharacterTileDescription extends CardDescription {
 
   getItemExtraCss(item: MaterialItem) {
     if (item.location.type === LocationType.ClothBag) return noPointer
-    if (process.env.NODE_ENV !== 'development') return
-    return css`
-      white-space:pre;
-      > div:hover:before {
-        content: 'location: ${item.location.type} \\A player: ${item.location.player} \\A x: ${item.location.x} \\A y: ${item.location.y}';
-        font-size: 0.7em;
-        padding: 0.2em;
-        background-color: rgba(255, 255, 255, 0.6);
-        border-radius: 0.8em;
-        position: absolute;
-        transform: translateZ(10em);
-        left: 0;
-        top:0;
-        height: 100%;
-        width: 100%;
-        color: black;
-        white-space: pre-wrap;
-      }
-    `
+    return
+  }
+
+  canLongClick(move: MaterialMove, context: ItemContext) {
+    return context.rules.game.rule?.id !== RuleId.Monkey && super.canLongClick(move, context)
   }
 
   isFlipped(item: MaterialItem): boolean {

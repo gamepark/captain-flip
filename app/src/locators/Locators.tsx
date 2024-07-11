@@ -6,12 +6,21 @@ import { adventureBoardCharacterTileLocator } from './AdventureBoardCharacterTil
 import { adventureBoardLocation } from './AdventureBoardLocator'
 import { clothBagLocator } from './ClothBagLocator'
 import { coinPileLocator } from './CoinPileLocator'
+import { monkeyFlipButtonLocator } from './FlipButtonLocator'
+import { playerCoinLocator } from './PlayerCoinLocator'
 import { playerHandLocator } from './PlayerHandLocator'
+import { playerTreasureMapLocator } from './PlayerTreasureMapLocator'
+import { treasureMapLocator } from './TreasureMapLocator'
 
 export const Locators: Partial<Record<LocationType, ItemLocator<PlayerId, MaterialType, LocationType>>> = {
   [LocationType.AdventureBoard]: adventureBoardLocation,
   [LocationType.AdventureBoardCharacterTile]: adventureBoardCharacterTileLocator,
   [LocationType.ClothBag]: clothBagLocator,
   [LocationType.PlayerHand]: playerHandLocator,
-  [LocationType.CoinStock]: coinPileLocator
+  [LocationType.CoinStock]: coinPileLocator,
+  [LocationType.PlayerCoin]: playerCoinLocator,
+  [LocationType.PlayerTreasureMapToken]: playerTreasureMapLocator,
+  [LocationType.TreasureMapToken]: treasureMapLocator,
+  [LocationType.MonkeyFlipButton]: monkeyFlipButtonLocator,
+
 }

@@ -16,6 +16,16 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
 
   setupMaterial(_options: CaptainFlipOptions) {
     this.setupClothBag()
+    this.setupTreasureMapToken()
+  }
+
+  setupTreasureMapToken() {
+    this.material(MaterialType.TreasureMapToken)
+      .createItem({
+        location: {
+          type: LocationType.TreasureMapToken
+        }
+      })
   }
 
   setupClothBag() {

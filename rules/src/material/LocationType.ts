@@ -5,5 +5,7 @@ export enum LocationType {
   PlayerCoin,
   ClothBag,
   TreasureMapToken,
-  CoinStock
+  PlayerTreasureMapToken,
+  CoinStock,
+  MonkeyFlipButton
 }
