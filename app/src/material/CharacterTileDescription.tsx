@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { Character } from '@gamepark/captain-flip/material/tiles/Character'
 import { CardDescription } from '@gamepark/react-game'
 import Swabby from '../images/characters/Swabby.jpg'
@@ -22,6 +23,7 @@ export class CharacterTileDescription extends CardDescription {
   images = images
 
   getItemExtraCss(item: MaterialItem) {
+    if (item.location.type === LocationType.ClothBag) return noPointer
     if (process.env.NODE_ENV !== 'development') return
     return css`
       white-space:pre;
@@ -61,3 +63,7 @@ const images = {
 }
 
 export const characterTileDescription = new CharacterTileDescription()
+
+const noPointer = css`
+  pointer-events: none;
+`
