@@ -4,7 +4,7 @@ import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { areAdjacentSquares, isMoveItemType, Location, MaterialMove } from '@gamepark/rules-api'
+import { areAdjacentSquares, isMoveItemType, Location, MaterialMove, MaterialRules } from '@gamepark/rules-api'
 import { characterTileDescription } from '../../material/CharacterTileDescription'
 import { FlipButton } from '../component/FlipButton'
 
@@ -39,7 +39,7 @@ export class FlipButtonDescription extends LocationDescription {
     }
 
     if (rules.game.rule?.id === RuleId.Monkey) {
-      const monkey = rules.material(MaterialType.CharacterTile).getItem(rules.remind(Memory.PlacedCard))!
+      const monkey = rules.material(MaterialType.CharacterTile).getItem(this.getLastPlacedCard(rules))!
       const tiles = rules.material(MaterialType.CharacterTile)
         .player(player)
         .location(LocationType.AdventureBoardCharacterTile)
@@ -54,6 +54,11 @@ export class FlipButtonDescription extends LocationDescription {
     }
 
     return locations
+  }
+
+  getLastPlacedCard(rules: MaterialRules) {
+    const cards = rules.remind(Memory.PlacedCard) ?? []
+    return cards[cards.length - 1]!
   }
 
   transformOwnLocation(location: Location, context: LocationContext): string[] {

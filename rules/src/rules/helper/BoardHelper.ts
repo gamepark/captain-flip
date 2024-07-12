@@ -1,9 +1,10 @@
-import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import { Location, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import maxBy from 'lodash/maxBy'
 import minBy from 'lodash/minBy'
 import { BoardType } from '../../material/board/Board'
 import { BoardADescription } from '../../material/board/description/BoardADescription'
 import { BoardBDescription } from '../../material/board/description/BoardBDescription'
+import { BoardSpaceEffect } from '../../material/board/description/BoardCommon'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
@@ -68,6 +69,10 @@ export class BoardHelper extends MaterialRulesPart {
       default:
         return BoardADescription
     }
+  }
+
+  getPlaceEffect(location: Location): BoardSpaceEffect | undefined {
+    return this.boardDescription.board[4 - location.y!]?.[location.x!]
   }
 
   get boardTile() {

@@ -20,7 +20,7 @@ export class MonkeyRule extends PlayerTurnRule {
       })
     )
     if (!adjacentCards.length) {
-      moves.push(this.startRule(RuleId.EndOfTurn))
+      moves.push(this.startRule(RuleId.BoardEffect))
     }
 
     return moves
@@ -40,7 +40,7 @@ export class MonkeyRule extends PlayerTurnRule {
     const character = getCharacter(item)
     const ruleId = CharacterEffect[character]
     if (ruleId) return [this.startRule(ruleId)]
-    return [this.startRule(RuleId.EndOfTurn)]
+    return [this.startRule(RuleId.BoardEffect)]
   }
 
   get adjacentCards() {
@@ -58,6 +58,6 @@ export class MonkeyRule extends PlayerTurnRule {
 
   get monkey() {
     return this.material(MaterialType.CharacterTile)
-      .getItem(this.remind(Memory.PlacedCard))!
+      .getItem(this.remind(Memory.PlacedCard)[0])!
   }
 }

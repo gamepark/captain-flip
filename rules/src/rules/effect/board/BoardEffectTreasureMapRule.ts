@@ -1,9 +1,9 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { LocationType } from '../../material/LocationType'
-import { MaterialType } from '../../material/MaterialType'
-import { RuleId } from '../RuleId'
+import { MaterialMove } from '@gamepark/rules-api'
+import { LocationType } from '../../../material/LocationType'
+import { MaterialType } from '../../../material/MaterialType'
+import { BaseBoardEffect } from './BaseBoardEffect'
 
-export class CartographerRule extends PlayerTurnRule {
+export class BoardEffectTreasureMapRule extends BaseBoardEffect {
   onRuleStart() {
     const token = this.treasureMapToken
     const moves: MaterialMove[] = []
@@ -16,7 +16,7 @@ export class CartographerRule extends PlayerTurnRule {
       )
     }
 
-    moves.push(this.startRule(RuleId.BoardEffect))
+    moves.push(this.goNext())
     return moves
   }
 

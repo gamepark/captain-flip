@@ -47,17 +47,23 @@ export class PlayTileRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.AdventureBoardCharacterTile) {
-      this.memorize(Memory.PlacedCard, move.itemIndex)
+      this.addPlacedCard(move.itemIndex)
       const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
       const character = getCharacter(item)
       const ruleId = CharacterEffect[character]
       if (ruleId) return [this.startRule(ruleId)]
 
-      return [this.startRule(RuleId.EndOfTurn)]
+      return [this.startRule(RuleId.BoardEffect)]
 
     }
 
     return []
+  }
+
+  addPlacedCard(index: number) {
+    const places = this.remind<number[]>(Memory.PlacedCard) ?? []
+    places.push(index)
+    this.memorize(Memory.PlacedCard, places)
   }
 
   get hand() {

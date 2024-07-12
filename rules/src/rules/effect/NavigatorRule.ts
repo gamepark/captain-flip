@@ -21,7 +21,7 @@ export class NavigatorRule extends PlayerTurnRule {
       )
     }
 
-    moves.push(this.startRule(RuleId.EndOfTurn))
+    moves.push(this.startRule(RuleId.BoardEffect))
     return moves
   }
 

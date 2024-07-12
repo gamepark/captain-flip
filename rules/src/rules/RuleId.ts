@@ -12,4 +12,8 @@ export enum RuleId {
   ParrotEndOfGame,
   SwabbyEndOfGame,
   LookoutEndOfGame,
+  BoardEffect,
+  BoardEffectCoinX,
+  BoardEffectTreasureMap,
+  BoardEffectFirstXThenY
 }

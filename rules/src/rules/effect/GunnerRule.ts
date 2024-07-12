@@ -13,7 +13,7 @@ export class GunnerRule extends PlayerTurnRule {
         },
         quantity: 5
       }),
-      this.startRule(RuleId.EndOfTurn)
+      this.startRule(RuleId.BoardEffect)
     ]
   }
 }

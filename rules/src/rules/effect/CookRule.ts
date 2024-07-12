@@ -14,7 +14,7 @@ export class CookRule extends PlayerTurnRule {
         },
         quantity: this.countColumnCharacters
       }),
-      this.startRule(RuleId.EndOfTurn)
+      this.startRule(RuleId.BoardEffect)
     ]
   }
 
@@ -33,6 +33,6 @@ export class CookRule extends PlayerTurnRule {
 
   get cook() {
     return this.material(MaterialType.CharacterTile)
-      .getItem(this.remind(Memory.PlacedCard))!
+      .getItem(this.remind(Memory.PlacedCard)[0])!
   }
 }

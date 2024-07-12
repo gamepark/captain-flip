@@ -2,7 +2,11 @@ import { FillGapStrategy, HiddenMaterialRules, hideItemId, MaterialGame, Materia
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { BoardEffectRule } from './rules/BoardEffectRule'
 import { DrawCharacterTileRule } from './rules/DrawCharacterTileRule'
+import { BoardEffectCoinXRule } from './rules/effect/board/BoardEffectCoinXRule'
+import { BoardEffectFirstXThenYRule } from './rules/effect/board/BoardEffectFirstXThenYRule'
+import { BoardEffectTreasureMapRule } from './rules/effect/board/BoardEffectTreasureMapRule'
 import { CartographerRule } from './rules/effect/CartographerRule'
 import { CookRule } from './rules/effect/CookRule'
 import { CarpenterEndOfGameRule } from './rules/effect/end/CarpenterEndOfGameRule'
@@ -34,6 +38,10 @@ export class CaptainFlipRules extends HiddenMaterialRules<PlayerId, MaterialType
     [RuleId.Cook]: CookRule,
     [RuleId.Gunner]: GunnerRule,
     [RuleId.Monkey]: MonkeyRule,
+    [RuleId.BoardEffect]: BoardEffectRule,
+    [RuleId.BoardEffectCoinX]: BoardEffectCoinXRule,
+    [RuleId.BoardEffectTreasureMap]: BoardEffectTreasureMapRule,
+    [RuleId.BoardEffectFirstXThenY]: BoardEffectFirstXThenYRule,
     [RuleId.CarpenterEndOfGame]: CarpenterEndOfGameRule,
     [RuleId.ParrotEndOfGame]: ParrotEndOfGameRule,
     [RuleId.SwabbyEndOfGame]: SwabbyEndOfGameRule,
