@@ -2,6 +2,7 @@ import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Character } from '../../material/tiles/Character'
+import { getCharacter } from '../GetCharacter'
 import { RuleId } from '../RuleId'
 
 export class NavigatorRule extends PlayerTurnRule {
@@ -29,7 +30,7 @@ export class NavigatorRule extends PlayerTurnRule {
       .material(MaterialType.CharacterTile)
       .location(LocationType.AdventureBoardCharacterTile)
       .player(this.player)
-      .filter((item) => (item.location.rotation? item.id.back : item.id.front) === Character.Cartographer)
+      .filter((item) => getCharacter(item) === Character.Cartographer)
       .length
   }
 }

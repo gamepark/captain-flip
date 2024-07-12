@@ -2,6 +2,7 @@ import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepar
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { CharacterEffect } from './effect/CharacterEffect'
+import { getCharacter } from './GetCharacter'
 import { PlacesHelper } from './helper/PlacesHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -48,7 +49,7 @@ export class PlayTileRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.AdventureBoardCharacterTile) {
       this.memorize(Memory.PlacedCard, move.itemIndex)
       const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
-      const character = item.location.rotation? item.id.back : item.id.front
+      const character = getCharacter(item)
       const ruleId = CharacterEffect[character]
       if (ruleId) return [this.startRule(ruleId)]
 

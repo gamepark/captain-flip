@@ -1,6 +1,7 @@
 import { getDistanceBetweenSquares, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { getCharacter } from '../GetCharacter'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 import { CharacterEffect } from './CharacterEffect'
@@ -36,7 +37,7 @@ export class MonkeyRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.CharacterTile)(move) || move.location.type !== LocationType.AdventureBoardCharacterTile) return []
     const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
-    const character = item.location.rotation? item.id.back : item.id.front
+    const character = getCharacter(item)
     const ruleId = CharacterEffect[character]
     if (ruleId) return [this.startRule(ruleId)]
     return [this.startRule(RuleId.EndOfTurn)]
