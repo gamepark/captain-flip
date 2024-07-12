@@ -1,20 +1,14 @@
-export const BoardADescription = {
-  columnCount: 5,
-  places: [
-    { x: 0, y: 0 },
-    { x: 1, y: 0 },
-    { x: 2, y: 0 },
-    { x: 4, y: 0 },
-    { x: 0, y: 1 },
-    { x: 1, y: 1 },
-    { x: 2, y: 1 },
-    { x: 4, y: 1 },
-    { x: 1, y: 2 },
-    { x: 2, y: 2 },
-    { x: 3, y: 2 },
-    { x: 4, y: 2 },
-    { x: 2, y: 3 },
-    { x: 3, y: 3 },
-    { x: 2, y: 4 },
+import { _, BoardDescription, N } from './BoardCommon'
+import { BoardSpaceType } from './BoardSpaceType'
+
+export const C5 = { type: BoardSpaceType.CoinsX, value: 5}
+export const C3 = { type: BoardSpaceType.CoinsX, value: 3}
+export const BoardADescription: BoardDescription = {
+  board: [
+    [_, _, C5, _,  _],
+    [_, _,  N, N,  _],
+    [_, N,  N, N, C3],
+    [N, N,  N, _,  N],
+    [N, N,  N, _,  N]
   ]
 }

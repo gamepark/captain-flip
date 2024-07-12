@@ -5,6 +5,7 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { characterTiles } from './material/tiles/CharacterTiles'
 import { PlayerId } from './PlayerId'
+import { Memory } from './rules/Memory'
 import { RuleId } from './rules/RuleId'
 import sample from 'lodash/sample'
 
@@ -14,9 +15,11 @@ import sample from 'lodash/sample'
 export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, CaptainFlipOptions> {
   Rules = CaptainFlipRules
 
-  setupMaterial(_options: CaptainFlipOptions) {
+  setupMaterial(options: CaptainFlipOptions) {
     this.setupClothBag()
+    this.setupPlayerBoards(options)
     this.setupTreasureMapToken()
+    this.memorize(Memory.Board, options.board)
   }
 
   setupTreasureMapToken() {
@@ -26,6 +29,19 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
           type: LocationType.TreasureMapToken
         }
       })
+  }
+
+  setupPlayerBoards(options: CaptainFlipOptions) {
+    for (const player of this.players) {
+      this.material(MaterialType.AdventureBoard)
+        .createItem({
+          id: options.board,
+          location: {
+            type: LocationType.AdventureBoard,
+            player: player
+          }
+        })
+    }
   }
 
   setupClothBag() {

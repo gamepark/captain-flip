@@ -1,21 +1,23 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import maxBy from 'lodash/maxBy'
+import minBy from 'lodash/minBy'
+import { BoardType } from '../../material/board/Board'
 import { BoardADescription } from '../../material/board/description/BoardADescription'
+import { BoardBDescription } from '../../material/board/description/BoardBDescription'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../PlayerId'
-import maxBy from 'lodash/maxBy'
-import minBy from 'lodash/minBy'
+import { Memory } from '../Memory'
 
-export class PlacesHelper extends MaterialRulesPart {
+export class BoardHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player: PlayerId) {
     super(game)
   }
 
   get freePlaces() {
-    const boardDescription = this.boardDescription
     const tiles = this.boardTile
     const availablePlaces: Record<number, number> = {}
-    for (const place of boardDescription.places) {
+    for (const place of this.places) {
       if (place.x in availablePlaces && place.y > availablePlaces[place.x]) continue
       const occupiedPlace = tiles.filter((item) => item.location.x === place.x && item.location.y === place.y).length > 0
       if (!occupiedPlace) availablePlaces[place.x] = place.y
@@ -23,10 +25,24 @@ export class PlacesHelper extends MaterialRulesPart {
     return availablePlaces
   }
 
+  get places() {
+    const board = this.boardDescription.board
+    const places: {x: number, y: number}[] = []
+    for (let y = (board.length - 1); y >= 0; y--) {
+      const line = board[y]
+      for (let x = 0; x < line.length; x++) {
+        if (line[x] === undefined) continue
+        places.push({x, y: (board.length - 1) - y})
+      }
+    }
+
+    return places
+  }
+
   get hasTriggeredEndOfGame() {
-    const description = this.boardDescription
     let count = 0
-    for (let x = 0; x < description.columnCount; x++) {
+
+    for (let x = 0; x < 5; x++) {
       if (this.isColumnFull(x)) count++
     }
 
@@ -34,8 +50,7 @@ export class PlacesHelper extends MaterialRulesPart {
   }
 
   isColumnFull(column: number) {
-    const boardDescription = this.boardDescription
-    const columnPlaces = boardDescription.places.filter((p) => p.x === column)
+    const columnPlaces = this.places.filter((p) => p.x === column)
     const maxY = maxBy(columnPlaces, (place) => place.y)!.y
     const minY = minBy(columnPlaces, (place) => place.y)!.y
     const maxTileCount = (maxY - minY) + 1
@@ -44,7 +59,15 @@ export class PlacesHelper extends MaterialRulesPart {
   }
 
   get boardDescription() {
-    return BoardADescription
+    const board = this.remind(Memory.Board)
+
+    switch (board) {
+      case BoardType.BoardB:
+        return BoardBDescription
+      case BoardType.BoardA:
+      default:
+        return BoardADescription
+    }
   }
 
   get boardTile() {

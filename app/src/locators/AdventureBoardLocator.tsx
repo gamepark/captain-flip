@@ -4,7 +4,7 @@ import { MaterialItem } from '@gamepark/rules-api'
 
 export class AdventureBoardLocator extends ItemLocator {
   getPosition(item: MaterialItem, context: ItemContext) {
-    return this.getBoardPosition(item.id, context)
+    return this.getBoardPosition(item.location.player!, context)
   }
 
   getBoardPosition(player: number, context: MaterialContext) {

@@ -3,7 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { CharacterEffect } from './effect/CharacterEffect'
 import { getCharacter } from './GetCharacter'
-import { PlacesHelper } from './helper/PlacesHelper'
+import { BoardHelper } from './helper/BoardHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -11,7 +11,7 @@ export class PlayTileRule extends PlayerTurnRule {
   getPlayerMoves() {
     const hand = this.hand
     const moves: MaterialMove[] = []
-    const availablePlaces = new PlacesHelper(this.game, this.player).freePlaces
+    const availablePlaces = new BoardHelper(this.game, this.player).freePlaces
     for (const [x, y] of Object.entries(availablePlaces)) {
       moves.push(
         hand.moveItem((item) => ({

@@ -1,41 +1,33 @@
 /** @jsxImportSource @emotion/react */
-import { BoardADescription } from '@gamepark/captain-flip/material/board/description/BoardADescription'
+import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
-import { BoardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
+import { BoardDescription, ItemContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import BoardA from '../images/boards/BoardA.jpg'
+import BoardB from '../images/boards/BoardB.jpg'
+import BoardC from '../images/boards/BoardC.jpg'
+import BoardD from '../images/boards/BoardD.jpg'
 
 export class AdventureBoardDescription extends BoardDescription {
   height = 24
   width = 24
   borderRadius = 0
-  image = BoardA
-
-  getStaticItems(context: MaterialContext) {
-    const { rules } = context
-    const items: MaterialItem[] = []
-
-    for (const player of rules.players) {
-      items.push({
-        id: player,
-        location: {
-          type: LocationType.AdventureBoard
-        }
-      })
-    }
-
-    return items
+  images = {
+    [BoardType.BoardA]: BoardA,
+    [BoardType.BoardB]: BoardB,
+    [BoardType.BoardC]: BoardC,
+    [BoardType.BoardD]: BoardD,
   }
 
   getLocations(item: MaterialItem, context: ItemContext) {
-    // TODO: configurable board ?
     const locations: Location[] = []
     if (!context.player) return locations
-    const board = BoardADescription
-    for (const place of board.places) {
+    const places = new BoardHelper(context.rules.game, context.player).places
+    for (const place of places) {
       locations.push({
         type: LocationType.AdventureBoardCharacterTile,
-        player: item.id,
+        player: item.location.player,
         x: place.x,
         y: place.y
       })

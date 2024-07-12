@@ -1,11 +1,13 @@
 import { OptionsSpec } from '@gamepark/rules-api'
+import { BoardType, boardTypes } from './material/board/Board'
 
 /**
  * This is the type of object that the game receives when a new game is started.
  * The first generic parameter, "{}", can be changed to include game options like variants or expansions.
  */
 export type CaptainFlipOptions = {
-  players: number
+  players: number,
+  board: BoardType
 }
 
 /**
@@ -13,4 +15,11 @@ export type CaptainFlipOptions = {
  * (forms for friendly games, or forms for matchmaking preferences, for instance).
  */
 export const CaptainFlipOptionsSpec: OptionsSpec<CaptainFlipOptions> = {
+  board: {
+    label: t => t('Adventure board'),
+    values: boardTypes,
+    valueSpec: _ => ({
+      label: t => t('THE BOARD')
+    })
+  }
 }

@@ -1,5 +1,5 @@
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
-import { ItemLocator } from '@gamepark/react-game'
+import { ItemContext, ItemLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { AdventureBoardCharacterTileDescription } from './descriptions/AdventureBoardCharacterTileDescription'
 
@@ -11,6 +11,9 @@ export class AdventureBoardCharacterTileLocator extends ItemLocator {
     return location.player
   }
 
+  getParentItem(location: Location, context: ItemContext) {
+    return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()!
+  }
 
   getPositionOnParent(location: Location) {
     const baseY = 86.9

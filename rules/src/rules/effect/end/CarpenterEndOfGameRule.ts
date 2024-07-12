@@ -18,8 +18,6 @@ export class CarpenterEndOfGameRule extends MaterialRulesPart {
         coins += this.getCoins(player, carpenter)
       }
 
-      console.log(player, coins)
-
       if (coins) {
         moves.push(
           this.material(MaterialType.Coin).createItem({

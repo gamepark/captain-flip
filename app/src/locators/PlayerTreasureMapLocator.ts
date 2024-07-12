@@ -1,12 +1,12 @@
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
-import { ItemLocator } from '@gamepark/react-game/dist/locators/ItemLocator'
+import { ItemContext, ItemLocator } from '@gamepark/react-game/dist/locators/ItemLocator'
 import { Location } from '@gamepark/rules-api'
 
 export class PlayerTreasureMapLocator extends ItemLocator {
   parentItemType = MaterialType.AdventureBoard
 
-  getParentItemId(location: Location){
-    return location.player
+  getParentItem(location: Location, context: ItemContext) {
+    return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()!
   }
 
   positionOnParent = {
