@@ -2,9 +2,8 @@
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { Character } from '@gamepark/captain-flip/material/tiles/Character'
-import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
-import { CardDescription, ItemContext } from '@gamepark/react-game'
-import { MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { CardDescription } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 import Carpenter from '../images/characters/Carpenter.jpg'
 import Cartographer from '../images/characters/Cartographer.jpg'
 import Cook from '../images/characters/Cook.jpg'
@@ -26,10 +25,6 @@ export class CharacterTileDescription extends CardDescription {
   getItemExtraCss(item: MaterialItem) {
     if (item.location.type === LocationType.ClothBag) return noPointer
     return
-  }
-
-  canLongClick(move: MaterialMove, context: ItemContext) {
-    return context.rules.game.rule?.id !== RuleId.Monkey && super.canLongClick(move, context)
   }
 
   isFlipped(item: MaterialItem): boolean {

@@ -16,6 +16,9 @@ export class FlipButtonDescription extends LocationDescription {
   extraCss = css`
     overflow: hidden;
     box-shadow: 0.07em 0.07em 0 0 black;
+    &:active {
+      box-shadow: unset;
+    }
   `
 
   coordinates = { x: characterTileDescription.width / 2, y: -(characterTileDescription.height / 2), z: 1 }
