@@ -15,5 +15,10 @@ export enum RuleId {
   BoardEffect,
   BoardEffectCoinX,
   BoardEffectTreasureMap,
-  BoardEffectFirstXThenY
+  BoardEffectFirstXThenY,
+  BoardEndOfEffect,
+  BoardEndOfGameCoinIfSame,
+  BoardEndOfGameCoinIfAllDifferent,
+  BoardEffectCoinPerDifferent,
+  BoardEffectCoinPerFullColumn
 }

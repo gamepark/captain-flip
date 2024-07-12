@@ -23,7 +23,7 @@ export class AdventureBoardDescription extends BoardDescription {
   getLocations(item: MaterialItem, context: ItemContext) {
     const locations: Location[] = []
     if (!context.player) return locations
-    const places = new BoardHelper(context.rules.game, context.player).places
+    const places = new BoardHelper(context.rules.game).places
     for (const place of places) {
       locations.push({
         type: LocationType.AdventureBoardCharacterTile,

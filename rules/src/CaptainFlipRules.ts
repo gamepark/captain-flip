@@ -3,10 +3,15 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
 import { BoardEffectRule } from './rules/BoardEffectRule'
+import { BoardEndOfGameEffectRule } from './rules/BoardEndOfGameEffectRule'
 import { DrawCharacterTileRule } from './rules/DrawCharacterTileRule'
+import { BoardEffectCoinPerDifferentRule } from './rules/effect/board/BoardEffectCoinPerDifferentRule'
+import { BoardEffectCoinPerFullColumnRule } from './rules/effect/board/BoardEffectCoinPerFullColumnRule'
 import { BoardEffectCoinXRule } from './rules/effect/board/BoardEffectCoinXRule'
 import { BoardEffectFirstXThenYRule } from './rules/effect/board/BoardEffectFirstXThenYRule'
 import { BoardEffectTreasureMapRule } from './rules/effect/board/BoardEffectTreasureMapRule'
+import { BoardEndOfGameCoinIfAllDifferentRule } from './rules/effect/board/BoardEndOfGameCoinIfAllDifferentRule'
+import { BoardEndOfGameCoinIfSameRule } from './rules/effect/board/BoardEndOfGameCoinIfSameRule'
 import { CartographerRule } from './rules/effect/CartographerRule'
 import { CookRule } from './rules/effect/CookRule'
 import { CarpenterEndOfGameRule } from './rules/effect/end/CarpenterEndOfGameRule'
@@ -42,10 +47,15 @@ export class CaptainFlipRules extends HiddenMaterialRules<PlayerId, MaterialType
     [RuleId.BoardEffectCoinX]: BoardEffectCoinXRule,
     [RuleId.BoardEffectTreasureMap]: BoardEffectTreasureMapRule,
     [RuleId.BoardEffectFirstXThenY]: BoardEffectFirstXThenYRule,
+    [RuleId.BoardEffectCoinPerDifferent]: BoardEffectCoinPerDifferentRule,
+    [RuleId.BoardEffectCoinPerFullColumn]: BoardEffectCoinPerFullColumnRule,
     [RuleId.CarpenterEndOfGame]: CarpenterEndOfGameRule,
     [RuleId.ParrotEndOfGame]: ParrotEndOfGameRule,
     [RuleId.SwabbyEndOfGame]: SwabbyEndOfGameRule,
     [RuleId.LookoutEndOfGame]: LookoutEndOfGameRule,
+    [RuleId.BoardEndOfEffect]: BoardEndOfGameEffectRule,
+    [RuleId.BoardEndOfGameCoinIfSame]: BoardEndOfGameCoinIfSameRule,
+    [RuleId.BoardEndOfGameCoinIfAllDifferent]: BoardEndOfGameCoinIfAllDifferentRule
   }
 
   hidingStrategies = {

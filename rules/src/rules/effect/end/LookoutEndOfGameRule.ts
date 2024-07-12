@@ -4,6 +4,7 @@ import { MaterialType } from '../../../material/MaterialType'
 import { Character } from '../../../material/tiles/Character'
 import { PlayerId } from '../../../PlayerId'
 import { getCharacter } from '../../GetCharacter'
+import { RuleId } from '../../RuleId'
 
 export class LookoutEndOfGameRule extends MaterialRulesPart {
 
@@ -29,7 +30,7 @@ export class LookoutEndOfGameRule extends MaterialRulesPart {
       }
     }
 
-    moves.push(this.endGame())
+    moves.push(this.startRule(RuleId.BoardEndOfEffect))
     return moves
   }
 

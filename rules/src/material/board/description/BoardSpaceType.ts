@@ -1,6 +1,11 @@
 export enum BoardSpaceType {
   None,
+  Cost,
   CoinsX,
   TreasureMap,
-  FirstXThenY
+  FirstXThenY,
+  CoinIfSame,
+  CoinIfAllDifferent,
+  CoinPerDifferent,
+  CoinPerFullColumn
 }

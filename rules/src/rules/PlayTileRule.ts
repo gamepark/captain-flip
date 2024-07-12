@@ -1,4 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { BoardSpaceType } from '../material/board/description/BoardSpaceType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { CharacterEffect } from './effect/CharacterEffect'
@@ -11,7 +12,7 @@ export class PlayTileRule extends PlayerTurnRule {
   getPlayerMoves() {
     const hand = this.hand
     const moves: MaterialMove[] = []
-    const availablePlaces = new BoardHelper(this.game, this.player).freePlaces
+    const availablePlaces = new BoardHelper(this.game).getFreePlaces(this.player)
     for (const [x, y] of Object.entries(availablePlaces)) {
       moves.push(
         hand.moveItem((item) => ({
@@ -46,18 +47,29 @@ export class PlayTileRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
+      const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.AdventureBoardCharacterTile) {
       this.addPlacedCard(move.itemIndex)
       const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
       const character = getCharacter(item)
+      const effect = new BoardHelper(this.game).getPlaceEffect({ x: move.location.x, y: move.location.y })
+      if (effect?.type === BoardSpaceType.Cost) {
+        moves.push(this.spendCoins(effect.cost ?? 0))
+      }
       const ruleId = CharacterEffect[character]
-      if (ruleId) return [this.startRule(ruleId)]
-
-      return [this.startRule(RuleId.BoardEffect)]
+      if (ruleId) {
+        moves.push(this.startRule(ruleId))
+      } else {
+        moves.push(this.startRule(RuleId.BoardEffect))
+      }
 
     }
 
-    return []
+    return moves
+  }
+
+  spendCoins(cost: number) {
+    return this.material(MaterialType.Coin).player(this.player).deleteItem(cost)
   }
 
   addPlacedCard(index: number) {

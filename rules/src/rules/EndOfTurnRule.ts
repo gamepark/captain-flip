@@ -37,7 +37,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
 
   get mustGoToScoring() {
     if (this.player !== this.game.players[this.game.players.length - 1]) return false
-    return this.game.players.some((p) => new BoardHelper(this.game, p).hasTriggeredEndOfGame);
+    return this.game.players.some((p) => new BoardHelper(this.game).hasTriggeredEndOfGame(p));
   }
 
   onRuleEnd() {
