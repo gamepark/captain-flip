@@ -15,6 +15,7 @@ export class BoardEndOfGameEffectRule extends PlayerTurnRule {
         effects.push(effect)
       }
     }
+    console.log(effects)
 
     if (!effects.length) return [this.endGame()]
     this.memorize(Memory.BoardEndOfGameEffect, effects)

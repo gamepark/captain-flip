@@ -4,6 +4,7 @@ import minBy from 'lodash/minBy'
 import { BoardType } from '../../material/board/Board'
 import { BoardADescription } from '../../material/board/description/BoardADescription'
 import { BoardBDescription } from '../../material/board/description/BoardBDescription'
+import { BoardCDescription } from '../../material/board/description/BoardCDescription'
 import { BoardSpaceEffect } from '../../material/board/description/BoardCommon'
 import { BoardDDescription } from '../../material/board/description/BoardDDescription'
 import { BoardSpaceType } from '../../material/board/description/BoardSpaceType'
@@ -88,6 +89,8 @@ export class BoardHelper extends MaterialRulesPart {
     switch (board) {
       case BoardType.BoardB:
         return BoardBDescription
+      case BoardType.BoardC:
+        return BoardCDescription
       case BoardType.BoardD:
         return BoardDDescription
       case BoardType.BoardA:
@@ -97,7 +100,9 @@ export class BoardHelper extends MaterialRulesPart {
   }
 
   getPlaceEffect(location: Partial<Location>): BoardSpaceEffect | undefined {
-    return this.boardDescription.board[4 - location.y!]?.[location.x!]
+    const effect = this.boardDescription.board[4 - location.y!]?.[location.x!]
+    if (effect?.endOfGame) return
+    return effect
   }
 
   endOfGameEffects() {

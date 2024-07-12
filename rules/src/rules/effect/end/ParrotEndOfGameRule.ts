@@ -13,8 +13,7 @@ export class ParrotEndOfGameRule extends MaterialRulesPart {
 
     for (const player of this.game.players) {
       const parrots = this.getPlayerParrot(player).length
-      const coins = this.getPlayerCoins(player)
-      if (coins) {
+      if (parrots) {
         moves.push(
           this.material(MaterialType.Coin).player(player).deleteItem(parrots)
         )
@@ -23,17 +22,6 @@ export class ParrotEndOfGameRule extends MaterialRulesPart {
 
     moves.push(this.startRule(RuleId.SwabbyEndOfGame))
     return moves
-  }
-
-  getPlayerCoins(playerId: PlayerId) {
-    const item = this
-      .material(MaterialType.Coin)
-      .player(playerId)
-      .getItem()
-
-    if (!item) return 0
-    return item.quantity ?? 1
-
   }
 
   getCoins() {
