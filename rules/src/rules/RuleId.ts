@@ -20,5 +20,7 @@ export enum RuleId {
   BoardEndOfGameCoinIfSame,
   BoardEndOfGameCoinIfAllDifferent,
   BoardEffectCoinPerDifferent,
-  BoardEffectCoinPerFullColumn
+  BoardEffectCoinPerFullColumn,
+  BoardEffectFlip,
+  BoardEffectReplay
 }

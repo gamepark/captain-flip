@@ -6,6 +6,7 @@ export enum BoardType {
   BoardB,
   BoardC,
   BoardD,
+  BoardE
 }
 
 export const boardTypes = Object.values(BoardType).filter(isEnumValue)

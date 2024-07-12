@@ -7,5 +7,7 @@ export enum BoardSpaceType {
   CoinIfSame,
   CoinIfAllDifferent,
   CoinPerDifferent,
-  CoinPerFullColumn
+  CoinPerFullColumn,
+  Replay,
+  Flip,
 }

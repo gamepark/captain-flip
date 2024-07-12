@@ -7,6 +7,7 @@ import { BoardBDescription } from '../../material/board/description/BoardBDescri
 import { BoardCDescription } from '../../material/board/description/BoardCDescription'
 import { BoardSpaceEffect } from '../../material/board/description/BoardCommon'
 import { BoardDDescription } from '../../material/board/description/BoardDDescription'
+import { BoardEDescription } from '../../material/board/description/BoardEDescription'
 import { BoardSpaceType } from '../../material/board/description/BoardSpaceType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -93,6 +94,8 @@ export class BoardHelper extends MaterialRulesPart {
         return BoardCDescription
       case BoardType.BoardD:
         return BoardDDescription
+      case BoardType.BoardE:
+        return BoardEDescription
       case BoardType.BoardA:
       default:
         return BoardADescription
@@ -132,6 +135,10 @@ export class BoardHelper extends MaterialRulesPart {
         return RuleId.BoardEffectCoinPerDifferent
       case BoardSpaceType.CoinPerFullColumn:
         return RuleId.BoardEffectCoinPerFullColumn
+      case BoardSpaceType.Flip:
+        return RuleId.BoardEffectFlip
+      case BoardSpaceType.Replay:
+        return RuleId.BoardEffectReplay
       default:
         return
     }

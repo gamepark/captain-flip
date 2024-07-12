@@ -9,6 +9,8 @@ import { BoardEffectCoinPerDifferentRule } from './rules/effect/board/BoardEffec
 import { BoardEffectCoinPerFullColumnRule } from './rules/effect/board/BoardEffectCoinPerFullColumnRule'
 import { BoardEffectCoinXRule } from './rules/effect/board/BoardEffectCoinXRule'
 import { BoardEffectFirstXThenYRule } from './rules/effect/board/BoardEffectFirstXThenYRule'
+import { BoasEffectFlipRule } from './rules/effect/board/BoardEffectFlipRule'
+import { BoardEffectReplayRule } from './rules/effect/board/BoardEffectReplayRule'
 import { BoardEffectTreasureMapRule } from './rules/effect/board/BoardEffectTreasureMapRule'
 import { BoardEndOfGameCoinIfAllDifferentRule } from './rules/effect/board/BoardEndOfGameCoinIfAllDifferentRule'
 import { BoardEndOfGameCoinIfSameRule } from './rules/effect/board/BoardEndOfGameCoinIfSameRule'
@@ -55,7 +57,9 @@ export class CaptainFlipRules extends HiddenMaterialRules<PlayerId, MaterialType
     [RuleId.LookoutEndOfGame]: LookoutEndOfGameRule,
     [RuleId.BoardEndOfEffect]: BoardEndOfGameEffectRule,
     [RuleId.BoardEndOfGameCoinIfSame]: BoardEndOfGameCoinIfSameRule,
-    [RuleId.BoardEndOfGameCoinIfAllDifferent]: BoardEndOfGameCoinIfAllDifferentRule
+    [RuleId.BoardEndOfGameCoinIfAllDifferent]: BoardEndOfGameCoinIfAllDifferentRule,
+    [RuleId.BoardEffectFlip]: BoasEffectFlipRule,
+    [RuleId.BoardEffectReplay]: BoardEffectReplayRule
   }
 
   hidingStrategies = {
