@@ -11,7 +11,7 @@ export const BoardEDescription: BoardDescription = {
     [_,  _,  _,  _,  _],
     [C4, _,  _,  _, C3],
     [N,  _,  F,  R,  N],
-    [N,  T,  N,  _,  N],
-    [N,  N,  N,  _,  _]
+    [N,  T,  N,  N,  N],
+    [N,  N,  N,  N,  _]
   ]
 }

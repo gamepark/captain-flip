@@ -5,14 +5,12 @@ import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { PlayerId } from '../../../PlayerId'
 import { getCharacter } from '../../GetCharacter'
-import { Memory } from '../../Memory'
-import { BaseBoardEndOfGameEffect, EffectMemory } from './BaseBoardEndOfGameEffect'
+import { BaseBoardEndOfGameEffect } from './BaseBoardEndOfGameEffect'
 
 type BoardEndOfGameCoinIfSame = { type: BoardSpaceType, value: number }
 export class BoardEndOfGameCoinIfSameRule extends BaseBoardEndOfGameEffect<BoardEndOfGameCoinIfSame> {
 
   onRuleStart() {
-    console.log(this.remind<EffectMemory[]>(Memory.BoardEndOfGameEffect))
     const moves: MaterialMove[] = []
     const columnSize = this.columnSize
     const effect = this.effect.effect

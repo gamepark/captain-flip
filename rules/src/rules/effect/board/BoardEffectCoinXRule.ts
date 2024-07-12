@@ -24,7 +24,6 @@ export class BoardEffectCoinXRule extends BaseBoardEffect<BoardEffectCoinX> {
         })
       )
     } else {
-      console.log("???")
       const coins = this.getPlayerCoins(this.player)
       if (coins >= effect.value) {
         moves.push(this.material(MaterialType.Coin).deleteItem(effect.value))

@@ -8,6 +8,7 @@ import BoardA from '../images/boards/BoardA.jpg'
 import BoardB from '../images/boards/BoardB.jpg'
 import BoardC from '../images/boards/BoardC.jpg'
 import BoardD from '../images/boards/BoardD.jpg'
+import BoardE from '../images/boards/BoardE.jpg'
 
 export class AdventureBoardDescription extends BoardDescription {
   height = 24
@@ -18,6 +19,7 @@ export class AdventureBoardDescription extends BoardDescription {
     [BoardType.BoardB]: BoardB,
     [BoardType.BoardC]: BoardC,
     [BoardType.BoardD]: BoardD,
+    [BoardType.BoardE]: BoardE,
   }
 
   getLocations(item: MaterialItem, context: ItemContext) {

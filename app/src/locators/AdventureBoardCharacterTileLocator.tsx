@@ -18,13 +18,25 @@ export class AdventureBoardCharacterTileLocator extends ItemLocator {
   }
 
   getPositionOnParent(location: Location, context: MaterialContext) {
-    const board = context.rules.remind(Memory.Board)
-    const baseY = board === BoardType.BoardB? 86.0 :86.9
+    const baseY = 86.9 + this.getDeltaY(context)
     const baseX = 14.9
     return {
       x: baseX + 17.5 * location.x!,
       y: baseY - 17.2 * location.y!,
     }
+  }
+
+  getDeltaY(context: MaterialContext) {
+    const board = context.rules.remind(Memory.Board)
+    switch (board) {
+      case BoardType.BoardB:
+        return -0.9
+      case BoardType.BoardE:
+        return -2.9
+      default:
+        return 0
+    }
+
   }
 }
 
