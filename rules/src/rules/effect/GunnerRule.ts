@@ -1,19 +1,15 @@
-import { PlayerTurnRule } from '@gamepark/rules-api'
-import { LocationType } from '../../material/LocationType'
-import { MaterialType } from '../../material/MaterialType'
 import { RuleId } from '../RuleId'
+import { CoinRule } from './CoinRule'
 
-export class GunnerRule extends PlayerTurnRule {
+export class GunnerRule extends CoinRule {
   onRuleStart() {
     return [
-      this.material(MaterialType.Coin).createItem({
-        location: {
-          type: LocationType.PlayerCoin,
-          player: this.player
-        },
-        quantity: 5
-      }),
+      ...super.onRuleStart(),
       this.startRule(RuleId.BoardEffect)
     ]
+  }
+
+  getCoins(): number {
+    return 5
   }
 }

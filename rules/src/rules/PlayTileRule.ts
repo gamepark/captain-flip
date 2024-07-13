@@ -1,14 +1,15 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { BoardSpaceType } from '../material/board/description/BoardSpaceType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { CharacterEffect } from './effect/CharacterEffect'
+import { CoinRule } from './effect/CoinRule'
 import { getCharacter } from './GetCharacter'
 import { BoardHelper } from './helper/BoardHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
-export class PlayTileRule extends PlayerTurnRule {
+export class PlayTileRule extends CoinRule {
   getPlayerMoves() {
     const hand = this.hand
     const moves: MaterialMove[] = []
@@ -54,7 +55,7 @@ export class PlayTileRule extends PlayerTurnRule {
       const character = getCharacter(item)
       const effect = new BoardHelper(this.game).getPlaceEffect({ x: move.location.x, y: move.location.y })
       if (effect?.type === BoardSpaceType.Cost) {
-        moves.push(this.spendCoins(effect.cost ?? 0))
+        moves.push(...this.getCoinsMoves(-effect.cost ?? 0))
       }
       const ruleId = CharacterEffect[character]
       if (ruleId) {
@@ -66,10 +67,6 @@ export class PlayTileRule extends PlayerTurnRule {
     }
 
     return moves
-  }
-
-  spendCoins(cost: number) {
-    return this.material(MaterialType.Coin).player(this.player).deleteItem(cost)
   }
 
   addPlacedCard(index: number) {

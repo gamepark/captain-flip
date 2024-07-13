@@ -22,5 +22,11 @@ export enum RuleId {
   BoardEffectCoinPerDifferent,
   BoardEffectCoinPerFullColumn,
   BoardEffectFlip,
-  BoardEffectReplay
+  BoardEffectReplay,
+
+  WinCoin,
+  LooseCoin,
+  Replay,
+  Flip,
+
 }

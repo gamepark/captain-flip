@@ -1,37 +1,37 @@
-import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { Character } from '../../../material/tiles/Character'
-import { PlayerId } from '../../../PlayerId'
 import { getCharacter } from '../../GetCharacter'
 import { RuleId } from '../../RuleId'
+import { CoinRule } from '../CoinRule'
 
-export class ParrotEndOfGameRule extends MaterialRulesPart {
+export class ParrotEndOfGameRule extends CoinRule {
 
   onRuleStart() {
     const moves: MaterialMove[] = []
-
-    for (const player of this.game.players) {
-      const parrots = this.getPlayerParrot(player).length
-      if (parrots) {
-        moves.push(
-          this.material(MaterialType.Coin).player(player).deleteItem(parrots)
-        )
-      }
+    moves.push(...super.onRuleStart())
+    const nextPlayer = this.nextPlayer
+    if (nextPlayer === this.game.players[0]) {
+      moves.push(this.startPlayerTurn(RuleId.SwabbyEndOfGame, nextPlayer))
+    } else {
+      moves.push(this.startPlayerTurn(RuleId.ParrotEndOfGame, nextPlayer))
     }
-
-    moves.push(this.startRule(RuleId.SwabbyEndOfGame))
     return moves
   }
 
   getCoins() {
+    return this.parrots.length * this.getParrotCoins()
+  }
+
+  getParrotCoins() {
     return -1
   }
 
-  getPlayerParrot(playerId: PlayerId) {
+  get parrots() {
     return this.material(MaterialType.CharacterTile)
       .location(LocationType.AdventureBoardCharacterTile)
-      .player(playerId)
+      .player(this.player)
       .filter((item) =>  getCharacter(item) === Character.Parrot)
   }
 }

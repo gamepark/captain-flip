@@ -1,21 +1,19 @@
-import { PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
+import { CoinRule } from './CoinRule'
 
-export class CookRule extends PlayerTurnRule {
+export class CookRule extends CoinRule {
   onRuleStart() {
     return [
-      this.material(MaterialType.Coin).createItem({
-        location: {
-          type: LocationType.PlayerCoin,
-          player: this.player
-        },
-        quantity: this.countColumnCharacters
-      }),
+      ...super.onRuleStart(),
       this.startRule(RuleId.BoardEffect)
     ]
+  }
+
+  getCoins(): number {
+    return this.countColumnCharacters
   }
 
   get countColumnCharacters() {
@@ -32,7 +30,9 @@ export class CookRule extends PlayerTurnRule {
 
 
   get cook() {
+    const cards = this.remind(Memory.PlacedCard) ?? []
+    const index = cards[cards.length - 1]
     return this.material(MaterialType.CharacterTile)
-      .getItem(this.remind(Memory.PlacedCard)[0])!
+      .getItem(index)!
   }
 }

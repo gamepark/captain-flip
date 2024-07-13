@@ -1,25 +1,15 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { CoinRule } from './effect/CoinRule'
 import { BoardHelper } from './helper/BoardHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
-export class EndOfTurnRule extends PlayerTurnRule {
+export class EndOfTurnRule extends CoinRule {
   onRuleStart() {
     const moves: MaterialMove[] = []
-    if (this.hasTreasureMap) {
-      moves.push(
-        this.material(MaterialType.Coin).createItem({
-          location: {
-            type: LocationType.PlayerCoin,
-            player: this.player
-          },
-          quantity: 1
-        })
-      )
-    }
-
+    moves.push(...super.onRuleStart())
     if (this.mustGoToScoring) {
       moves.push(this.startRule(RuleId.ParrotEndOfGame))
     } else {
@@ -27,6 +17,11 @@ export class EndOfTurnRule extends PlayerTurnRule {
     }
     return moves
   }
+
+  getCoins() {
+    return this.hasTreasureMap? 1: 0
+  }
+
 
   get hasTreasureMap() {
     return this.material(MaterialType.TreasureMapToken)

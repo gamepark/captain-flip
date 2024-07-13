@@ -1,54 +1,38 @@
-import { MaterialMove } from '@gamepark/rules-api'
 import uniqBy from 'lodash/uniqBy'
 import { BoardSpaceType } from '../../../material/board/description/BoardSpaceType'
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
-import { PlayerId } from '../../../PlayerId'
 import { getCharacter } from '../../GetCharacter'
 import { BaseBoardEndOfGameEffect } from './BaseBoardEndOfGameEffect'
 
 type BoardEndOfGameCoinIfAllDifferent = { type: BoardSpaceType, value: number }
+
 export class BoardEndOfGameCoinIfAllDifferentRule extends BaseBoardEndOfGameEffect<BoardEndOfGameCoinIfAllDifferent> {
 
-  onRuleStart() {
-    const moves: MaterialMove[] = []
+  getCoins() {
     const columnSize = this.columnSize
     const effect = this.effect.effect
-    for (const player of this.game.players) {
-
-      const characters = this.getPlayerCharacters(player)
-      const countDifferent = uniqBy(characters, (item) => getCharacter(item))?.length ?? 0
-      if (characters.length === columnSize && countDifferent === columnSize) {
-        moves.push(
-          this.material(MaterialType.Coin).createItem({
-            location: {
-              type: LocationType.PlayerCoin,
-              player: player
-            },
-            quantity: effect.value
-          })
-        )
-      }
-
+    const characters = this.playerCharacters
+    const countDifferent = uniqBy(characters, (item) => getCharacter(item))?.length ?? 0
+    if (characters.length === columnSize && countDifferent === columnSize) {
+      return effect.value
     }
 
-    moves.push(this.goNext())
-    return moves
+    return 0
   }
 
   get columnSize() {
     return this.effect.y + 1
   }
 
-  getPlayerCharacters(playerId: PlayerId) {
+  get playerCharacters() {
     const effect = this.effect
     return this
       .material(MaterialType.CharacterTile)
-      .player(playerId)
+      .player(this.player)
       .location((l) => l.type === LocationType.AdventureBoardCharacterTile && l.x === effect.x)
       .getItems()
   }
-
 
 
 }

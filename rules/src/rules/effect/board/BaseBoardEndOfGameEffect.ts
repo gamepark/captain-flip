@@ -1,7 +1,8 @@
-import { MaterialRulesPart } from '@gamepark/rules-api'
 import { BoardSpaceEffect } from '../../../material/board/description/BoardCommon'
 import { BoardHelper } from '../../helper/BoardHelper'
 import { Memory } from '../../Memory'
+import { CoinRule } from '../CoinRule'
+import { MaterialMove } from '@gamepark/rules-api'
 
 export type EffectMemory<E extends BoardSpaceEffect = BoardSpaceEffect> = {
   effect: E,
@@ -9,7 +10,13 @@ export type EffectMemory<E extends BoardSpaceEffect = BoardSpaceEffect> = {
   y: number
 }
 
-export class BaseBoardEndOfGameEffect<E extends BoardSpaceEffect = BoardSpaceEffect> extends MaterialRulesPart {
+export abstract class BaseBoardEndOfGameEffect<E extends BoardSpaceEffect = BoardSpaceEffect> extends CoinRule {
+  onRuleStart() {
+    const moves: MaterialMove[] = []
+    moves.push(...super.onRuleStart())
+    moves.push(this.goNext())
+    return moves
+  }
 
   removeFirst() {
     const effects = this.remind<EffectMemory[]>(Memory.BoardEndOfGameEffect)
@@ -18,11 +25,17 @@ export class BaseBoardEndOfGameEffect<E extends BoardSpaceEffect = BoardSpaceEff
   }
 
   goNext() {
-    this.removeFirst()
+
+    const nextPlayer = this.nextPlayer
     const effects = this.remind<EffectMemory[]>(Memory.BoardEndOfGameEffect)
     if (!effects.length) return this.endGame()
     const rule = new BoardHelper(this.game).getEffectRule(effects[0]!.effect)!
-    return this.startRule(rule)
+    if (nextPlayer === this.game.players[0]) {
+      this.removeFirst()
+      return this.startRule(rule)
+    } else {
+      return this.startPlayerTurn(rule, nextPlayer)
+    }
   }
 
   get effect(): EffectMemory<E> {

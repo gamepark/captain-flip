@@ -1,41 +1,39 @@
-import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { Character } from '../../../material/tiles/Character'
-import { PlayerId } from '../../../PlayerId'
 import { getCharacter } from '../../GetCharacter'
 import { RuleId } from '../../RuleId'
+import { CoinRule } from '../CoinRule'
 
-export class LookoutEndOfGameRule extends MaterialRulesPart {
+export class LookoutEndOfGameRule extends CoinRule {
 
   onRuleStart() {
     const moves: MaterialMove[] = []
-    for (const player of this.game.players) {
-      let coins = 0
-      const lookouts = this.getPlayerLookouts(player)
-      for (const lookout of lookouts) {
-        coins += this.getCoin(player, lookout)
-      }
-
-      if (coins) {
-        moves.push(
-          this.material(MaterialType.Coin).createItem({
-            location: {
-              type: LocationType.PlayerCoin,
-              player: player
-            },
-            quantity: coins
-          })
-        )
-      }
+    moves.push(...super.onRuleStart())
+    const nextPlayer = this.nextPlayer
+    if (nextPlayer === this.game.players[0]) {
+      moves.push(this.startRule(RuleId.BoardEndOfEffect))
+    } else {
+      moves.push(this.startPlayerTurn(RuleId.LookoutEndOfGame, nextPlayer))
     }
 
     moves.push(this.startRule(RuleId.BoardEndOfEffect))
     return moves
   }
 
-  getCoin(playerId: PlayerId, lookout: MaterialItem) {
-    const characters = this.getPlayerCharacters(playerId)
+  getCoins() {
+    let coins = 0
+    const lookouts = this.lookouts
+    for (const lookout of lookouts) {
+      coins += this.getLookoutCoins(lookout)
+    }
+
+    return coins
+  }
+
+  getLookoutCoins(lookout: MaterialItem) {
+    const characters = this.characters
     if (!characters.some((item) => item.location.x === lookout.location.x && item.location.y! > lookout.location.y!)) {
       return 4
     }
@@ -43,18 +41,18 @@ export class LookoutEndOfGameRule extends MaterialRulesPart {
     return 0
   }
 
-  getPlayerLookouts(playerId: PlayerId) {
+  get lookouts() {
     return this.material(MaterialType.CharacterTile)
       .location(LocationType.AdventureBoardCharacterTile)
-      .player(playerId)
+      .player(this.player)
       .filter((item) =>  getCharacter(item) === Character.Lookout)
       .getItems()
   }
 
-  getPlayerCharacters(playerId: PlayerId) {
+  get characters() {
     return this.material(MaterialType.CharacterTile)
       .location(LocationType.AdventureBoardCharacterTile)
-      .player(playerId)
+      .player(this.player)
       .getItems()
   }
 }

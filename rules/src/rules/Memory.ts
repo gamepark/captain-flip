@@ -1,7 +1,12 @@
+import { PlayerId } from '../PlayerId'
+
 export enum Memory {
   Flipped = 1,
   PlacedCard,
   Board,
   BoardEffect,
-  BoardEndOfGameEffect
+  BoardEndOfGameEffect,
+  PlayerCoins
 }
+
+export type PlayerCoins = Partial<Record<PlayerId, number>>

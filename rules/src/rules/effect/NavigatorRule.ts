@@ -1,28 +1,26 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Character } from '../../material/tiles/Character'
 import { getCharacter } from '../GetCharacter'
 import { RuleId } from '../RuleId'
+import { CoinRule } from './CoinRule'
 
-export class NavigatorRule extends PlayerTurnRule {
+export class NavigatorRule extends CoinRule {
   onRuleStart() {
-    const cartographers = this.cartographerCount
     const moves: MaterialMove[] = []
-    if (cartographers > 0) {
-      moves.push(
-        this.material(MaterialType.Coin).createItem({
-          location: {
-            type: LocationType.PlayerCoin,
-            player: this.player
-          },
-          quantity: cartographers * 2
-        })
-      )
-    }
-
+    moves.push(...super.onRuleStart())
     moves.push(this.startRule(RuleId.BoardEffect))
     return moves
+  }
+
+  getCoins() {
+    const cartographers = this.cartographerCount
+    if (cartographers > 0) {
+      return cartographers * 2
+    }
+
+    return 0
   }
 
   get cartographerCount() {

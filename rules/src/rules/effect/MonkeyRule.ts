@@ -1,29 +1,26 @@
-import { getDistanceBetweenSquares, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { getDistanceBetweenSquares, isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { getCharacter } from '../GetCharacter'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 import { CharacterEffect } from './CharacterEffect'
+import { CoinRule } from './CoinRule'
 
-export class MonkeyRule extends PlayerTurnRule {
+export class MonkeyRule extends CoinRule {
   onRuleStart() {
     const adjacentCards = this.adjacentCards
     const moves: MaterialMove[] = []
-    moves.push(
-      this.material(MaterialType.Coin).createItem({
-        location: {
-          type: LocationType.PlayerCoin,
-          player: this.player
-        },
-        quantity: 1
-      })
-    )
+    moves.push(...super.onRuleStart())
     if (!adjacentCards.length) {
       moves.push(this.startRule(RuleId.BoardEffect))
     }
 
     return moves
+  }
+
+  getCoins() {
+    return 1
   }
 
   getPlayerMoves() {
@@ -57,7 +54,9 @@ export class MonkeyRule extends PlayerTurnRule {
   }
 
   get monkey() {
+    const cards = this.remind(Memory.PlacedCard) ?? []
+    const index = cards[cards.length - 1]
     return this.material(MaterialType.CharacterTile)
-      .getItem(this.remind(Memory.PlacedCard)[0])!
+      .getItem(index)!
   }
 }

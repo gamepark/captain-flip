@@ -1,8 +1,9 @@
-import { PlayerTurnRule } from '@gamepark/rules-api'
 import { BoardSpaceEffect } from '../../../material/board/description/BoardCommon'
 import { BoardHelper } from '../../helper/BoardHelper'
+import { MaterialMove } from '@gamepark/rules-api'
 import { Memory } from '../../Memory'
 import { RuleId } from '../../RuleId'
+import { CoinRule } from '../CoinRule'
 
 export type EffectMemory<E extends BoardSpaceEffect = BoardSpaceEffect> = {
   effect: E,
@@ -10,7 +11,13 @@ export type EffectMemory<E extends BoardSpaceEffect = BoardSpaceEffect> = {
   y: number
 }
 
-export class BaseBoardEffect<E extends BoardSpaceEffect = BoardSpaceEffect> extends PlayerTurnRule {
+export class BaseBoardEffect<E extends BoardSpaceEffect = BoardSpaceEffect> extends CoinRule {
+  onRuleStart() {
+    const moves: MaterialMove[] = []
+    moves.push(...super.onRuleStart())
+    moves.push(this.goNext())
+    return moves
+  }
 
   removeFirst() {
     const effects = this.remind<EffectMemory[]>(Memory.BoardEffect)
