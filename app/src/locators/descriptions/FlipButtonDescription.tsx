@@ -9,16 +9,12 @@ import { characterTileDescription } from '../../material/CharacterTileDescriptio
 import { FlipButton } from '../component/FlipButton'
 
 export class FlipButtonDescription extends LocationDescription {
-  height = 1.7
-  width = 1.7
+  height = 1.77
+  width = 1.77
   borderRadius = 5
   alwaysVisible = true
   extraCss = css`
     overflow: hidden;
-    box-shadow: 0.07em 0.07em 0 0 black;
-    &:active {
-      box-shadow: unset;
-    }
   `
 
   coordinates = { x: characterTileDescription.width / 2, y: -(characterTileDescription.height / 2), z: 1 }
@@ -28,7 +24,7 @@ export class FlipButtonDescription extends LocationDescription {
     const { rules, player } = context
     if (!player || player !== rules.game.rule?.player) return locations
 
-    if (rules.game.rule?.id === RuleId.PlaceTile) {
+    if (rules.game.rule?.id === RuleId.PlayTile) {
       if (rules.remind(Memory.Flipped)) return locations
       const hand = rules.material(MaterialType.CharacterTile).location(LocationType.PlayerHand)
       if (!hand.length) return locations

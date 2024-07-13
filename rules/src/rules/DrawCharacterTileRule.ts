@@ -16,7 +16,7 @@ export class DrawCharacterTileRule extends PlayerTurnRule {
     )
 
     moves.push(
-      this.startRule(RuleId.PlaceTile)
+      this.startRule(RuleId.PlayTile)
     )
 
     return moves;

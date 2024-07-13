@@ -22,7 +22,6 @@ export class EndOfTurnRule extends CoinRule {
     return this.hasTreasureMap? 1: 0
   }
 
-
   get hasTreasureMap() {
     return this.material(MaterialType.TreasureMapToken)
       .location(LocationType.PlayerTreasureMapToken)

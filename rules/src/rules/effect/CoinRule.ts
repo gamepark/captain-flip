@@ -1,4 +1,4 @@
-import { isDeleteItem, Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isCreateItem, isDeleteItem, Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import orderBy from 'lodash/orderBy'
 import sum from 'lodash/sum'
 import { Coin } from '../../material/Coin'
@@ -37,6 +37,10 @@ export class CoinRule extends PlayerTurnRule {
 
     const deltaCoin1 = bestCombinationFor[Coin.Coin1] - (coins1.getItem()?.quantity ?? 0)
     moves.push(...this.moveCoins(coins1, Coin.Coin1, deltaCoin1))
+
+    if (coins < 0) {
+      return orderBy(moves, (move) => isCreateItem(move)? 1: 0)
+    }
 
     return orderBy(moves, (move) => isDeleteItem(move)? 1: 0)
   }

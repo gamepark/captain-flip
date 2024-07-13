@@ -1,6 +1,6 @@
 export enum RuleId {
   DrawCharacterTile = 1,
-  PlaceTile,
+  PlayTile,
   EndOfTurn,
   Cartographer,
   Navigator,
@@ -23,10 +23,4 @@ export enum RuleId {
   BoardEffectCoinPerFullColumn,
   BoardEffectFlip,
   BoardEffectReplay,
-
-  WinCoin,
-  LooseCoin,
-  Replay,
-  Flip,
-
 }

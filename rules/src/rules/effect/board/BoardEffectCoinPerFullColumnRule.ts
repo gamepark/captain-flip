@@ -6,6 +6,7 @@ type BoardEffectCoinPerFullColumn = { type: BoardSpaceType, value: number }
 
 export class BoardEffectCoinPerFullColumnRule extends BaseBoardEffect<BoardEffectCoinPerFullColumn> {
   getCoins() {
+    console.log(this.effect)
     const effect = this.effect.effect
     const helper = new BoardHelper(this.game)
     let fullColumn = 0

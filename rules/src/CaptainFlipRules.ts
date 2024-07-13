@@ -37,7 +37,7 @@ export class CaptainFlipRules extends HiddenMaterialRules<PlayerId, MaterialType
   implements TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
     [RuleId.DrawCharacterTile]: DrawCharacterTileRule,
-    [RuleId.PlaceTile]: PlayTileRule,
+    [RuleId.PlayTile]: PlayTileRule,
     [RuleId.EndOfTurn]: EndOfTurnRule,
     [RuleId.Cartographer]: CartographerRule,
     [RuleId.Navigator]: NavigatorRule,
