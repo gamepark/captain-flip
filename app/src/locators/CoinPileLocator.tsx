@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { PileLocator } from '@gamepark/react-game'
+import { LocationContext, PileLocator } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api/dist/material/items/MaterialItem'
 import { coin10StockLocation, coin1StockLocation, coin3StockLocation, coin5StockLocation } from '../material/CoinDescription'
 import { CoinPileDescription } from './descriptions/CoinPileDescription'
@@ -13,7 +13,14 @@ export class CoinPileLocator extends PileLocator {
   ]
   locationDescription = new CoinPileDescription()
   radius = 3
-  coordinates = { x: 0, y: 0, z: 0 }
+  coordinates = { x: 0, y: 7, z: 0 }
+  getCoordinates(_item :MaterialItem, context: LocationContext) {
+    if (context.rules.players.length === 5) {
+      return { x: 7, y: 14, z: 5 }
+    }
+
+    return this.coordinates
+  }
 
   getPileId(item: MaterialItem) {
     return item.id

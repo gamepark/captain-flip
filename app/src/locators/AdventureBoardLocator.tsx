@@ -15,12 +15,14 @@ export class AdventureBoardLocator extends ItemLocator {
       case 1:
         return { x: -35, y: -13, z: 0.05}
       case 2:
+        if (context.rules.players.length === 5) return  { x: 0, y: -13, z: 0.05}
         return { x: 35, y: -13, z: 0.05}
       case 3:
+        if (context.rules.players.length === 5) return { x: 35, y: -13, z: 0.05}
         return { x: 35, y: 13, z: 0.05}
       case 4:
       default:
-        return { x: 0, y: 0, z: 0.05}
+        return { x: 35, y: 13, z: 0.05}
     }
   }
 }

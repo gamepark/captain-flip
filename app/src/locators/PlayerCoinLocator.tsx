@@ -1,14 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import { ItemContext, PileLocator } from '@gamepark/react-game'
+import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import { adventureBoardLocation } from './AdventureBoardLocator'
 
 export class PlayerCoinLocator extends PileLocator {
-  radius = 2
+  radius = 1.5
   getCoordinates(item: MaterialItem, context: ItemContext) {
     const coordinates = adventureBoardLocation.getBoardPosition(item.location.player!, context)
-    coordinates.x += coordinates.x < 0? 13.5: -13.5
-    coordinates.y -= 10.7
+
+
+    const index = getRelativePlayerIndex(context, item.location.player!)
+    if (context.rules.players.length === 5 && index === 2) {
+      coordinates.x += 14.1
+      coordinates.y += 10
+    } else {
+      coordinates.x += coordinates.x < 0? 14.1: -14.1
+      coordinates.y -= 10
+    }
+
     return coordinates
   }
 
