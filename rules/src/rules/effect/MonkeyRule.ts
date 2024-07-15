@@ -59,4 +59,8 @@ export class MonkeyRule extends CoinRule {
     return this.material(MaterialType.CharacterTile)
       .getItem(index)!
   }
+
+  onRuleEnd() {
+    return []
+  }
 }

@@ -22,6 +22,9 @@ export class BaseBoardEffect<E extends BoardSpaceEffect = BoardSpaceEffect> exte
   removeFirst() {
     const effects = this.remind<EffectMemory[]>(Memory.BoardEffect)
     effects.shift()
+    const placedCards = this.remind(Memory.PlacedCard)
+    placedCards.shift()
+    this.memorize(Memory.PlacedCard, placedCards)
     this.memorize(Memory.BoardEffect, effects)
   }
 

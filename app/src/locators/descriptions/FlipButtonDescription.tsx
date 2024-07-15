@@ -49,6 +49,19 @@ export class FlipButtonDescription extends LocationDescription {
       )
     }
 
+    if (rules.game.rule?.id === RuleId.BoardEffectFlip) {
+      const tiles = rules.material(MaterialType.CharacterTile)
+        .player(player)
+        .location(LocationType.AdventureBoardCharacterTile)
+      if (!tiles.length) return []
+      locations.push(
+        ...tiles.getIndexes().map((parent) => ({
+          type: LocationType.MonkeyFlipButton,
+          parent: parent
+        }))
+      )
+    }
+
     return locations
   }
 
