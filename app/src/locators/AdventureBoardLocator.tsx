@@ -11,8 +11,10 @@ export class AdventureBoardLocator extends ItemLocator {
     const index = getRelativePlayerIndex(context, player)
     switch (index) {
       case 0:
+        if (context.rules.players.length === 2) return{ x: -20, y: 13, z: 0.05}
         return { x: -35, y: 13, z: 0.05}
       case 1:
+        if (context.rules.players.length === 2) return { x: 20, y: 13, z: 0.05}
         return { x: -35, y: -13, z: 0.05}
       case 2:
         if (context.rules.players.length === 5) return  { x: 0, y: -13, z: 0.05}

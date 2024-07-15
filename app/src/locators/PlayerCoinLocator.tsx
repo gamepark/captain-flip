@@ -10,7 +10,10 @@ export class PlayerCoinLocator extends PileLocator {
 
 
     const index = getRelativePlayerIndex(context, item.location.player!)
-    if (context.rules.players.length === 5 && index === 2) {
+    if (context.rules.players.length === 2) {
+      coordinates.x += (index === 0? 10: -10)
+      coordinates.y -= 14.1
+    } else if (context.rules.players.length === 5 && index === 2) {
       coordinates.x += 14.1
       coordinates.y += 10
     } else {

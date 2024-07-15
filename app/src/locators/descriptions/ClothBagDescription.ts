@@ -9,8 +9,12 @@ export class ClothBagDescription extends LocationDescription {
   width = 9
   height = 10.91
   location = { type: LocationType.ClothBag }
-  coordinates = { x: 0, y: 17, z: 5 }
+  coordinates = { x: 0, y: 10, z: 5 }
   getCoordinates(_location :Location, context: LocationContext) {
+    if (context.rules.players.length === 2) {
+      return { x: 0, y: 20, z: 5 }
+    }
+
     if (context.rules.players.length === 5) {
       return { x: -7, y: 14, z: 5 }
     }

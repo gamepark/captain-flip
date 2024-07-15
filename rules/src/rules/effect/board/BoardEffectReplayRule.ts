@@ -18,7 +18,6 @@ export class BoardEffectReplayRule extends BaseBoardEffect<BoardEffectReplay> {
     }
 
     moves.push(this.startRule(RuleId.DrawCharacterTile))
-    moves.push(this.goNext())
     return moves
   }
 

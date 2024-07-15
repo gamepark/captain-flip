@@ -13,10 +13,14 @@ export class CoinPileLocator extends PileLocator {
   ]
   locationDescription = new CoinPileDescription()
   radius = 3
-  coordinates = { x: 0, y: 7, z: 0 }
+  coordinates = { x: 0, y: -10, z: 0 }
   getCoordinates(_item :MaterialItem, context: LocationContext) {
+    if (context.rules.players.length === 2) {
+      return { x: 0, y: 7, z: 0 }
+    }
+
     if (context.rules.players.length === 5) {
-      return { x: 7, y: 14, z: 5 }
+      return { x: 7, y: 14, z: 0 }
     }
 
     return this.coordinates
