@@ -11,6 +11,8 @@ import { useMaterialContext } from '@gamepark/react-game/dist/hooks/useMaterialC
 import { useRules } from '@gamepark/react-game/dist/hooks/useRules'
 import { MaterialContext } from '@gamepark/react-game/dist/locators/ItemLocator'
 import { getRelativePlayerIndex } from '@gamepark/react-game/dist/locators/utils/getRelativePlayerIndex.util'
+import { isCreateItemType } from '@gamepark/rules-api/dist/material/moves/items/CreateItem'
+import { isDeleteItemType } from '@gamepark/rules-api/dist/material/moves/items/DeleteItem'
 import { FC, HTMLAttributes, useCallback, useEffect, useState } from 'react'
 import TotalCoin from '../images/coins/TotalCoin.png'
 import PlayerOne from '../images/panel/player-1.jpg'
@@ -28,7 +30,7 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
   const { setFocus } = useFocusContext()
   const rules = useRules<CaptainFlipRules>()!
   const context = useMaterialContext()
-  const animations = useAnimations()
+  const animations = useAnimations((a) => isCreateItemType(MaterialType.Coin)(a.move) || isDeleteItemType(MaterialType.Coin)(a.move))
   const playerId = usePlayerId()
   const itsMe = playerId && player.id === playerId
   const [coins, setCoins] = useState<number>(new CoinHelper(rules.game, player.id).coins)

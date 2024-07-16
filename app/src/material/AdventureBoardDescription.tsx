@@ -34,8 +34,7 @@ export class AdventureBoardDescription extends BoardDescription {
         height: 2.5em;
         width: 2.5em;
         left: 0.3em;
-        background-color: blue;
-        top: 0.5em;
+        top: 1em;
         transform: translateZ(4em);
         background: url(${Flag}) no-repeat center center;
         background-size: cover;
