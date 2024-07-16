@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
-import { PlayerPanel, usePlayers } from '@gamepark/react-game'
+import { usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
 import { createPortal } from 'react-dom'
+import { CaptainFlipPlayerPanel } from './CaptainFlipPlayerPanel'
 
 export const PlayerPanels: FC<any> = () => {
   const players = usePlayers({ sortFromMe: true })
@@ -13,18 +13,10 @@ export const PlayerPanels: FC<any> = () => {
 
   return createPortal(
     <>
-      {players.map((player, index) =>
-        <PlayerPanel key={player.id} playerId={player.id} css={panelPosition(index)}/>
+      {players.map((player) =>
+        <CaptainFlipPlayerPanel key={player.id} player={player}/>
       )}
     </>,
     root
   )
 }
-const panelPosition = (index: number) => css`
-  position: absolute;
-  right: 1em;
-  top: ${8.5 + index * 16}em;
-  width: 28em;
-  height: 14em;
-  display: none;
-`

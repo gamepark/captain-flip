@@ -14,6 +14,9 @@ export class PlayerHandLocator extends HandLocator {
     if (context.rules.players.length === 5 && index === 2) {
       coordinates.y += 15
       coordinates.z = 5
+    } else if (context.rules.players.length === 5 && index === 1) {
+      coordinates.y += 15
+      coordinates.z = 5
     } else {
       coordinates.x += coordinates.x < 0? 15: -15
       coordinates.z = 5

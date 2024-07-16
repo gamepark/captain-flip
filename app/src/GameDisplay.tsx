@@ -16,10 +16,10 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
     <GameTable
       verticalCenter
       {...boundaries}
-      margin={{ top: 7, left: 0, right: 0, bottom: 0 }}
-      css={css`background-color: #ffffff20`}
+      margin={{ top: 7 + (boundaries.top ?? 0), left: 0, right: 0, bottom: boundaries.bottom ?? 0 }}
+      //css={css`background-color: #ffffff20`}
     >
-      <GameTableNavigation/>
+      <GameTableNavigation css={navigationCss(players.length)} scaleStep={0.2}/>
       <PlayerPanels/>
     </GameTable>
   </>
@@ -31,7 +31,7 @@ const tableSize = (players: number) => {
       xMin: -32,
       xMax: 32,
       yMin: -5,
-      yMax: 26
+      yMax: 26,
     }
   }
 
@@ -39,6 +39,18 @@ const tableSize = (players: number) => {
     xMin: -48,
     xMax: 48,
     yMin: -26,
-    yMax: 26
+    yMax: 26,
+    bottom: players > 4? 7: 0,
+    top: players > 4? 5: 0,
   }
+}
+
+const navigationCss = (players: number) => {
+  if (players === 2) {
+    return css`
+      left: 32em
+    `
+  }
+
+  return undefined
 }

@@ -9,6 +9,18 @@ export class PlayerTreasureMapLocator extends ItemLocator {
     return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()!
   }
 
+  getPositionOnParent(location: Location, context: ItemContext) {
+    const first = context.rules.players[0]
+    if (location.player === first) {
+      return {
+        x: 20,
+        y: 10
+      }
+    }
+
+    return this.positionOnParent
+  }
+
   positionOnParent = {
     x: 10,
     y: 10

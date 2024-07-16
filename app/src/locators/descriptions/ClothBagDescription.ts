@@ -15,7 +15,7 @@ export class ClothBagDescription extends LocationDescription {
       return { x: 0, y: 20, z: 5 }
     }
 
-    if (context.rules.players.length === 5) {
+    if (context.rules.players.length === 3 || context.rules.players.length === 5) {
       return { x: -7, y: 14, z: 5 }
     }
 

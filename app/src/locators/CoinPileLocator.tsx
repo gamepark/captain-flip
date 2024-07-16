@@ -16,10 +16,10 @@ export class CoinPileLocator extends PileLocator {
   coordinates = { x: 0, y: -10, z: 0 }
   getCoordinates(_item :MaterialItem, context: LocationContext) {
     if (context.rules.players.length === 2) {
-      return { x: 0, y: 7, z: 0 }
+      return { x: 0, y: 5, z: 0 }
     }
 
-    if (context.rules.players.length === 5) {
+    if (context.rules.players.length === 3 || context.rules.players.length === 5) {
       return { x: 7, y: 14, z: 0 }
     }
 

@@ -7,6 +7,7 @@ import Coin1 from '../images/coins/Coin1.png'
 import Coin10 from '../images/coins/Coin10.png'
 import Coin3 from '../images/coins/Coin3.png'
 import Coin5 from '../images/coins/Coin5.png'
+import TotalCoin from '../images/coins/TotalCoin.png'
 
 export class CoinDescription extends TokenDescription {
   height = 2.79
@@ -17,6 +18,12 @@ export class CoinDescription extends TokenDescription {
     [Coin.Coin3]: Coin3,
     [Coin.Coin5]: Coin5,
     [Coin.Coin10]: Coin10,
+  }
+
+  getImages() {
+    const images = super.getImages()
+    images.push(TotalCoin)
+    return images
   }
 
 
