@@ -30,9 +30,6 @@ export class CookRule extends CoinRule {
 
 
   get cook() {
-    const cards = this.remind(Memory.PlacedCard) ?? []
-    const index = cards[cards.length - 1]
-    return this.material(MaterialType.CharacterTile)
-      .getItem(index)!
+    return this.material(MaterialType.CharacterTile).getItem(this.remind(Memory.PlacedCard))!
   }
 }

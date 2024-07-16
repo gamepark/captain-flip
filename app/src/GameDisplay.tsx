@@ -28,8 +28,8 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
 const tableSize = (players: number) => {
   if (players === 2) {
     return {
-      xMin: -33,
-      xMax: 33,
+      xMin: -32,
+      xMax: 32,
       yMin: -5,
       yMax: 26
     }

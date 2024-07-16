@@ -104,7 +104,7 @@ export class BoardHelper extends MaterialRulesPart {
 
   getPlaceEffect(location: Partial<Location>): BoardSpaceEffect | undefined {
     const effect = this.boardDescription.board[4 - location.y!]?.[location.x!]
-    if (effect?.endOfGame) return
+      if (effect?.endOfGame) return
     return effect
   }
 

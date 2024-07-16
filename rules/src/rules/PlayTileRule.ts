@@ -1,4 +1,5 @@
-import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, Location, MaterialMove } from '@gamepark/rules-api'
+import { BoardSpaceEffect } from '../material/board/description/BoardCommon'
 import { BoardSpaceType } from '../material/board/description/BoardSpaceType'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -48,7 +49,7 @@ export class PlayTileRule extends CoinRule {
   }
 
   afterItemMove(move: ItemMove) {
-      const moves: MaterialMove[] = []
+    const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.AdventureBoardCharacterTile) {
       this.addPlacedCard(move.itemIndex)
       const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
@@ -56,7 +57,10 @@ export class PlayTileRule extends CoinRule {
       const effect = new BoardHelper(this.game).getPlaceEffect({ x: move.location.x, y: move.location.y })
       if (effect?.type === BoardSpaceType.Cost) {
         moves.push(...this.getCoinsMoves(-effect.cost ?? 0))
+      } else if (effect?.type !== BoardSpaceType.None) {
+        this.addBoardEffect(effect!, move.location)
       }
+
       const ruleId = CharacterEffect[character]
       if (ruleId) {
         moves.push(this.startRule(ruleId))
@@ -69,10 +73,19 @@ export class PlayTileRule extends CoinRule {
     return moves
   }
 
+  addBoardEffect(effect: BoardSpaceEffect, location: Partial<Location>) {
+    const effects = this.remind(Memory.BoardEffect) ?? []
+    effects.push({
+      effect: effect,
+      x: location.x!,
+      y: location.y!,
+    })
+
+    this.memorize(Memory.BoardEffect, effects)
+  }
+
   addPlacedCard(index: number) {
-    const places = this.remind<number[]>(Memory.PlacedCard) ?? []
-    places.push(index)
-    this.memorize(Memory.PlacedCard, places)
+    this.memorize(Memory.PlacedCard, index)
   }
 
   get hand() {

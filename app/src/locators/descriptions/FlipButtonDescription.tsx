@@ -35,7 +35,7 @@ export class FlipButtonDescription extends LocationDescription {
     }
 
     if (rules.game.rule?.id === RuleId.Monkey) {
-      const monkey = rules.material(MaterialType.CharacterTile).getItem(this.getLastPlacedCard(rules))!
+      const monkey = rules.material(MaterialType.CharacterTile).getItem(this.getPlacedCard(rules))!
       const tiles = rules.material(MaterialType.CharacterTile)
         .player(player)
         .location(LocationType.AdventureBoardCharacterTile)
@@ -65,9 +65,8 @@ export class FlipButtonDescription extends LocationDescription {
     return locations
   }
 
-  getLastPlacedCard(rules: MaterialRules) {
-    const cards = rules.remind(Memory.PlacedCard) ?? []
-    return cards[cards.length - 1]!
+  getPlacedCard(rules: MaterialRules) {
+    return rules.remind(Memory.PlacedCard)
   }
 
   transformOwnLocation(location: Location, context: LocationContext): string[] {

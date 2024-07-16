@@ -15,8 +15,8 @@ export class BoasEffectFlipRule extends BaseBoardEffect<BoasEffectFlip> {
       const characters = this.effectColumnTiles
       const countDifferent = uniqBy(characters, (item) => getCharacter(item))?.length ?? 0
       if (countDifferent !== this.columnSize) return [this.goNext()]
-    }
 
+    }
     return moves
   }
 

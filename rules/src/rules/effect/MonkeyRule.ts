@@ -54,10 +54,7 @@ export class MonkeyRule extends CoinRule {
   }
 
   get monkey() {
-    const cards = this.remind(Memory.PlacedCard) ?? []
-    const index = cards[cards.length - 1]
-    return this.material(MaterialType.CharacterTile)
-      .getItem(index)!
+    return this.material(MaterialType.CharacterTile).getItem(this.remind(Memory.PlacedCard))!
   }
 
   onRuleEnd() {

@@ -8,3 +8,5 @@ export type BoardSpaceEffect = { type: BoardSpaceType, endOfGame?: boolean } & R
 export type BoardDescription = {
   board: (BoardSpaceEffect | undefined)[][]
 }
+
+export type BoardSpaceEffectWithCoordinates = BoardSpaceEffect & { x: number, y: number }
