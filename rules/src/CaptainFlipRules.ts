@@ -1,4 +1,4 @@
-import { FillGapStrategy, HiddenMaterialRules, hideItemId, MaterialGame, MaterialItem, MaterialMove, TimeLimit } from '@gamepark/rules-api'
+import { CompetitiveScore, FillGapStrategy, HiddenMaterialRules, hideItemId, MaterialGame, MaterialItem, MaterialMove, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
@@ -25,6 +25,7 @@ import { MonkeyRule } from './rules/effect/MonkeyRule'
 import { NavigatorRule } from './rules/effect/NavigatorRule'
 import { ParrotRule } from './rules/effect/ParrotRule'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
+import { CoinHelper } from './rules/helper/CoinHelper'
 import { PlayTileRule } from './rules/PlayTileRule'
 import { RuleId } from './rules/RuleId'
 
@@ -34,7 +35,8 @@ import { RuleId } from './rules/RuleId'
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class CaptainFlipRules extends HiddenMaterialRules<PlayerId, MaterialType, LocationType>
-  implements TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
+  implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
+TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
     [RuleId.DrawCharacterTile]: DrawCharacterTileRule,
     [RuleId.PlayTile]: PlayTileRule,
@@ -78,6 +80,19 @@ export class CaptainFlipRules extends HiddenMaterialRules<PlayerId, MaterialType
 
   giveTime(): number {
     return 60
+  }
+
+  getScore(playerId: PlayerId): number {
+    return new CoinHelper(this.game, playerId).coins
+  }
+
+  getTieBreaker(tieBreaker: number, playerId: PlayerId): number | undefined {
+    if (tieBreaker === 1) {
+      const treasureMap = this.material(MaterialType.TreasureMapToken).player(playerId)
+      return treasureMap.length
+    }
+
+    return
   }
 }
 
