@@ -1,6 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { CaptainFlipOptions } from './CaptainFlipOptions'
 import { CaptainFlipRules } from './CaptainFlipRules'
+import { BoardType } from './material/board/Board'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { characterTiles } from './material/tiles/CharacterTiles'
@@ -16,10 +17,11 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
   Rules = CaptainFlipRules
 
   setupMaterial(options: CaptainFlipOptions) {
+    const board = options.board ?? BoardType.BoardA
     this.setupClothBag()
-    this.setupPlayerBoards(options)
+    this.setupPlayerBoards(board)
     this.setupTreasureMapToken()
-    this.memorize(Memory.Board, options.board)
+    this.memorize(Memory.Board, board)
   }
 
   setupTreasureMapToken() {
@@ -31,11 +33,11 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
       })
   }
 
-  setupPlayerBoards(options: CaptainFlipOptions) {
+  setupPlayerBoards(board: BoardType) {
     for (const player of this.players) {
       this.material(MaterialType.AdventureBoard)
         .createItem({
-          id: options.board,
+          id: board,
           location: {
             type: LocationType.AdventureBoard,
             player: player

@@ -14,8 +14,20 @@ setupTranslation(translations, { debug: false })
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="captain-flip" Rules={CaptainFlipRules} optionsSpec={CaptainFlipOptionsSpec} GameSetup={CaptainFlipSetup}
-                  material={Material} locators={Locators} animations={new MaterialGameAnimations()}>
+    <GameProvider
+      game="captain-flip"
+      Rules={CaptainFlipRules}
+      optionsSpec={CaptainFlipOptionsSpec}
+      GameSetup={CaptainFlipSetup}
+      material={Material}
+      locators={Locators}
+      theme={{
+        dialog: {
+          backgroundColor: '#e9decb',
+        }
+      }}
+      animations={new MaterialGameAnimations()}
+    >
       <App/>
     </GameProvider>
   </StrictMode>,

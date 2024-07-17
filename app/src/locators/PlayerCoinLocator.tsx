@@ -3,8 +3,11 @@ import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/reac
 import { MaterialItem } from '@gamepark/rules-api'
 import { adventureBoardLocation } from './AdventureBoardLocator'
 
+
 export class PlayerCoinLocator extends PileLocator {
   radius = 1.5
+
+
   getCoordinates(item: MaterialItem, context: ItemContext) {
     const coordinates = adventureBoardLocation.getBoardPosition(item.location.player!, context)
 

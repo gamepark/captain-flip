@@ -15,6 +15,7 @@ import Monkey from '../images/characters/Monkey.jpg'
 import Navigator from '../images/characters/Navigator.jpg'
 import Parrot from '../images/characters/Parrot.jpg'
 import Swabby from '../images/characters/Swabby.jpg'
+import { CharacterTileHelp } from './help/CharactereTileHelp'
 
 export class CharacterTileDescription extends CardDescription {
   height = 3.79
@@ -23,6 +24,8 @@ export class CharacterTileDescription extends CardDescription {
   backImages = images
 
   images = images
+
+  help = CharacterTileHelp
 
   getItemExtraCss(item: MaterialItem, context: ItemContext) {
     if (item.location.type === LocationType.ClothBag) return noPointer

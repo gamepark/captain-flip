@@ -46,9 +46,16 @@ const tableSize = (players: number) => {
 }
 
 const navigationCss = (players: number) => {
-  if (players === 2) {
+  if (players === 2 || players === 5) {
     return css`
       left: 32em
+    `
+  }
+
+  if (players > 3) {
+    return css`
+      left: 50%;
+      transform: translateX(-50%);
     `
   }
 

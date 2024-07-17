@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
@@ -11,6 +10,7 @@ import BoardC from '../images/boards/BoardC.jpg'
 import BoardD from '../images/boards/BoardD.jpg'
 import BoardE from '../images/boards/BoardE.jpg'
 import Flag from '../images/boards/Flag.png'
+import { AdventureBoardHelp } from './help/AdventureBoardHelp'
 
 export class AdventureBoardDescription extends BoardDescription {
   height = 24
@@ -24,23 +24,7 @@ export class AdventureBoardDescription extends BoardDescription {
     [BoardType.BoardE]: BoardE,
   }
 
-  getItemExtraCss(item: MaterialItem, context: ItemContext) {
-    const firstPlayer = context.rules.players[0]
-    if (item.location.player !== firstPlayer) return
-    return css`
-      &:after {
-        content: '';
-        position: absolute;
-        height: 2.5em;
-        width: 2.5em;
-        left: 0.3em;
-        top: 1em;
-        transform: translateZ(4em);
-        background: url(${Flag}) no-repeat center center;
-        background-size: cover;
-      }
-    `
-  }
+  help = AdventureBoardHelp
 
   getImages() {
     const images = super.getImages()
@@ -50,6 +34,12 @@ export class AdventureBoardDescription extends BoardDescription {
 
   getLocations(item: MaterialItem, context: ItemContext) {
     const locations: Location[] = []
+    if (item.location.player === context.rules.players[0]) {
+      locations.push({
+        type: LocationType.FirstPlayerFlag,
+      })
+    }
+
     if (!context.player) return locations
     const places = new BoardHelper(context.rules.game).places
     for (const place of places) {
@@ -60,6 +50,7 @@ export class AdventureBoardDescription extends BoardDescription {
         y: place.y
       })
     }
+
 
     return locations
   }

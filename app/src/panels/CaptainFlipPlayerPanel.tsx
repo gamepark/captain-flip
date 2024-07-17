@@ -29,6 +29,7 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
   const { player } = props
   const { setFocus } = useFocusContext()
   const rules = useRules<CaptainFlipRules>()!
+  const isTutorial = !rules || rules.game.tutorialStep !== undefined
   const context = useMaterialContext()
   const animations = useAnimations((a) => isCreateItemType(MaterialType.Coin)(a.move) || isDeleteItemType(MaterialType.Coin)(a.move))
   const playerId = usePlayerId()
@@ -58,9 +59,18 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
     })
   }, [rules, player, itsMe, setFocus])
 
+
+  useEffect(() => {
+    if (itsMe && !isTutorial) {
+      setTimeout(focusPlayer, 3000)
+    }
+
+  }, [itsMe, playerId, setFocus, isTutorial])
+
   return (
     <StyledPlayerPanel
       player={player}
+      activeRing
       css={panelPosition(getComputedIndex(context, player.id))}
       onClick={focusPlayer}
       backgroundImage={getBackground(player.id)}

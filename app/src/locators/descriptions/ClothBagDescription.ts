@@ -4,6 +4,7 @@ import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { LocationContext, LocationDescription } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import Bag from '../../images/Bag.png'
+import { ClothBagHelp } from './help/ClothBagHelp'
 
 export class ClothBagDescription extends LocationDescription {
   width = 9
@@ -22,12 +23,19 @@ export class ClothBagDescription extends LocationDescription {
     return this.coordinates
   }
 
+  help = ClothBagHelp
+  helpImage = Bag
+
+
   alwaysVisible = true
   extraCss = css`
     background: url(${Bag}) no-repeat center center;
     background-size: cover;
     filter: drop-shadow(0 0 0.1em black);
-    pointer-events: none;
+    &:hover {
+      background-color: unset !important;
+    }
+    //pointer-events: none;
   `
 
 }

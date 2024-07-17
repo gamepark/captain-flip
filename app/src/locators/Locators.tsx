@@ -6,6 +6,7 @@ import { adventureBoardCharacterTileLocator } from './AdventureBoardCharacterTil
 import { adventureBoardLocation } from './AdventureBoardLocator'
 import { clothBagLocator } from './ClothBagLocator'
 import { coinPileLocator } from './CoinPileLocator'
+import { firstPlayerFlagLocator } from './FirstPlayerFlagLocator'
 import { monkeyFlipButtonLocator } from './FlipButtonLocator'
 import { playerCoinLocator } from './PlayerCoinLocator'
 import { playerHandLocator } from './PlayerHandLocator'
@@ -22,5 +23,6 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerId, Materi
   [LocationType.PlayerTreasureMapToken]: playerTreasureMapLocator,
   [LocationType.TreasureMapToken]: treasureMapLocator,
   [LocationType.MonkeyFlipButton]: monkeyFlipButtonLocator,
+  [LocationType.FirstPlayerFlag]: firstPlayerFlagLocator
 
 }
