@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { getBoardTitle } from '@gamepark/captain-flip/CaptainFlipOptions'
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { BoardDescription, BoardSpaceEffect } from '@gamepark/captain-flip/material/board/description/BoardCommon'
@@ -340,18 +341,3 @@ const imageCss = css`
   width: 2.5em;
   margin-right: 1em;
 `
-
-const getBoardTitle = (board: BoardType) => {
-  switch (board) {
-    case BoardType.BoardA:
-      return 'board.pirate'
-    case BoardType.BoardB:
-      return 'board.kraken'
-    case BoardType.BoardC:
-      return 'board.raft'
-    case BoardType.BoardD:
-      return 'board.island'
-    case BoardType.BoardE:
-      return 'board.kraken-bonus'
-  }
-}

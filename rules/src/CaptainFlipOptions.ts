@@ -18,8 +18,23 @@ export const CaptainFlipOptionsSpec: OptionsSpec<CaptainFlipOptions> = {
   board: {
     label: t => t('Adventure board'),
     values: boardTypes,
-    valueSpec: _ => ({
-      label: t => t('THE BOARD')
+    valueSpec: board => ({
+      label: t => t(getBoardTitle(board))
     })
+  }
+}
+
+export const getBoardTitle = (board: BoardType) => {
+  switch (board) {
+    case BoardType.BoardA:
+      return 'board.pirate'
+    case BoardType.BoardB:
+      return 'board.kraken'
+    case BoardType.BoardC:
+      return 'board.raft'
+    case BoardType.BoardD:
+      return 'board.island'
+    case BoardType.BoardE:
+      return 'board.kraken-bonus'
   }
 }
