@@ -13,8 +13,8 @@ export class PlayerTreasureMapLocator extends ItemLocator {
     const first = context.rules.players[0]
     if (location.player === first) {
       return {
-        x: 25,
-        y: 2.5
+        x: 28,
+        y: 2
       }
     }
 

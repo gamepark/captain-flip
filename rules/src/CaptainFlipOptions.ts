@@ -19,7 +19,8 @@ export const CaptainFlipOptionsSpec: OptionsSpec<CaptainFlipOptions> = {
     label: t => t('Adventure board'),
     values: boardTypes,
     valueSpec: board => ({
-      label: t => t(getBoardTitle(board))
+      label: t => t(getBoardTitle(board)),
+      subscriberRequired: board !== BoardType.BoardA
     })
   }
 }
