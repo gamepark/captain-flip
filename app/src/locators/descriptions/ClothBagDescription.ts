@@ -6,8 +6,10 @@ import { Location } from '@gamepark/rules-api'
 import Bag from '../../images/bag.png'
 import { ClothBagHelp } from './help/ClothBagHelp'
 
+const height = 11
+const width = height * (384 / 512)
 export class ClothBagDescription extends LocationDescription {
-  height = 9.5
+  height = 5
   ratio = 384 / 512
   location = { type: LocationType.ClothBag }
   coordinates = { x: 0, y: 10, z: 5 }
@@ -32,6 +34,8 @@ export class ClothBagDescription extends LocationDescription {
     background: url(${Bag}) no-repeat center center;
     background-size: contain;
     filter: drop-shadow(0 0 0.1em black);
+    height: ${height}em;
+    width: ${width}em;
     &:hover {
       background-color: unset !important;
     }
