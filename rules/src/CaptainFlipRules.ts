@@ -77,6 +77,9 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
   locationsStrategies = {
     [MaterialType.CharacterTile]: {
       [LocationType.ClothBag]: new FillGapStrategy()
+    },
+    [MaterialType.Coin]: {
+      [LocationType.PlayerCoin]: new FillGapStrategy()
     }
   }
 
@@ -102,6 +105,10 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
     }
 
     return
+  }
+
+  itemsCanMerge(): boolean {
+    return false
   }
 }
 
