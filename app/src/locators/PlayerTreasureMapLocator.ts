@@ -22,7 +22,7 @@ export class PlayerTreasureMapLocator extends ItemLocator {
   }
 
   positionOnParent = {
-    x: 10,
+    x: 12,
     y: 5
   }
 
