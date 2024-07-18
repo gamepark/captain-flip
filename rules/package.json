@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/captain-flip",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The rules of Captain Flip adapted for Game Park",
   "sideEffects": false,
   "main": "dist/index.js",
