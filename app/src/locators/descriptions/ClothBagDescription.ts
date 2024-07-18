@@ -19,7 +19,7 @@ export class ClothBagDescription extends LocationDescription {
     }
 
     if (context.rules.players.length === 3 || context.rules.players.length === 5) {
-      return { x: -7, y: 14, z: 5 }
+      return { x: -8, y: 14, z: 5 }
     }
 
     return this.coordinates

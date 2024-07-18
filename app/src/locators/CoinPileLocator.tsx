@@ -20,7 +20,7 @@ export class CoinPileLocator extends PileLocator {
     }
 
     if (context.rules.players.length === 3 || context.rules.players.length === 5) {
-      coordinates = { x: 7, y: 14, z: 0 }
+      coordinates = { x: 9, y: 14, z: 0 }
     }
 
     if (item.location.id === 10) {

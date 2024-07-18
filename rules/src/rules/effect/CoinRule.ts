@@ -8,7 +8,7 @@ export class CoinRule extends PlayerTurnRule {
   onRuleStart() {
     const coins = this.getCoins() ?? 0
     if (coins > 0) return this.gainCoinsMoves(coins)
-    if (coins < 0) return this.loseCoinsMoves(coins)
+    if (coins < 0) return this.loseCoinsMoves(-coins)
     return []
   }
 
@@ -40,21 +40,16 @@ export class CoinRule extends PlayerTurnRule {
       [Coin.Coin5]: allCoins.id(Coin.Coin5).getQuantity(),
       [Coin.Coin10]: allCoins.id(Coin.Coin10).getQuantity(),
     }, coins)
+
     const moves: MaterialMove[] = []
     for (const coin of coinValues) {
       if (delta[coin] > 0) {
         moves.unshift(...this.moveCoins(allCoins, coin, delta[coin]))
       } else if (delta[coin] < 0) {
-        moves.unshift(allCoins.id(coin).deleteItem(delta[coin]))
+        moves.unshift(allCoins.id(coin).deleteItem(-delta[coin]))
       }
     }
     return moves
-  }
-
-  getCoinValue(coin: Material) {
-    const item = coin.getItem()
-    if (!item) return 0
-    return item.quantity ?? 1
   }
 
   moveCoins(coins: Material, coin: Coin, count: number): MaterialMove[] {

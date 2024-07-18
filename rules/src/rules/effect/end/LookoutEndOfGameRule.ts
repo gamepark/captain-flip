@@ -13,12 +13,10 @@ export class LookoutEndOfGameRule extends CoinRule {
     moves.push(...super.onRuleStart())
     const nextPlayer = this.nextPlayer
     if (nextPlayer === this.game.players[0]) {
-      moves.push(this.startRule(RuleId.BoardEndOfEffect))
+      moves.push(this.startPlayerTurn(RuleId.ParrotEndOfGame, nextPlayer))
     } else {
       moves.push(this.startPlayerTurn(RuleId.LookoutEndOfGame, nextPlayer))
     }
-
-    moves.push(this.startRule(RuleId.BoardEndOfEffect))
     return moves
   }
 

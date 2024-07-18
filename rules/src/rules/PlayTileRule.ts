@@ -56,7 +56,7 @@ export class PlayTileRule extends CoinRule {
       const character = getCharacter(item)
       const effect = new BoardHelper(this.game).getPlaceEffect({ x: move.location.x, y: move.location.y })
       if (effect?.type === BoardSpaceType.Cost) {
-        moves.push(...this.gainCoinsMoves(-effect.cost ?? 0))
+        moves.push(...this.loseCoinsMoves(effect.cost))
       } else if (effect?.type !== BoardSpaceType.None) {
         this.addBoardEffect(effect!, move.location)
       }

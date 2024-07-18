@@ -1,5 +1,5 @@
 import mapValues from 'lodash/mapValues'
-import { isEnumValue } from '../../../../rules-api'
+import { isEnumValue } from '@gamepark/rules-api'
 
 export enum Coin {
   Coin1 = 1,
