@@ -1,6 +1,7 @@
 import { CompetitiveScore, FillGapStrategy, HiddenMaterialRules, hideItemId, MaterialGame, MaterialItem, MaterialMove, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { Character } from './material/tiles/Character'
 import { PlayerId } from './PlayerId'
 import { BoardEffectRule } from './rules/BoardEffectRule'
 import { BoardEndOfGameEffectRule } from './rules/BoardEndOfGameEffectRule'
@@ -25,6 +26,7 @@ import { MonkeyRule } from './rules/effect/MonkeyRule'
 import { NavigatorRule } from './rules/effect/NavigatorRule'
 import { ParrotRule } from './rules/effect/ParrotRule'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
+import { getCharacter } from './rules/GetCharacter'
 import { CoinHelper } from './rules/helper/CoinHelper'
 import { PlayTileRule } from './rules/PlayTileRule'
 import { RuleId } from './rules/RuleId'
@@ -83,6 +85,13 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
   }
 
   getScore(playerId: PlayerId): number {
+    const gunners = this
+      .material(MaterialType.CharacterTile)
+      .player(playerId)
+      .filter((item) => getCharacter(item) === Character.Gunner)
+      .length
+
+    if (gunners >= 3) return 0
     return new CoinHelper(this.game, playerId).coins
   }
 
