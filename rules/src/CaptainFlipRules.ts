@@ -85,23 +85,28 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
   }
 
   getScore(playerId: PlayerId): number {
-    const gunners = this
-      .material(MaterialType.CharacterTile)
-      .player(playerId)
-      .filter((item) => getCharacter(item) === Character.Gunner)
-      .length
-
+    const gunners = this.getPlayerGunners(playerId)
     if (gunners >= 3) return 0
     return new CoinHelper(this.game, playerId).coins
   }
 
   getTieBreaker(tieBreaker: number, playerId: PlayerId): number | undefined {
     if (tieBreaker === 1) {
+      const gunner = this.getPlayerGunners(playerId)
+      if (gunner === 3) return 0
       const treasureMap = this.material(MaterialType.TreasureMapToken).player(playerId)
       return treasureMap.length
     }
 
     return
+  }
+
+  getPlayerGunners(player: PlayerId) {
+    return this
+      .material(MaterialType.CharacterTile)
+      .player(player)
+      .filter((item) => getCharacter(item) === Character.Gunner)
+      .length
   }
 }
 
