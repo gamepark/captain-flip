@@ -26,6 +26,7 @@ export class DrawCharacterTileRule extends PlayerTurnRule {
     return this
       .material(MaterialType.CharacterTile)
       .location(LocationType.ClothBag)
+      .sort((item) => -item.location.x!)
   }
 
   getPlayerMoves() {

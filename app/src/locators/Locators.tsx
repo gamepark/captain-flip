@@ -4,6 +4,7 @@ import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { ItemLocator } from '@gamepark/react-game'
 import { adventureBoardCharacterTileLocator } from './AdventureBoardCharacterTileLocator'
 import { adventureBoardLocation } from './AdventureBoardLocator'
+import { boardEffectLocator } from './BoardEffectLocator'
 import { clothBagLocator } from './ClothBagLocator'
 import { coinPileLocator } from './CoinPileLocator'
 import { firstPlayerFlagLocator } from './FirstPlayerFlagLocator'
@@ -23,6 +24,7 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerId, Materi
   [LocationType.PlayerTreasureMapToken]: playerTreasureMapLocator,
   [LocationType.TreasureMapToken]: treasureMapLocator,
   [LocationType.MonkeyFlipButton]: monkeyFlipButtonLocator,
-  [LocationType.FirstPlayerFlag]: firstPlayerFlagLocator
+  [LocationType.FirstPlayerFlag]: firstPlayerFlagLocator,
+  [LocationType.BoardEffect]: boardEffectLocator
 
 }

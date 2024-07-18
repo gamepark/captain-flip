@@ -1,4 +1,13 @@
-import { CompetitiveScore, FillGapStrategy, HiddenMaterialRules, hideItemId, MaterialGame, MaterialItem, MaterialMove, TimeLimit } from '@gamepark/rules-api'
+import {
+  CompetitiveScore,
+  HiddenMaterialRules,
+  hideItemId,
+  MaterialGame,
+  MaterialItem,
+  MaterialMove,
+  PositiveSequenceStrategy,
+  TimeLimit
+} from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Character } from './material/tiles/Character'
@@ -76,7 +85,7 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
 
   locationsStrategies = {
     [MaterialType.CharacterTile]: {
-      [LocationType.ClothBag]: new FillGapStrategy()
+      [LocationType.ClothBag]: new PositiveSequenceStrategy()
     }
   }
 
