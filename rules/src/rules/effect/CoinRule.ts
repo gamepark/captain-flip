@@ -1,5 +1,4 @@
-import { isCreateItem, isDeleteItem, Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import orderBy from 'lodash/orderBy'
+import { Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import sum from 'lodash/sum'
 import { Coin } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
@@ -8,7 +7,8 @@ import { MaterialType } from '../../material/MaterialType'
 export class CoinRule extends PlayerTurnRule {
   onRuleStart() {
     const coins = this.getCoins() ?? 0
-    if (coins !== 0) return this.getCoinsMoves(coins)
+    if (coins > 0) return this.gainCoinsMoves(coins)
+    if (coins < 0) return this.loseCoinsMoves(coins)
     return []
   }
 
@@ -16,7 +16,7 @@ export class CoinRule extends PlayerTurnRule {
     return 0
   }
 
-  getCoinsMoves(coins: number) {
+  gainCoinsMoves(coins: number) {
     const allCoins = this.allCoins
     const coins10 = allCoins.filter((coin) => coin.id === Coin.Coin10)
     const coins5 = allCoins.filter((coin) => coin.id === Coin.Coin5)
@@ -29,12 +29,11 @@ export class CoinRule extends PlayerTurnRule {
     moves.push(...this.moveCoins(coins5, Coin.Coin5, bestCombinationFor[Coin.Coin5]))
     moves.push(...this.moveCoins(coins3, Coin.Coin3, bestCombinationFor[Coin.Coin3]))
     moves.push(...this.moveCoins(coins1, Coin.Coin1, bestCombinationFor[Coin.Coin1]))
+    return moves
+  }
 
-    if (coins < 0) {
-      return orderBy(moves, (move) => isCreateItem(move)? 1: 0)
-    }
-
-    return orderBy(moves, (move) => isDeleteItem(move)? 1: 0)
+  loseCoinsMoves(_coins: number) {
+    return []
   }
 
   getCoinValue(coin: Material) {
