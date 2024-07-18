@@ -1,6 +1,7 @@
 import { Location, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import maxBy from 'lodash/maxBy'
 import minBy from 'lodash/minBy'
+import sum from 'lodash/sum'
 import { BoardType } from '../../material/board/Board'
 import { BoardADescription } from '../../material/board/description/BoardADescription'
 import { BoardBDescription } from '../../material/board/description/BoardBDescription'
@@ -29,7 +30,7 @@ export class BoardHelper extends MaterialRulesPart {
       if (!occupiedPlace) {
         const effect = this.getPlaceEffect({ x: place.x, y: place.y })
         if (effect?.type !== BoardSpaceType.Cost || this.getPlayerCoin(playerId) >= (effect.cost ?? 0)) {
-           availablePlaces[place.x] = place.y
+          availablePlaces[place.x] = place.y
         }
       }
     }
@@ -37,24 +38,24 @@ export class BoardHelper extends MaterialRulesPart {
   }
 
   getPlayerCoin(playerId: PlayerId) {
-    const item = this
-      .material(MaterialType.Coin)
-      .player(playerId)
-      .getItem()
-
-    if (!item) return 0
-    return item.quantity ?? 1
+    return sum(
+      this
+        .material(MaterialType.Coin)
+        .player(playerId)
+        .getItems()
+        .map((item) => item.id)
+    )
 
   }
 
   get places() {
     const board = this.boardDescription.board
-    const places: {x: number, y: number, effect?: BoardSpaceEffect }[] = []
+    const places: { x: number, y: number, effect?: BoardSpaceEffect }[] = []
     for (let y = (board.length - 1); y >= 0; y--) {
       const line = board[y]
       for (let x = 0; x < line.length; x++) {
         if (line[x] === undefined) continue
-        places.push({x, y: (board.length - 1) - y, effect: line[x]})
+        places.push({ x, y: (board.length - 1) - y, effect: line[x] })
       }
     }
 
@@ -104,7 +105,7 @@ export class BoardHelper extends MaterialRulesPart {
 
   getPlaceEffect(location: Partial<Location>): BoardSpaceEffect | undefined {
     const effect = this.boardDescription.board[4 - location.y!]?.[location.x!]
-      if (effect?.endOfGame) return
+    if (effect?.endOfGame) return
     return effect
   }
 

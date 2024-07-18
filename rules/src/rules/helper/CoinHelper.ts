@@ -14,7 +14,7 @@ export class CoinHelper extends MaterialRulesPart {
       .material(MaterialType.Coin)
       .player(this.player)
       .getItems()
-      .map((item) => (item.quantity ?? 1) * item.id)
+      .map((item) => item.id)
     )
   }
 }
