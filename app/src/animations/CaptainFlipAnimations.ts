@@ -10,7 +10,7 @@ export const captainFlipAnimations = new MaterialGameAnimations()
 captainFlipAnimations
   .when()
   .move((move) => isCreateItemType(MaterialType.Coin)(move) || isDeleteItemType(MaterialType.Coin)(move))
-  .duration(0.6)
+  .duration(1)
 
 captainFlipAnimations
   .when()

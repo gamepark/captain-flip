@@ -2,28 +2,28 @@
 import { Coin } from '@gamepark/captain-flip/material/Coin'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { ItemContext, PileLocator } from '@gamepark/react-game'
-import { Location, MaterialItem } from '@gamepark/rules-api'
+import { MaterialItem } from '@gamepark/rules-api'
+import { PlayerCoinDescription } from './descriptions/PlayerCoinDescription'
 
 
 export class PlayerCoinLocator extends PileLocator {
-  parentItemType = MaterialType.AdventureBoard
+  locationDescription = new PlayerCoinDescription()
   radius = 1.5
 
-  getParentItem(location: Location, context: ItemContext) {
-    return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()!
+  transformItemLocation(item: MaterialItem, context: ItemContext): string[] {
+    const { rules, locators } = context
+    const board = rules.material(MaterialType.AdventureBoard).player(item.location.player)
+    const boardItem = board.getItem()!
+    return [
+      locators[boardItem.location.type]!.getTranslate3d(boardItem, { ...context, type: MaterialType.AdventureBoard, index: board.getIndex()!, displayIndex: 0 }),
+      ...super.transformItemLocation(item, context)
+    ]
   }
-
-  getPositionOnParent() {
-    return {
-      x: 87,
-      y: 10
-    }
-  }
-
 
   getCoordinates(item: MaterialItem) {
-    const coordinates = { x: 0, y: 0, z: 0.05 }
+    const coordinates = { ...this.locationDescription.getCoordinates() }
 
+    if (item.id === Coin.Coin10) coordinates.z = 0.5
     if (item.id === Coin.Coin5) coordinates.z = 1
     if (item.id === Coin.Coin3) coordinates.z = 1.5
     if (item.id === Coin.Coin1) coordinates.z = 2

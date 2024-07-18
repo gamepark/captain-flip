@@ -1,38 +1,58 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { LocationContext, LocationDescription } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/captain-flip/material/LocationType'
+import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
+import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
+import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
-import { LocationType } from '@gamepark/solstis/material/LocationType'
-import { MaterialType } from '@gamepark/solstis/material/MaterialType'
-import { landscapeTileDescription } from '../../material/LandscapeTileDescription'
 
-export class LandscapeDeckDescription extends LocationDescription {
-  height = 11 + landscapeTileDescription.height
-  width = 11 + landscapeTileDescription.height
+export class PlayerCoinDescription extends LocationDescription {
+  height = 5
+  width = 5
   borderRadius = 50
-  getExtraCss(_location: Location, context: LocationContext) {
+  getExtraCss(location: Location, context: LocationContext) {
     const { rules } = context
-    const deckLength = rules.material(MaterialType.LandscapeTile).location(LocationType.LandscapeDeck).length
+    const coins = new BoardHelper(rules.game).getPlayerCoin(location.player!)
+    if (!coins) return
     return css`
       display: flex;
       align-items: center;
       justify-content: center;
       pointer-events: none;
       &:after {
-        content: '${deckLength}';
+        content: '${coins}';
         display: flex;
         align-self: center;
         justify-content: center;
         color: black;
-        font-size: 5em;
+        font-size: 2.5em;
         font-weight: bold;
-        opacity: 0.6;
+        opacity: 0.7;
       }
       
     `
   }
-  extraCss = css``
-  coordinates = { x: 4.85, y: -6.5, z: 50}
+
+  transformOwnLocation(location: Location, context: LocationContext): string[] {
+    const { rules, locators } = context
+    const board = rules.material(MaterialType.AdventureBoard).player(location.player)
+    const boardItem = board.getItem()!
+    return [
+      locators[boardItem.location.type]!.getTranslate3d(boardItem, { ...context, type: MaterialType.AdventureBoard, index: board.getIndex()!, displayIndex: 0 }),
+      ...super.transformOwnLocation(location, context)
+    ]
+  }
+
+
+  getCoordinates() {
+    return { x: 8, y: -10, z: 5 }
+  }
+
   alwaysVisible = true
-  location = { type: LocationType.LandscapeDeck }
+  getLocations(context: MaterialContext) {
+    return context.rules.players.map((p) => ({
+      type: LocationType.PlayerCoin,
+      player: p
+    }))
+  }
 }

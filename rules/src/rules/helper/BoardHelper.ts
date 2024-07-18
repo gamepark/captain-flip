@@ -44,7 +44,6 @@ export class BoardHelper extends MaterialRulesPart {
       .player(playerId)
       .getItems().map((item) => (item.quantity ?? 1) * item.id)
     )
-
   }
 
   get places() {

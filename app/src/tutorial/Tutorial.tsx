@@ -50,7 +50,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }),
       move: {
         filter: (move) => {
-          console.log(move)
           return isMoveItemType(MaterialType.CharacterTile)(move)
             && move.location.x === 4 && move.location.y === 0
         },
@@ -152,10 +151,15 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           this.material(game, MaterialType.TreasureMapToken)
         ]
       }),
-      move: {}
+      move: {
+        interrupt: (move) => isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.PlayerHand
+      }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.opponent.2"><strong/><em/></Trans> }
+      popup: {
+        text: () => <Trans defaults="tuto.opponent.2"><strong/><em/></Trans>
+      },
+      move: {}
     },
     {
       move: {
