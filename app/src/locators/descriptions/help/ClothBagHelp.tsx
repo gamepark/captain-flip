@@ -10,12 +10,15 @@ export const ClothBagHelp = () => {
   return (
     <>
       <h2>
-        <Trans defaults="bag" />
+        <Trans defaults="bag"/>
       </h2>
       <p>
         <Trans defaults="bag.count" values={{ number: remainingInBag }}>
-          <strong />
+          <strong/>
         </Trans>
+      </p>
+      <p>
+        <Trans defaults="tile.characters"/>
       </p>
     </>
   )

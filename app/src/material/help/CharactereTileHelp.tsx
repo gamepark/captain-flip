@@ -44,9 +44,6 @@ export const CharacterTileHelp: FC<MaterialHelpProps> = (props) => {
         </p>
       )}
       <Quote quote={texts.quote}/>
-      <p>
-        <Trans defaults="tile.characters"/>
-      </p>
     </>
   )
 
