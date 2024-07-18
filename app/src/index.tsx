@@ -2,9 +2,10 @@
 import { CaptainFlipOptionsSpec } from '@gamepark/captain-flip/CaptainFlipOptions'
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { CaptainFlipSetup } from '@gamepark/captain-flip/CaptainFlipSetup'
-import { GameProvider, MaterialGameAnimations, setupTranslation } from '@gamepark/react-game'
+import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import { captainFlipAnimations } from './animations/CaptainFlipAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
@@ -26,7 +27,7 @@ ReactDOM.render(
           backgroundColor: '#e9decb',
         }
       }}
-      animations={new MaterialGameAnimations()}
+      animations={captainFlipAnimations}
     >
       <App/>
     </GameProvider>

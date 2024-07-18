@@ -12,18 +12,32 @@ export class CoinPileLocator extends PileLocator {
     coin10StockLocation
   ]
   locationDescription = new CoinPileDescription()
-  radius = 3
-  coordinates = { x: 0, y: -10, z: 0 }
-  getCoordinates(_item :MaterialItem, context: LocationContext) {
+  radius = 1
+  getCoordinates(item :MaterialItem, context: LocationContext) {
+    let coordinates = { x: 0, y: -10, z: 0 }
     if (context.rules.players.length === 2) {
-      return { x: 0, y: 5, z: 0 }
+      coordinates = { x: 0, y: 5, z: 0 }
     }
 
     if (context.rules.players.length === 3 || context.rules.players.length === 5) {
-      return { x: 7, y: 14, z: 0 }
+      coordinates = { x: 7, y: 14, z: 0 }
     }
 
-    return this.coordinates
+    if (item.location.id === 10) {
+      coordinates.x += 2.5
+      coordinates.y += 2.5
+    } else if (item.location.id === 5) {
+      coordinates.x -= 2.5
+      coordinates.y += 2.5
+    } else if (item.location.id === 3) {
+      coordinates.x += 2.5
+      coordinates.y -= 2.5
+    } else {
+      coordinates.x -= 2.5
+      coordinates.y -= 2.5
+    }
+
+    return coordinates
   }
 
   getPileId(item: MaterialItem) {
