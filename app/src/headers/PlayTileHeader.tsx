@@ -21,8 +21,7 @@ export const PlayTileHeader = () => {
 
 
   if (animation) {
-    const coins = (animation.action.consequences ?? []).filter((move) => isDeleteItemType(MaterialType.Coin)(move)).length
-    return <LoseCoinHeader effect={t('column-malus')} coins={coins} />
+    return <LoseCoinHeader effect={t('column-malus')} coins={animation.move.quantity ?? 1} />
   }
 
   if (itsMe) {

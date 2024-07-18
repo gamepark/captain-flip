@@ -1,7 +1,6 @@
 import { isCreateItem, isDeleteItem, Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import orderBy from 'lodash/orderBy'
 import sum from 'lodash/sum'
-import times from 'lodash/times'
 import { Coin } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -27,16 +26,16 @@ export class CoinRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     const total = this.totalCoins
     const bestCombinationFor = this.getBestCombinationFor(total + coins)
-    const deltaCoin10 = bestCombinationFor[Coin.Coin10] - coins10.length
+    const deltaCoin10 = bestCombinationFor[Coin.Coin10] - (coins10.getItem()?.quantity ?? 0)
     moves.push(...this.moveCoins(coins10, Coin.Coin10, deltaCoin10))
 
-    const deltaCoin5 = bestCombinationFor[Coin.Coin5] - coins5.length
+    const deltaCoin5 = bestCombinationFor[Coin.Coin5] - (coins5.getItem()?.quantity ?? 0)
     moves.push(...this.moveCoins(coins5, Coin.Coin5, deltaCoin5))
 
-    const deltaCoin3 = bestCombinationFor[Coin.Coin3] - coins3.length
+    const deltaCoin3 = bestCombinationFor[Coin.Coin3] - (coins3.getItem()?.quantity ?? 0)
     moves.push(...this.moveCoins(coins3, Coin.Coin3, deltaCoin3))
 
-    const deltaCoin1 = bestCombinationFor[Coin.Coin1] - coins1.length
+    const deltaCoin1 = bestCombinationFor[Coin.Coin1] - (coins1.getItem()?.quantity ?? 0)
     moves.push(...this.moveCoins(coins1, Coin.Coin1, deltaCoin1))
 
     if (coins < 0) {
@@ -48,20 +47,18 @@ export class CoinRule extends PlayerTurnRule {
 
   moveCoins(coins: Material, coin: Coin, count: number): MaterialMove[] {
     if (count < 0) {
-      return coins.limit(Math.abs(count)).deleteItems()
+      return [coins.deleteItem(Math.abs(count))]
     }
 
     if (count > 0) {
-      return coins
-        .createItems(
-        times(count).map(_ => ({
-          id: coin,
-          location: {
-            type: LocationType.PlayerCoin,
-            player: this.player
-          }
-        }))
-      )
+      return [coins.createItem({
+        id: coin,
+        location: {
+          type: LocationType.PlayerCoin,
+          player: this.player
+        },
+        quantity: count
+      })]
     }
 
     return []
@@ -69,7 +66,7 @@ export class CoinRule extends PlayerTurnRule {
 
   get totalCoins() {
     return sum(
-      this.allCoins.getItems().map((item) => item.id)
+      this.allCoins.getItems().map((item) => (item.quantity ?? 1) * item.id)
     )
   }
 
