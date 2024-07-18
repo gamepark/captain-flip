@@ -24,19 +24,11 @@ export class CoinRule extends PlayerTurnRule {
     const coins1 = allCoins.filter((coin) => coin.id === Coin.Coin1)
 
     const moves: MaterialMove[] = []
-    const total = this.totalCoins
-    const bestCombinationFor = this.getBestCombinationFor(total + coins)
-    const deltaCoin10 = bestCombinationFor[Coin.Coin10] - this.getCoinValue(coins10)
-    moves.push(...this.moveCoins(coins10, Coin.Coin10, deltaCoin10))
-
-    const deltaCoin5 = bestCombinationFor[Coin.Coin5] - this.getCoinValue(coins5)
-    moves.push(...this.moveCoins(coins5, Coin.Coin5, deltaCoin5))
-
-    const deltaCoin3 = bestCombinationFor[Coin.Coin3] - this.getCoinValue(coins3)
-    moves.push(...this.moveCoins(coins3, Coin.Coin3, deltaCoin3))
-
-    const deltaCoin1 = bestCombinationFor[Coin.Coin1] - this.getCoinValue(coins1)
-    moves.push(...this.moveCoins(coins1, Coin.Coin1, deltaCoin1))
+    const bestCombinationFor = this.getBestCombinationFor(coins)
+    moves.push(...this.moveCoins(coins10, Coin.Coin10, bestCombinationFor[Coin.Coin10]))
+    moves.push(...this.moveCoins(coins5, Coin.Coin5, bestCombinationFor[Coin.Coin5]))
+    moves.push(...this.moveCoins(coins3, Coin.Coin3, bestCombinationFor[Coin.Coin3]))
+    moves.push(...this.moveCoins(coins1, Coin.Coin1, bestCombinationFor[Coin.Coin1]))
 
     if (coins < 0) {
       return orderBy(moves, (move) => isCreateItem(move)? 1: 0)
