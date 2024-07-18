@@ -1,6 +1,7 @@
 import { Location, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import maxBy from 'lodash/maxBy'
 import minBy from 'lodash/minBy'
+import sum from 'lodash/sum'
 import { BoardType } from '../../material/board/Board'
 import { BoardADescription } from '../../material/board/description/BoardADescription'
 import { BoardBDescription } from '../../material/board/description/BoardBDescription'
@@ -37,13 +38,12 @@ export class BoardHelper extends MaterialRulesPart {
   }
 
   getPlayerCoin(playerId: PlayerId) {
-    const item = this
+    return sum(
+      this
       .material(MaterialType.Coin)
       .player(playerId)
-      .getItem()
-
-    if (!item) return 0
-    return item.quantity ?? 1
+      .getItems().map((item) => (item.quantity ?? 1) * item.id)
+    )
 
   }
 

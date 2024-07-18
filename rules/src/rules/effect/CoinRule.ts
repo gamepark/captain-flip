@@ -26,16 +26,16 @@ export class CoinRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     const total = this.totalCoins
     const bestCombinationFor = this.getBestCombinationFor(total + coins)
-    const deltaCoin10 = bestCombinationFor[Coin.Coin10] - (coins10.getItem()?.quantity ?? 0)
+    const deltaCoin10 = bestCombinationFor[Coin.Coin10] - this.getCoinValue(coins10)
     moves.push(...this.moveCoins(coins10, Coin.Coin10, deltaCoin10))
 
-    const deltaCoin5 = bestCombinationFor[Coin.Coin5] - (coins5.getItem()?.quantity ?? 0)
+    const deltaCoin5 = bestCombinationFor[Coin.Coin5] - this.getCoinValue(coins5)
     moves.push(...this.moveCoins(coins5, Coin.Coin5, deltaCoin5))
 
-    const deltaCoin3 = bestCombinationFor[Coin.Coin3] - (coins3.getItem()?.quantity ?? 0)
+    const deltaCoin3 = bestCombinationFor[Coin.Coin3] - this.getCoinValue(coins3)
     moves.push(...this.moveCoins(coins3, Coin.Coin3, deltaCoin3))
 
-    const deltaCoin1 = bestCombinationFor[Coin.Coin1] - (coins1.getItem()?.quantity ?? 0)
+    const deltaCoin1 = bestCombinationFor[Coin.Coin1] - this.getCoinValue(coins1)
     moves.push(...this.moveCoins(coins1, Coin.Coin1, deltaCoin1))
 
     if (coins < 0) {
@@ -43,6 +43,12 @@ export class CoinRule extends PlayerTurnRule {
     }
 
     return orderBy(moves, (move) => isDeleteItem(move)? 1: 0)
+  }
+
+  getCoinValue(coin: Material) {
+    const item = coin.getItem()
+    if (!item) return 0
+    return item.quantity ?? 1
   }
 
   moveCoins(coins: Material, coin: Coin, count: number): MaterialMove[] {
