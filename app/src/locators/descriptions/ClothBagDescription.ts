@@ -3,12 +3,12 @@ import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { LocationContext, LocationDescription } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
-import Bag from '../../images/Bag.png'
+import Bag from '../../images/bag.png'
 import { ClothBagHelp } from './help/ClothBagHelp'
 
 export class ClothBagDescription extends LocationDescription {
-  width = 9
-  height = 10.91
+  height = 9.5
+  ratio = 384 / 512
   location = { type: LocationType.ClothBag }
   coordinates = { x: 0, y: 10, z: 5 }
   getCoordinates(_location :Location, context: LocationContext) {
@@ -30,12 +30,11 @@ export class ClothBagDescription extends LocationDescription {
   alwaysVisible = true
   extraCss = css`
     background: url(${Bag}) no-repeat center center;
-    background-size: cover;
+    background-size: contain;
     filter: drop-shadow(0 0 0.1em black);
     &:hover {
       background-color: unset !important;
     }
-    //pointer-events: none;
   `
 
 }
