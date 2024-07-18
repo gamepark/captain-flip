@@ -4,6 +4,7 @@ import { BoardSpaceType } from '../../../material/board/description/BoardSpaceTy
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { getCharacter } from '../../GetCharacter'
+import { Memory } from '../../Memory'
 import { CharacterEffect } from '../CharacterEffect'
 import { BaseBoardEffect } from './BaseBoardEffect'
 
@@ -34,10 +35,15 @@ export class BoasEffectFlipRule extends BaseBoardEffect<BoasEffectFlip> {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.CharacterTile)(move) || move.location.type !== LocationType.AdventureBoardCharacterTile) return []
     const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
+    this.addPlacedCard(move.itemIndex)
     const character = getCharacter(item)
     const ruleId = CharacterEffect[character]
     if (ruleId) return [this.startRule(ruleId)]
     return [this.goNext()]
+  }
+
+  addPlacedCard(index: number) {
+    this.memorize(Memory.PlacedCard, index)
   }
 
   get columnSize() {
