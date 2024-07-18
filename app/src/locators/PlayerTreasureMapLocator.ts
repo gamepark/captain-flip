@@ -14,7 +14,7 @@ export class PlayerTreasureMapLocator extends ItemLocator {
     if (location.player === first) {
       return {
         x: 25,
-        y: 5
+        y: 2.5
       }
     }
 
@@ -23,7 +23,7 @@ export class PlayerTreasureMapLocator extends ItemLocator {
 
   positionOnParent = {
     x: 12,
-    y: 5
+    y: 2.5
   }
 
 }

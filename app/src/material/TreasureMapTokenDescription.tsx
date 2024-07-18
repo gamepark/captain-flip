@@ -4,7 +4,7 @@ import TreasureMapToken from '../images/TreasureMapToken.png'
 import { TreasureMapTokenHelp } from './help/TreasureMapTokenHelp'
 
 export class TreasureMapTokenDescription extends TokenDescription {
-  height = 5
+  height = 8
   //width = 5.81
   ratio = 5.81 / 7
   borderRadius = 0.5
