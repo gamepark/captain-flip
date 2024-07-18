@@ -45,7 +45,7 @@ export class PlayerCoinDescription extends LocationDescription {
 
 
   getCoordinates() {
-    return { x: 8, y: -10, z: 5 }
+    return { x: 9, y: -10, z: 5 }
   }
 
   alwaysVisible = true
