@@ -1,6 +1,6 @@
 import { Material, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import sum from 'lodash/sum'
-import { Coin } from '../../material/Coin'
+import { Coin, coinValues, spendCoinsDelta } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -32,8 +32,23 @@ export class CoinRule extends PlayerTurnRule {
     return moves
   }
 
-  loseCoinsMoves(_coins: number) {
-    return []
+  loseCoinsMoves(coins: number) {
+    const allCoins = this.allCoins
+    const delta = spendCoinsDelta({
+      [Coin.Coin1]: allCoins.id(Coin.Coin1).getQuantity(),
+      [Coin.Coin3]: allCoins.id(Coin.Coin3).getQuantity(),
+      [Coin.Coin5]: allCoins.id(Coin.Coin5).getQuantity(),
+      [Coin.Coin10]: allCoins.id(Coin.Coin10).getQuantity(),
+    }, coins)
+    const moves: MaterialMove[] = []
+    for (const coin of coinValues) {
+      if (delta[coin] > 0) {
+        moves.unshift(...this.moveCoins(allCoins, coin, delta[coin]))
+      } else if (delta[coin] < 0) {
+        moves.unshift(allCoins.id(coin).deleteItem(delta[coin]))
+      }
+    }
+    return moves
   }
 
   getCoinValue(coin: Material) {
