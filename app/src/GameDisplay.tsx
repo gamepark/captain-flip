@@ -35,6 +35,16 @@ const tableSize = (players: number) => {
     }
   }
 
+  if (players === 3) {
+    return {
+      xMin: -44,
+      xMax: 44,
+      yMin: -23,
+      yMax: 26,
+    }
+
+  }
+
   return {
     xMin: -48,
     xMax: 48,

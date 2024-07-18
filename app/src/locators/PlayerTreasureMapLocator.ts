@@ -13,8 +13,8 @@ export class PlayerTreasureMapLocator extends ItemLocator {
     const first = context.rules.players[0]
     if (location.player === first) {
       return {
-        x: 20,
-        y: 10
+        x: 25,
+        y: 5
       }
     }
 
@@ -23,7 +23,7 @@ export class PlayerTreasureMapLocator extends ItemLocator {
 
   positionOnParent = {
     x: 10,
-    y: 10
+    y: 5
   }
 
 }
