@@ -1,3 +1,7 @@
+import { ClotheType, EyebrowType, EyeType, FacialHairType, GraphicType, MouthType, TopType } from '@gamepark/avataaars'
+import ClotheColorName from '@gamepark/avataaars/dist/avatar/clothes/ClotheColorName'
+import SkinColor from '@gamepark/avataaars/dist/avatar/SkinColor'
+import HairColorName from '@gamepark/avataaars/dist/avatar/top/HairColorName'
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
@@ -18,7 +22,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
 
   players = [
     { id: me },
-    { id: opponent }
+    {
+      id: opponent,
+      name: 'Blackbeard',
+      avatar: {
+        topType: TopType.Eyepatch,
+        facialHairType: FacialHairType.BeardMajestic,
+        facialHairColor: HairColorName.Black,
+        clotheType: ClotheType.GraphicShirt,
+        clotheColor: ClotheColorName.Black,
+        graphicType: GraphicType.Skull,
+        eyeType: EyeType.Default,
+        eyebrowType: EyebrowType.AngryNatural,
+        mouthType: MouthType.Smile,
+        skinColor: SkinColor.Light
+      }
+    }
   ]
 
   steps: TutorialStep[] = [
@@ -188,22 +207,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         margin: {
           top: 7
         }
-      }),
+      })
     },
     {
       move: {
-        filter: (move) => isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.AdventureBoardCharacterTile &&  move.location.x === 4 && move.location.y === 2,
+        filter: (move) => isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.AdventureBoardCharacterTile && move.location.x === 4 && move.location.y === 2,
         interrupt: (move) => isCreateItemType(MaterialType.Coin)(move)
       }
     },
     {
       popup: {
         text: () => <Trans defaults="tuto.column.completed"><strong/><em/></Trans>,
-        position: { x: 40}
+        position: { x: 40 }
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me),
+          this.material(game, MaterialType.CharacterTile).player(me)
           //this.material(game, MaterialType.AdventureBoard).player(me)
         ],
         locations: [
