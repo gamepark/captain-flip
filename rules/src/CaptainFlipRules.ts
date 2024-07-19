@@ -90,7 +90,7 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
   }
 
   giveTime(): number {
-    return 60
+    return 10
   }
 
   getScore(playerId: PlayerId): number {
