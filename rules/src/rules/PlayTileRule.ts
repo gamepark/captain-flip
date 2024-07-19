@@ -77,7 +77,6 @@ export class PlayTileRule extends CoinRule {
 
   addBoardEffect(effect: BoardSpaceEffect, location: Partial<Location>) {
     const effects = this.remind(Memory.BoardEffect) ?? []
-    console.log(effects)
     effects.push({
       effect: effect,
       x: location.x!,

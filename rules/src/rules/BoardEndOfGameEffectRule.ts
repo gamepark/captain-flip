@@ -19,7 +19,7 @@ export class BoardEndOfGameEffectRule extends PlayerTurnRule {
     if (!effects.length) return [this.endGame()]
     this.memorize(Memory.BoardEndOfGameEffect, effects)
     const rule = new BoardHelper(this.game).getEffectRule(effects[0].effect!)!
-    return [this.startRule(rule)]
+    return [this.startPlayerTurn(rule, this.game.players[0])]
   }
 
   hasCardInLocation(player: PlayerId, x: number, y: number) {

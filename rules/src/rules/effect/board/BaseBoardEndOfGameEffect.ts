@@ -27,12 +27,15 @@ export abstract class BaseBoardEndOfGameEffect<E extends BoardSpaceEffect = Boar
   goNext() {
 
     const nextPlayer = this.nextPlayer
-    const effects = this.remind<EffectMemory[]>(Memory.BoardEndOfGameEffect).slice(1)
-    if (!effects.length) return this.endGame()
-    const rule = new BoardHelper(this.game).getEffectRule(effects[0]!.effect)!
     if (nextPlayer === this.game.players[0]) {
-      return this.startRule(rule)
+      const effects = this.remind<EffectMemory[]>(Memory.BoardEndOfGameEffect).slice(1)
+      if (!effects.length) return this.endGame()
+      const rule = new BoardHelper(this.game).getEffectRule(effects[0]!.effect)!
+      return this.startPlayerTurn(rule, nextPlayer)
     } else {
+      const effects = this.remind<EffectMemory[]>(Memory.BoardEndOfGameEffect)
+      if (!effects.length) return this.endGame()
+      const rule = new BoardHelper(this.game).getEffectRule(effects[0]!.effect)!
       return this.startPlayerTurn(rule, nextPlayer)
     }
   }
