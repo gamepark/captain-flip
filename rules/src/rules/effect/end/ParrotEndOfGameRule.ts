@@ -13,7 +13,7 @@ export class ParrotEndOfGameRule extends CoinRule {
     moves.push(...super.onRuleStart())
     const nextPlayer = this.nextPlayer
     if (nextPlayer === this.game.players[0]) {
-      moves.push(this.endGame())
+      moves.push(this.startRule(RuleId.BoardEndOfEffect))
     } else {
       moves.push(this.startPlayerTurn(RuleId.ParrotEndOfGame, nextPlayer))
     }

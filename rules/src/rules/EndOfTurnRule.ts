@@ -11,7 +11,7 @@ export class EndOfTurnRule extends CoinRule {
     const moves: MaterialMove[] = []
     moves.push(...super.onRuleStart())
     if (this.mustGoToScoring) {
-      moves.push(this.startRule(RuleId.BoardEndOfEffect))
+      moves.push(this.startRule(RuleId.SwabbyEndOfGame))
     } else {
       moves.push(this.startPlayerTurn(RuleId.DrawCharacterTile, this.nextPlayer))
     }
