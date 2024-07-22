@@ -16,7 +16,7 @@ const me = 1
 const opponent = 2
 
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
-  version = 1
+  version = 2
   options = { player: 2, board: BoardType.BoardA }
   setup = new TutorialSetup()
 
