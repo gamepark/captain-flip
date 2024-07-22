@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
 import { ComponentType } from 'react'
+import { BoardEffectFlipHeader } from './BoardEffectFlipHeader'
 import { BoardEffectHeader } from './BoardEffectHeader'
 import { CarpenterEndOfGameHeader } from './CarpenterEndOfGameHeader'
 import { CartographerHeader } from './CartographerHeader'
@@ -35,4 +36,5 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.BoardEndOfGameCoinIfAllDifferent]: BoardEffectHeader,
   [RuleId.BoardEffectCoinPerDifferent]: BoardEffectHeader,
   [RuleId.BoardEffectCoinPerFullColumn]: BoardEffectHeader,
+  [RuleId.BoardEffectFlip]: BoardEffectFlipHeader,
 }
