@@ -9,6 +9,7 @@ import { captainFlipAnimations } from './animations/CaptainFlipAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
+import { CaptainFlipScoringDescription } from './scoring/CaptainFlipScoringDescription'
 import translations from './translations.json'
 import { Tutorial } from './tutorial/Tutorial'
 
@@ -24,6 +25,7 @@ ReactDOM.render(
       material={Material}
       locators={Locators}
       tutorial={new Tutorial()}
+      scoring={new CaptainFlipScoringDescription()}
       theme={{
         dialog: {
           backgroundColor: '#e9decb',

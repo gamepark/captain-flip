@@ -120,12 +120,12 @@ const getEffectImage = (board: BoardType, effect: BoardSpaceEffect) => {
       }
 
       return BoardCTreasureMap
-    case BoardSpaceType.CoinIfSame:
+    case BoardSpaceType.EndOfGameCoinIfSame:
       if (board === BoardType.BoardC) {
         return BoardCCoin6
       }
       break
-    case BoardSpaceType.CoinIfAllDifferent:
+    case BoardSpaceType.EndOfGameCoinIfAllDifferent:
       if (board === BoardType.BoardC) {
         return BoardCCoin4
       }
@@ -178,13 +178,13 @@ const getEffectDesc = (effect: BoardSpaceEffect) => {
           <strong/>
         </Trans>
       )
-    case BoardSpaceType.CoinIfSame:
+    case BoardSpaceType.EndOfGameCoinIfSame:
       return (
         <Trans defaults="effect.same-all" values={{ number: effect.value }}>
           <strong/>
         </Trans>
       )
-    case BoardSpaceType.CoinIfAllDifferent:
+    case BoardSpaceType.EndOfGameCoinIfAllDifferent:
       return (
         <Trans defaults="effect.diff-all" values={{ number: effect.value }}>
           <strong/>

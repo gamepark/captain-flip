@@ -5,7 +5,7 @@ import { MaterialType } from '../../../material/MaterialType'
 import { getCharacter } from '../../GetCharacter'
 import { BaseBoardEndOfGameEffect } from './BaseBoardEndOfGameEffect'
 
-type BoardEndOfGameCoinIfSame = { type: BoardSpaceType, value: number }
+export type BoardEndOfGameCoinIfSame = { type: BoardSpaceType, value: number }
 
 export class BoardEndOfGameCoinIfSameRule extends BaseBoardEndOfGameEffect<BoardEndOfGameCoinIfSame> {
 

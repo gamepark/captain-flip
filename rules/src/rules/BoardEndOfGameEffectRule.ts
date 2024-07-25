@@ -1,11 +1,11 @@
-import { PlayerTurnRule } from '@gamepark/rules-api'
+import { MaterialRulesPart } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerId } from '../PlayerId'
 import { BoardHelper } from './helper/BoardHelper'
 import { Memory } from './Memory'
 
-export class BoardEndOfGameEffectRule extends PlayerTurnRule {
+export class BoardEndOfGameEffectRule extends MaterialRulesPart {
   onRuleStart() {
     const helper = new BoardHelper(this.game)
     const boardEffects = helper.endOfGameEffects()

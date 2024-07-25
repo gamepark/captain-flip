@@ -5,7 +5,7 @@ import { MaterialType } from '../../../material/MaterialType'
 import { getCharacter } from '../../GetCharacter'
 import { BaseBoardEndOfGameEffect } from './BaseBoardEndOfGameEffect'
 
-type BoardEndOfGameCoinIfAllDifferent = { type: BoardSpaceType, value: number }
+export type BoardEndOfGameCoinIfAllDifferent = { type: BoardSpaceType, value: number }
 
 export class BoardEndOfGameCoinIfAllDifferentRule extends BaseBoardEndOfGameEffect<BoardEndOfGameCoinIfAllDifferent> {
 

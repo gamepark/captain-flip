@@ -126,9 +126,9 @@ export class BoardHelper extends MaterialRulesPart {
         return RuleId.BoardEffectTreasureMap
       case BoardSpaceType.FirstXThenY:
         return RuleId.BoardEffectFirstXThenY
-      case BoardSpaceType.CoinIfAllDifferent:
+      case BoardSpaceType.EndOfGameCoinIfAllDifferent:
         return RuleId.BoardEndOfGameCoinIfAllDifferent
-      case BoardSpaceType.CoinIfSame:
+      case BoardSpaceType.EndOfGameCoinIfSame:
         return RuleId.BoardEndOfGameCoinIfSame
       case BoardSpaceType.CoinPerDifferent:
         return RuleId.BoardEffectCoinPerDifferent
