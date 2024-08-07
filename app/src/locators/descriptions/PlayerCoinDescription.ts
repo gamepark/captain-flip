@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
-import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
 import { LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
+import { adventureBoardLocator } from '../AdventureBoardLocator'
 
 export class PlayerCoinDescription extends LocationDescription {
   height = 5
@@ -33,19 +33,9 @@ export class PlayerCoinDescription extends LocationDescription {
     `
   }
 
-  transformOwnLocation(location: Location, context: LocationContext): string[] {
-    const { rules, locators } = context
-    const board = rules.material(MaterialType.AdventureBoard).player(location.player)
-    const boardItem = board.getItem()!
-    return [
-      locators[boardItem.location.type]!.getTranslate3d(boardItem, { ...context, type: MaterialType.AdventureBoard, index: board.getIndex()!, displayIndex: 0 }),
-      ...super.transformOwnLocation(location, context)
-    ]
-  }
-
-
-  getCoordinates() {
-    return { x: 9, y: -10, z: 5 }
+  getCoordinates(location: Location, context: MaterialContext) {
+    const { x, y, z } = adventureBoardLocator.getBoardPosition(location.player!, context)
+    return { x: x + 9, y: y - 10, z: z + 5 }
   }
 
   alwaysVisible = true
