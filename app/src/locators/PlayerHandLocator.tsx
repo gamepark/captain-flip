@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { getRelativePlayerIndex, HandLocator, ItemContext, LocationContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
-import { adventureBoardLocation } from './AdventureBoardLocator'
+import { adventureBoardLocator } from './AdventureBoardLocator'
 
 export class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: ItemContext) {
@@ -9,7 +9,7 @@ export class PlayerHandLocator extends HandLocator {
   }
 
   getHandPosition(location: Location, context: LocationContext){
-    const coordinates = adventureBoardLocation.getBoardPosition(location.player!, context)
+    const coordinates = adventureBoardLocator.getBoardPosition(location.player!, context)
     const index = getRelativePlayerIndex(context, location.player!)
     if (context.rules.players.length === 5 && index === 2) {
       coordinates.y += 15

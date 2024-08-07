@@ -36,4 +36,4 @@ export class AdventureBoardLocator extends ItemLocator {
   }
 }
 
-export const adventureBoardLocation = new AdventureBoardLocator()
+export const adventureBoardLocator = new AdventureBoardLocator()
