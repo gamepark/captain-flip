@@ -9,10 +9,6 @@ export class AdventureBoardCharacterTileLocator extends ItemLocator {
   parentItemType = MaterialType.AdventureBoard
   locationDescription = new AdventureBoardCharacterTileDescription()
 
-  getParentItemId(location: Location) {
-    return location.player
-  }
-
   getParentItem(location: Location, context: ItemContext) {
     return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()!
   }
