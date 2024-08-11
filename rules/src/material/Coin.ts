@@ -18,7 +18,7 @@ export const spendCoinsDelta = (owned: Record<Coin, number>, spend = 1): Record<
         delta[coin]--
         if (coin > 1) {
           let rest = coin - 1
-          for (const lowerCoin of coinValues.slice(0, coinValues.indexOf(coin) - 1).reverse()) {
+          for (const lowerCoin of coinValues.slice(0, coinValues.indexOf(coin)).reverse()) {
             if (lowerCoin <= rest) {
               delta[lowerCoin] += Math.floor(rest / lowerCoin)
               rest -= rest % lowerCoin
