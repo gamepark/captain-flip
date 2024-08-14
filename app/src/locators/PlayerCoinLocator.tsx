@@ -6,6 +6,7 @@ import { PlayerCoinDescription } from './descriptions/PlayerCoinDescription'
 
 
 export class PlayerCoinLocator extends PileLocator {
+  limit = 100
   locationDescription = new PlayerCoinDescription()
   radius = 1.5
 
@@ -20,8 +21,8 @@ export class PlayerCoinLocator extends PileLocator {
     return coordinates
   }
 
-  getPileId(item: MaterialItem) {
-    return `${item.location.player}_${item.id}`
+  getItemIndex(item: MaterialItem, { displayIndex }: ItemContext): number {
+    return (item.id - 1) * 10 + displayIndex
   }
 }
 
