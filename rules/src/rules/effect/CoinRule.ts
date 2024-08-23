@@ -41,6 +41,8 @@ export class CoinRule extends PlayerTurnRule {
       [Coin.Coin10]: allCoins.id(Coin.Coin10).getQuantity(),
     }, coins)
 
+    console.log(delta)
+
     const moves: MaterialMove[] = []
     for (const coin of coinValues) {
       if (delta[coin] > 0) {
