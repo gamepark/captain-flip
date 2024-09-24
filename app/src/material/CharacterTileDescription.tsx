@@ -69,6 +69,8 @@ const highlightCharactersCss = css`
     width: 100%;
     height: 100%;
     position: absolute;
+    top: 0;
+    left: 0;
     border: 0.2em solid green;
     background-color: rgba(255, 215, 0, 0.2);
     border-radius: 0.4em;

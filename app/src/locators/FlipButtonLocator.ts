@@ -3,6 +3,7 @@ import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
 import { LocationContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { ItemContext } from '@gamepark/react-game/dist/locators/Locator'
 import { areAdjacentSquares, Location } from '@gamepark/rules-api'
 import { characterTileDescription } from '../material/CharacterTileDescription'
 import { FlipButtonDescription } from './descriptions/FlipButtonDescription'
@@ -57,11 +58,10 @@ export class FlipButtonLocator extends Locator {
 
   coordinates = { x: characterTileDescription.width / 2, y: -(characterTileDescription.height / 2), z: 1 }
 
-  getCoordinates(location: Location, context: LocationContext) {
+  placeLocation(location: Location, context: LocationContext): string[] {
     const { rules, locators } = context
     const tile = rules.material(MaterialType.CharacterTile).getItem(location.parent!)
-    const { x = 0, y = 0, z = 0 } = locators[tile.location.type]!.getCoordinates(tile.location, context)
-    return { x: x + characterTileDescription.width / 2, y: y - characterTileDescription.height / 2, z: z + 1 }
+    return locators[tile.location.type]!.placeItem(tile, context as ItemContext).concat(super.placeLocation(location, context))
   }
 }
 
