@@ -1,16 +1,16 @@
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
-import { ItemContext, ItemLocator, MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Locator, MaterialContext } from '@gamepark/react-game'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 import { AdventureBoardCharacterTileDescription } from './descriptions/AdventureBoardCharacterTileDescription'
 
-export class AdventureBoardCharacterTileLocator extends ItemLocator {
+class AdventureBoardCharacterTileLocator extends Locator {
   parentItemType = MaterialType.AdventureBoard
   locationDescription = new AdventureBoardCharacterTileDescription()
 
-  getParentItem(location: Location, context: ItemContext) {
-    return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()!
+  getParentItem(location: Location, context: MaterialContext) {
+    return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()
   }
 
   getPositionOnParent(location: Location, context: MaterialContext) {
@@ -18,7 +18,7 @@ export class AdventureBoardCharacterTileLocator extends ItemLocator {
     const baseX = 14.9
     return {
       x: baseX + 17.5 * location.x!,
-      y: baseY - 17.2 * location.y!,
+      y: baseY - 17.2 * location.y!
     }
   }
 
@@ -32,7 +32,10 @@ export class AdventureBoardCharacterTileLocator extends ItemLocator {
       default:
         return 0
     }
+  }
 
+  getHoverTransform(item: MaterialItem) {
+    return [`translateZ(${item.location.rotation ? -10 : 10}em)`, 'scale(2)']
   }
 }
 

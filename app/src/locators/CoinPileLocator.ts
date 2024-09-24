@@ -1,15 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
-import { LocationContext, PileLocator } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
-import { CoinPileDescription } from './descriptions/CoinPileDescription'
+import { PileLocator } from '@gamepark/react-game'
+import { MaterialContext } from '@gamepark/react-game/dist/locators/Locator'
+import { Location } from '@gamepark/rules-api'
 
-export class CoinPileLocator extends PileLocator {
-  locationDescription = new CoinPileDescription()
+class CoinPileLocator extends PileLocator {
   radius = 1
 
-  getCoordinates(item: MaterialItem, context: LocationContext) {
+  getCoordinates(location: Location, context: MaterialContext) {
     let coordinates = { x: 0, y: -10, z: 0 }
     const isOnInitialPosition = context.rules.material(MaterialType.TreasureMapToken).getItem()!.location.type === LocationType.TreasureMapToken
     if (context.rules.players.length === 2) {
@@ -22,13 +21,13 @@ export class CoinPileLocator extends PileLocator {
 
     const deltaX = 2.5
     const deltaY = isOnInitialPosition ? 2 : 2.5
-    if (item.location.id === 10) {
+    if (location.id === 10) {
       coordinates.x += deltaX
       coordinates.y += deltaY
-    } else if (item.location.id === 5) {
+    } else if (location.id === 5) {
       coordinates.x -= deltaX
       coordinates.y += deltaY
-    } else if (item.location.id === 3) {
+    } else if (location.id === 3) {
       coordinates.x += deltaX
       coordinates.y -= deltaY
     } else {

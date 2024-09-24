@@ -110,12 +110,12 @@ The file [LocationType.ts](/rules/src/material/LocationType.ts) lists the types 
 
 _Tips: add you location types one by one. Locations are used to position the Material on the screen._
 
-When you add a new LocationType in the rules, you have to create a new "Locator" in the app, inside [Locators.tsx](/app/src/locators/Locators.tsx).
+When you add a new LocationType in the rules, you have to create a new "Locator" in the app, inside [Locators.ts](/app/src/locators/Locators.ts).
 
 Example:
 
 ```
-export const Locators: Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>> = {
+export const Locators: Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>> = {
   [LocationType.Hand]: new PlayerHandLocator(),
 }
 

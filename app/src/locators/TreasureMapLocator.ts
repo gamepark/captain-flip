@@ -1,14 +1,10 @@
-import { ItemLocator, LocationContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { Locator, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
 
-export class TreasureMapLocator extends ItemLocator {
-  position = { x: 0, y: -1, z: 0.05 }
-  getPosition(_item: MaterialItem, context: LocationContext) {
-    if (context.rules.players.length === 5 || context.rules.players.length === 3) {
-      return { x: 0, y: 14, z: 0.05 }
-    }
+class TreasureMapLocator extends Locator {
+  getCoordinates(_: Location, { rules: { players } }: MaterialContext) {
+    return players.length === 5 || players.length === 3 ? { y: 14 } : { y: -1 }
 
-    return this.position
   }
 }
 

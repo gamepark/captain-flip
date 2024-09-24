@@ -39,6 +39,11 @@ export class CharacterTileDescription extends CardDescription {
   isFlipped(item: MaterialItem): boolean {
     return item.location.rotation
   }
+
+  getHoverTransform(item: MaterialItem, context: ItemContext) {
+    const locator = context.locators[item.location.type]
+    return locator?.getHoverTransform(item, context) ?? []
+  }
 }
 
 const images = {
@@ -50,7 +55,7 @@ const images = {
   [Character.Monkey]: Monkey,
   [Character.Gunner]: Gunner,
   [Character.Parrot]: Parrot,
-  [Character.Lookout]: Lookout,
+  [Character.Lookout]: Lookout
 }
 
 export const characterTileDescription = new CharacterTileDescription()

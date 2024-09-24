@@ -7,7 +7,7 @@ export enum LocationType {
   TreasureMapToken,
   PlayerTreasureMapToken,
   CoinStock,
-  MonkeyFlipButton,
+  FlipButton,
   FirstPlayerFlag,
   BoardEffect
 }

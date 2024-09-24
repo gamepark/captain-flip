@@ -9,7 +9,7 @@ import { StyledPlayerPanel, useFocusContext, usePlayerId } from '@gamepark/react
 import { useAnimations } from '@gamepark/react-game/dist/hooks/useAnimations'
 import { useMaterialContext } from '@gamepark/react-game/dist/hooks/useMaterialContext'
 import { useRules } from '@gamepark/react-game/dist/hooks/useRules'
-import { MaterialContext } from '@gamepark/react-game/dist/locators/ItemLocator'
+import { MaterialContext } from '@gamepark/react-game/dist/locators/Locator'
 import { getRelativePlayerIndex } from '@gamepark/react-game/dist/locators/utils/getRelativePlayerIndex.util'
 import { isCreateItemType } from '@gamepark/rules-api/dist/material/moves/items/CreateItem'
 import { isDeleteItemType } from '@gamepark/rules-api/dist/material/moves/items/DeleteItem'
@@ -29,7 +29,7 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
   const { player } = props
   const { setFocus } = useFocusContext()
   const rules = useRules<CaptainFlipRules>()!
-  const isTutorial = !rules || rules.game.tutorialStep !== undefined
+  const isTutorial = !rules || rules.game.tutorial !== undefined
   const context = useMaterialContext()
   const animations = useAnimations((a) => isCreateItemType(MaterialType.Coin)(a.move) || isDeleteItemType(MaterialType.Coin)(a.move))
   const playerId = usePlayerId()
