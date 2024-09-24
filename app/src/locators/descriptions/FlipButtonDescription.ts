@@ -10,7 +10,7 @@ export class FlipButtonDescription extends DropAreaDescription {
 
   canShortClick(move: MaterialMove, location: Location, context: MaterialContext): boolean {
     if (!isMoveItemType(MaterialType.CharacterTile)(move)) return false
-    const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
+    const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)
     return move.itemIndex === location.parent && item.location.rotation !== move.location.rotation
   }
 

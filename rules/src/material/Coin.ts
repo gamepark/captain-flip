@@ -1,5 +1,5 @@
+import { getEnumValues } from '@gamepark/rules-api'
 import mapValues from 'lodash/mapValues'
-import { isEnumValue } from '@gamepark/rules-api'
 
 export enum Coin {
   Coin1 = 1,
@@ -8,7 +8,7 @@ export enum Coin {
   Coin10 = 10
 }
 
-export const coinValues = Object.values(Coin).filter<Coin>(isEnumValue)
+export const coinValues = getEnumValues(Coin)
 
 export const spendCoinsDelta = (owned: Record<Coin, number>, spend = 1): Record<Coin, number> => {
   const delta = mapValues(owned, _ => 0)

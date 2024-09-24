@@ -21,7 +21,7 @@ captainFlipAnimations
 .when()
 .move((move, context) => {
   if (!isMoveItemType(MaterialType.CharacterTile)(move)) return false
-  const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
+  const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)
   return (
     (item.location.type === LocationType.PlayerHand && move.location.type === LocationType.PlayerHand) ||
     (item.location.type === LocationType.AdventureBoardCharacterTile && move.location.type === LocationType.AdventureBoardCharacterTile)

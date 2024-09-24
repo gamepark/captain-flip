@@ -41,7 +41,7 @@ export class PlayTileRule extends CoinRule {
   beforeItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type !== LocationType.AdventureBoardCharacterTile) {
 
-      const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
+      const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)
       if (item.location.rotation !== move.location.rotation) this.memorize(Memory.Flipped, true)
     }
 
@@ -52,7 +52,7 @@ export class PlayTileRule extends CoinRule {
     const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.CharacterTile)(move) && move.location.type === LocationType.AdventureBoardCharacterTile) {
       this.addPlacedCard(move.itemIndex)
-      const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
+      const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)
       const character = getCharacter(item)
       const effect = new BoardHelper(this.game).getPlaceEffect({ x: move.location.x, y: move.location.y })
       if (effect) {

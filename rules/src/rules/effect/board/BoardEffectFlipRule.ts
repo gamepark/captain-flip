@@ -34,7 +34,7 @@ export class BoasEffectFlipRule extends BaseBoardEffect<BoasEffectFlip> {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.CharacterTile)(move) || move.location.type !== LocationType.AdventureBoardCharacterTile) return []
-    const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
+    const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)
     this.addPlacedCard(move.itemIndex)
     const character = getCharacter(item)
     const ruleId = CharacterEffect[character]

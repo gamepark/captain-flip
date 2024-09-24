@@ -25,7 +25,7 @@ export class FlipButtonLocator extends Locator {
     }
 
     if (rules.game.rule?.id === RuleId.Monkey) {
-      const monkey = rules.material(MaterialType.CharacterTile).getItem(rules.remind(Memory.PlacedCard))!
+      const monkey = rules.material(MaterialType.CharacterTile).getItem(rules.remind(Memory.PlacedCard))
       const tiles = rules.material(MaterialType.CharacterTile)
         .player(player)
         .location(LocationType.AdventureBoardCharacterTile)
@@ -59,7 +59,7 @@ export class FlipButtonLocator extends Locator {
 
   getCoordinates(location: Location, context: LocationContext) {
     const { rules, locators } = context
-    const tile = rules.material(MaterialType.CharacterTile).getItem(location.parent!)!
+    const tile = rules.material(MaterialType.CharacterTile).getItem(location.parent!)
     const { x = 0, y = 0, z = 0 } = locators[tile.location.type]!.getCoordinates(tile.location, context)
     return { x: x + characterTileDescription.width / 2, y: y - characterTileDescription.height / 2, z: z + 1 }
   }

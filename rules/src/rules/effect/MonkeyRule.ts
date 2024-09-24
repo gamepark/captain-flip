@@ -33,7 +33,7 @@ export class MonkeyRule extends CoinRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.CharacterTile)(move) || move.location.type !== LocationType.AdventureBoardCharacterTile) return []
-    const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)!
+    const item = this.material(MaterialType.CharacterTile).getItem(move.itemIndex)
     this.addPlacedCard(move.itemIndex)
     const character = getCharacter(item)
     const ruleId = CharacterEffect[character]
@@ -59,7 +59,7 @@ export class MonkeyRule extends CoinRule {
   }
 
   get monkey() {
-    return this.material(MaterialType.CharacterTile).getItem(this.remind(Memory.PlacedCard))!
+    return this.material(MaterialType.CharacterTile).getItem(this.remind(Memory.PlacedCard))
   }
 
   onRuleEnd() {
