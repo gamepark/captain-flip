@@ -2,7 +2,7 @@ import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { Locator, MaterialContext } from '@gamepark/react-game'
-import { Location, MaterialItem } from '@gamepark/rules-api'
+import { Location } from '@gamepark/rules-api'
 import { AdventureBoardCharacterTileDescription } from './descriptions/AdventureBoardCharacterTileDescription'
 
 class AdventureBoardCharacterTileLocator extends Locator {
@@ -32,10 +32,6 @@ class AdventureBoardCharacterTileLocator extends Locator {
       default:
         return 0
     }
-  }
-
-  getHoverTransform(item: MaterialItem) {
-    return [`translateZ(${item.location.rotation ? -10 : 10}em)`, 'scale(2)']
   }
 }
 

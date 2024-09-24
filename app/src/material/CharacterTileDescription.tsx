@@ -40,9 +40,8 @@ export class CharacterTileDescription extends CardDescription {
     return item.location.rotation
   }
 
-  getHoverTransform(item: MaterialItem, context: ItemContext) {
-    const locator = context.locators[item.location.type]
-    return locator?.getHoverTransform(item, context) ?? []
+  getHoverTransform(item: MaterialItem) {
+    return [`translateZ(${item.location.rotation ? -10 : 10}em)`, 'scale(2)']
   }
 }
 
