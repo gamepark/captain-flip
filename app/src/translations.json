@@ -317,7 +317,7 @@
       "tuto.opponent.2": "C'est au tour de votre adversaire.",
       "tuto.swabby": "C'est un Mousse.\nLes personnages ont 2 sortes d'effet : les effets immédiats (sur fond jaune), et les effets de fin de partie (sur fond gris).\nCliquez sur le Mousse pour connaître son effet de fin de partie.\nPlacez le ensuite dans votre bateau.",
       "tuto.column.completed": "Lorsque vous complétez une colonne, vous gagnez son eventuel bonus ! Ici, vous gagnez immédiatement 3 Pièces.",
-      "tuto.trigger-end": "La partie se poursuit ainsi jusqu'à ce qu'un joueur ait complété 4 colonnes de son bateau : on termine alors le tour de table, on applique les effets de fin de partie (sur fond gris), puis la joueur la plus riche l'emporte !",
+      "tuto.trigger-end": "La partie se poursuit ainsi jusqu'à ce qu'un joueur ait complété 4 colonnes de son bateau : on termine alors le tour de table, on applique les effets de fin de partie (sur fond gris), puis le plus riche l'emporte !",
       "tuto.go": "À vous de jouer à présent. Bon vent, capitaine !",
       "scoring.coins": "Pièces",
       "scoring.total": "Total",

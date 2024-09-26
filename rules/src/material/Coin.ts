@@ -1,5 +1,4 @@
 import { getEnumValues } from '@gamepark/rules-api'
-import mapValues from 'lodash/mapValues'
 
 export enum Coin {
   Coin1 = 1,
@@ -9,25 +8,3 @@ export enum Coin {
 }
 
 export const coinValues = getEnumValues(Coin)
-
-export const spendCoinsDelta = (owned: Record<Coin, number>, spend = 1): Record<Coin, number> => {
-  const delta = mapValues(owned, _ => 0)
-  for (let _ = 0; _ < spend; _++) {
-    for (const coin of coinValues) {
-      if (owned[coin] + delta[coin] > 0) {
-        delta[coin]--
-        if (coin > 1) {
-          let rest = coin - 1
-          for (const lowerCoin of coinValues.slice(0, coinValues.indexOf(coin)).reverse()) {
-            if (lowerCoin <= rest) {
-              delta[lowerCoin] += Math.floor(rest / lowerCoin)
-              rest = rest % lowerCoin
-            }
-          }
-        }
-        break
-      }
-    }
-  }
-  return delta
-}
