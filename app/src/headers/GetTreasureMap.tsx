@@ -15,11 +15,11 @@ export const GetTreasureMap: FC<EffectHeaderProps> = ({ effect }) => {
   const name = usePlayerName(activePlayer)
   if (itsMe) {
     return (
-      <Trans defaults="header.map.you" values={{ effect: effect }}/>
+      <Trans i18nKey="header.map.you" values={{ effect: effect }}/>
     )
   }
 
   return (
-    <Trans defaults="header.map.player" values={{ player: name, effect: effect }}/>
+    <Trans i18nKey="header.map.player" values={{ player: name, effect: effect }}/>
   )
 }

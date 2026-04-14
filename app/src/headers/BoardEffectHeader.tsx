@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { CoinRule } from '@gamepark/captain-flip/rules/effect/CoinRule'
 import { useRules } from '@gamepark/react-game'

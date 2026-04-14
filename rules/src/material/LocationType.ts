@@ -9,5 +9,6 @@ export enum LocationType {
   CoinStock,
   FlipButton,
   FirstPlayerFlag,
-  BoardEffect
+  BoardEffect,
+  Cell
 }

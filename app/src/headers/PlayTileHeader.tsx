@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
@@ -27,11 +26,11 @@ export const PlayTileHeader = () => {
   if (itsMe) {
     if (flipped) {
       return (
-        <Trans defaults="header.place.you" values={{ player: name }} />
+        <Trans i18nKey="header.place.you" values={{ player: name }} />
       )
     }
     return (
-      <Trans defaults="header.flip.you">
+      <Trans i18nKey="header.flip.you">
         <PlayMoveButton move={flip} />
       </Trans>
     )
@@ -39,11 +38,11 @@ export const PlayTileHeader = () => {
 
   if (flipped) {
     return (
-      <Trans defaults="header.place.player" values={{ player: name }} />
+      <Trans i18nKey="header.place.player" values={{ player: name }} />
     )
   }
 
   return (
-    <Trans defaults="header.flip.player" values={{ player: name }} />
+    <Trans i18nKey="header.flip.player" values={{ player: name }} />
   )
 }

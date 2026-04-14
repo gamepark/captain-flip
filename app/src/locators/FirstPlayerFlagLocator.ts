@@ -7,8 +7,8 @@ export class FirstPlayerFlagLocator extends Locator {
   locationDescription = new FirstPlayerFlagDescription()
 
   positionOnParent = {
-    x: 7.87,
-    y: 10.12
+    x: 6.7,
+    y: -4
   }
 }
 

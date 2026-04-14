@@ -1,11 +1,13 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { Character } from '@gamepark/captain-flip/material/tiles/Character'
 import { getCharacter } from '@gamepark/captain-flip/rules/GetCharacter'
 import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
-import { CardDescription, ItemContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { faRotateRight } from '@fortawesome/free-solid-svg-icons/faRotateRight'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import Carpenter from '../images/characters/Carpenter.jpg'
 import Cartographer from '../images/characters/Cartographer.jpg'
 import Cook from '../images/characters/Cook.jpg'
@@ -27,6 +29,15 @@ export class CharacterTileDescription extends CardDescription {
 
   help = CharacterTileHelp
 
+  getHelpDisplayExtraCss() {
+    // Hide the default tile render on the left side of the help dialog.
+    // We render our own framed tile inside CharacterTileHelp.
+    return css`
+      display: none;
+      width: 0;
+    `
+  }
+
   getItemExtraCss(item: MaterialItem, context: ItemContext) {
     if (item.location.type === LocationType.ClothBag) return noPointer
     if (context.rules.game.rule?.id === RuleId.ParrotEndOfGame && getCharacter(item) === Character.Parrot) return highlightCharactersCss
@@ -40,8 +51,21 @@ export class CharacterTileDescription extends CardDescription {
     return item.location.rotation
   }
 
-  getHoverTransform(item: MaterialItem) {
-    return [`translateZ(${item.location.rotation ? -10 : 10}em)`, 'scale(2)']
+  menuAlwaysVisible = true
+
+  getItemMenu(item: MaterialItem, _context: ItemContext, legalMoves: MaterialMove[]) {
+    const flipMove = legalMoves.find(move =>
+      isMoveItemType(MaterialType.CharacterTile)(move) &&
+      move.itemIndex === _context.index &&
+      move.location.rotation !== item.location.rotation
+    )
+    if (!flipMove) return
+    return <ItemMenuButton move={flipMove} label="Flip" labelPosition="right" angle={45} radius={3} css={flipButtonCss}><FontAwesomeIcon icon={faRotateRight} /></ItemMenuButton>
+  }
+
+  getHoverTransform(item: MaterialItem, context: ItemContext) {
+    const baseHover = super.getHoverTransform(item, context)
+    return baseHover.concat([`translateZ(${item.location.rotation ? -10 : 10}em)`, !baseHover.some((t) => t.startsWith('scale'))? 'scale(2)': ''])
   }
 }
 
@@ -61,6 +85,10 @@ export const characterTileDescription = new CharacterTileDescription()
 
 const noPointer = css`
   pointer-events: none;
+`
+
+const flipButtonCss = css`
+  font-size: 0.8em;
 `
 
 const highlightCharactersCss = css`

@@ -1,5 +1,6 @@
 import {
   CompetitiveScore,
+  FillGapStrategy,
   HiddenMaterialRules,
   hideItemId,
   MaterialGame,
@@ -21,6 +22,18 @@ import { BoardEffectCoinXRule } from './rules/effect/board/BoardEffectCoinXRule'
 import { BoardEffectFirstXThenYRule } from './rules/effect/board/BoardEffectFirstXThenYRule'
 import { BoasEffectFlipRule } from './rules/effect/board/BoardEffectFlipRule'
 import { BoardEffectReplayRule } from './rules/effect/board/BoardEffectReplayRule'
+import { BoardEffectReplayIfAllDifferentRule } from './rules/effect/board/BoardEffectReplayIfAllDifferentRule'
+import { BoardEffectCoinPerDifferentAdjacentRule } from './rules/effect/board/BoardEffectCoinPerDifferentAdjacentRule'
+import { BoardEffectCoinAndTreasureMapRule } from './rules/effect/board/BoardEffectCoinAndTreasureMapRule'
+import { BoardEffectCoinPerBombRule } from './rules/effect/board/BoardEffectCoinPerBombRule'
+import { BoardEffectCoinPerTreasureMapRule } from './rules/effect/board/BoardEffectCoinPerTreasureMapRule'
+import { BoardEffectFirstXThenYRowRule } from './rules/effect/board/BoardEffectFirstXThenYRowRule'
+import { BoardEffectEndOfGameRowSameRule } from './rules/effect/board/BoardEffectEndOfGameRowSameRule'
+import { BoardEffectFirstFlipThenYRule } from './rules/effect/board/BoardEffectFirstFlipThenYRule'
+import { BoardEffectFlipCellRule } from './rules/effect/board/BoardEffectFlipCellRule'
+import { BoardEffectPassTreasureMapRule } from './rules/effect/board/BoardEffectPassTreasureMapRule'
+import { BoardEffectPlayFromCellRule } from './rules/effect/board/BoardEffectPlayFromCellRule'
+import { BoardEffectStealLeftRule, BoardEffectStealRightRule } from './rules/effect/board/BoardEffectStealRule'
 import { BoardEffectTreasureMapRule } from './rules/effect/board/BoardEffectTreasureMapRule'
 import { BoardEndOfGameCoinIfAllDifferentRule } from './rules/effect/board/BoardEndOfGameCoinIfAllDifferentRule'
 import { BoardEndOfGameCoinIfSameRule } from './rules/effect/board/BoardEndOfGameCoinIfSameRule'
@@ -36,7 +49,9 @@ import { NavigatorRule } from './rules/effect/NavigatorRule'
 import { ParrotRule } from './rules/effect/ParrotRule'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
 import { getCharacter } from './rules/GetCharacter'
+import { BoardHelper } from './rules/helper/BoardHelper'
 import { CoinHelper } from './rules/helper/CoinHelper'
+import { TreasureMapHelper } from './rules/helper/TreasureMapHelper'
 import { PlayTileRule } from './rules/PlayTileRule'
 import { RuleId } from './rules/RuleId'
 
@@ -72,20 +87,38 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
     [RuleId.BoardEndOfGameCoinIfSame]: BoardEndOfGameCoinIfSameRule,
     [RuleId.BoardEndOfGameCoinIfAllDifferent]: BoardEndOfGameCoinIfAllDifferentRule,
     [RuleId.BoardEffectFlip]: BoasEffectFlipRule,
-    [RuleId.BoardEffectReplay]: BoardEffectReplayRule
+    [RuleId.BoardEffectReplay]: BoardEffectReplayRule,
+    [RuleId.BoardEffectReplayIfAllDifferent]: BoardEffectReplayIfAllDifferentRule,
+    [RuleId.BoardEffectCoinPerDifferentAdjacent]: BoardEffectCoinPerDifferentAdjacentRule,
+    [RuleId.BoardEffectCoinAndTreasureMap]: BoardEffectCoinAndTreasureMapRule,
+    [RuleId.BoardEffectCoinPerBomb]: BoardEffectCoinPerBombRule,
+    [RuleId.BoardEffectCoinPerTreasureMap]: BoardEffectCoinPerTreasureMapRule,
+    [RuleId.BoardEffectFirstXThenYRow]: BoardEffectFirstXThenYRowRule,
+    [RuleId.BoardEffectEndOfGameRowSame]: BoardEffectEndOfGameRowSameRule,
+    [RuleId.BoardEffectStealLeft]: BoardEffectStealLeftRule,
+    [RuleId.BoardEffectStealRight]: BoardEffectStealRightRule,
+    [RuleId.BoardEffectPassTreasureMap]: BoardEffectPassTreasureMapRule,
+    [RuleId.BoardEffectFirstFlipThenY]: BoardEffectFirstFlipThenYRule,
+    [RuleId.BoardEffectPlayFromCell]: BoardEffectPlayFromCellRule,
+    [RuleId.BoardEffectFlipCell]: BoardEffectFlipCellRule,
   }
 
   hidingStrategies = {
     [MaterialType.CharacterTile]: {
       [LocationType.ClothBag]: hideItemId,
       [LocationType.PlayerHand]: hideIfRotated,
-      [LocationType.AdventureBoardCharacterTile]: hideIfRotated
+      [LocationType.AdventureBoardCharacterTile]: hideIfRotated,
+      [LocationType.Cell]: hideIfRotated
     }
   }
 
   locationsStrategies = {
     [MaterialType.CharacterTile]: {
-      [LocationType.ClothBag]: new PositiveSequenceStrategy()
+      [LocationType.ClothBag]: new PositiveSequenceStrategy(),
+      [LocationType.Cell]: new FillGapStrategy()
+    },
+    [MaterialType.TreasureMapToken]: {
+      [LocationType.PlayerTreasureMapToken]: new PositiveSequenceStrategy()
     }
   }
 
@@ -111,11 +144,39 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
   }
 
   getPlayerGunners(player: PlayerId) {
-    return this
+    let count = this
       .material(MaterialType.CharacterTile)
       .player(player)
       .filter((item) => getCharacter(item) === Character.Gunner)
       .length
+
+    // Count uncovered bomb symbols on board
+    const helper = new BoardHelper(this.game)
+    for (const place of helper.places) {
+      if (!place.effect?.bomb) continue
+      const occupied = this.material(MaterialType.CharacterTile)
+        .location(LocationType.AdventureBoardCharacterTile)
+        .player(player)
+        .filter((item) => item.location.x === place.x && item.location.y === place.y)
+        .length > 0
+      if (!occupied) count++
+    }
+
+    // Count bombWhenFilled symbols (active when covered)
+    for (const place of helper.places) {
+      if (!place.effect?.bombWhenFilled) continue
+      const occupied = this.material(MaterialType.CharacterTile)
+        .location(LocationType.AdventureBoardCharacterTile)
+        .player(player)
+        .filter((item) => item.location.x === place.x && item.location.y === place.y)
+        .length > 0
+      if (occupied) count++
+    }
+
+    // Count bombs from Inflamed treasure map
+    count += new TreasureMapHelper(this.game, player).bombCount
+
+    return count
   }
 }
 

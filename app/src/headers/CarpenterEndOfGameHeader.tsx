@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CarpenterEndOfGameRule } from '@gamepark/captain-flip/rules/effect/end/CarpenterEndOfGameRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'

@@ -1,8 +1,7 @@
-/** @jsxImportSource @emotion/react */
 import { Coin } from '@gamepark/captain-flip/material/Coin'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MoneyDescription } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api/dist/material/items/MaterialItem'
+import { MaterialItem } from '@gamepark/rules-api'
 import Coin1 from '../images/coins/Coin1.png'
 import Coin10 from '../images/coins/Coin10.png'
 import Coin3 from '../images/coins/Coin3.png'
@@ -13,6 +12,7 @@ import { CoinHelp } from './help/CoinHelp'
 export class CoinDescription extends MoneyDescription {
   height = 2.79
   width = 2.79
+  transparency = true
   borderRadius = 2
   images = {
     [Coin.Coin1]: Coin1,

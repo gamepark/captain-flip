@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */ import { css } from '@emotion/react'
+import { css } from '@emotion/react'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 
@@ -10,7 +10,7 @@ export const Quote: FC<QuoteProps> = ({ quote }) => {
   return (
     <>
       <div css={alignRightCss}>
-        <Trans defaults={quote} />
+        <Trans i18nKey={quote} />
       </div>
     </>
   )

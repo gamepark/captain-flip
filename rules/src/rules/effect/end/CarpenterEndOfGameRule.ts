@@ -3,6 +3,7 @@ import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { Character } from '../../../material/tiles/Character'
 import { getCharacter } from '../../GetCharacter'
+import { BoardHelper } from '../../helper/BoardHelper'
 import { RuleId } from '../../RuleId'
 import { CoinRule } from '../CoinRule'
 
@@ -32,11 +33,25 @@ export class CarpenterEndOfGameRule extends CoinRule {
 
   getCarpenterCoin(carpenter: MaterialItem) {
     const gunners = this.gunners
-    if (!gunners.filter((item) => item.location.x === carpenter.location.x || item.location.y === carpenter.location.y).length) {
-      return 3
+    if (gunners.some((item) => item.location.x === carpenter.location.x || item.location.y === carpenter.location.y)) {
+      return 0
     }
 
-    return 0
+    // Check uncovered bomb symbols on board
+    const helper = new BoardHelper(this.game)
+    for (const place of helper.places) {
+      if (!place.effect?.bomb) continue
+      const occupied = this.material(MaterialType.CharacterTile)
+        .location(LocationType.AdventureBoardCharacterTile)
+        .player(this.player)
+        .filter((item) => item.location.x === place.x && item.location.y === place.y)
+        .length > 0
+      if (!occupied && (place.x === carpenter.location.x || place.y === carpenter.location.y)) {
+        return 0
+      }
+    }
+
+    return 3
   }
 
   get carpenters() {

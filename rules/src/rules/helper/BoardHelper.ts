@@ -1,7 +1,6 @@
 import { Location, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import maxBy from 'lodash/maxBy'
-import minBy from 'lodash/minBy'
-import sum from 'lodash/sum'
+import { maxBy, minBy } from 'es-toolkit'
+import { sum } from 'es-toolkit/compat'
 import { BoardType } from '../../material/board/Board'
 import { BoardADescription } from '../../material/board/description/BoardADescription'
 import { BoardBDescription } from '../../material/board/description/BoardBDescription'
@@ -9,6 +8,10 @@ import { BoardCDescription } from '../../material/board/description/BoardCDescri
 import { BoardSpaceEffect } from '../../material/board/description/BoardCommon'
 import { BoardDDescription } from '../../material/board/description/BoardDDescription'
 import { BoardEDescription } from '../../material/board/description/BoardEDescription'
+import { BoardFDescription } from '../../material/board/description/BoardFDescription'
+import { BoardGDescription } from '../../material/board/description/BoardGDescription'
+import { BoardHDescription } from '../../material/board/description/BoardHDescription'
+import { BoardIDescription } from '../../material/board/description/BoardIDescription'
 import { BoardSpaceType } from '../../material/board/description/BoardSpaceType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -95,6 +98,14 @@ export class BoardHelper extends MaterialRulesPart {
         return BoardDDescription
       case BoardType.BoardE:
         return BoardEDescription
+      case BoardType.BoardF:
+        return BoardFDescription
+      case BoardType.BoardG:
+        return BoardGDescription
+      case BoardType.BoardH:
+        return BoardHDescription
+      case BoardType.BoardI:
+        return BoardIDescription
       case BoardType.BoardA:
       default:
         return BoardADescription
@@ -138,6 +149,30 @@ export class BoardHelper extends MaterialRulesPart {
         return RuleId.BoardEffectFlip
       case BoardSpaceType.Replay:
         return RuleId.BoardEffectReplay
+      case BoardSpaceType.ReplayIfAllDifferent:
+        return RuleId.BoardEffectReplayIfAllDifferent
+      case BoardSpaceType.CoinPerDifferentAdjacent:
+        return RuleId.BoardEffectCoinPerDifferentAdjacent
+      case BoardSpaceType.CoinAndTreasureMap:
+        return RuleId.BoardEffectCoinAndTreasureMap
+      case BoardSpaceType.CoinPerBomb:
+        return RuleId.BoardEffectCoinPerBomb
+      case BoardSpaceType.StealLeft:
+        return RuleId.BoardEffectStealLeft
+      case BoardSpaceType.StealRight:
+        return RuleId.BoardEffectStealRight
+      case BoardSpaceType.PassTreasureMap:
+        return RuleId.BoardEffectPassTreasureMap
+      case BoardSpaceType.FirstFlipThenY:
+        return RuleId.BoardEffectFirstFlipThenY
+      case BoardSpaceType.PlayFromCell:
+        return RuleId.BoardEffectPlayFromCell
+      case BoardSpaceType.FlipCell:
+        return RuleId.BoardEffectFlipCell
+      case BoardSpaceType.FirstXThenYRow:
+        return RuleId.BoardEffectFirstXThenYRow
+      case BoardSpaceType.CoinPerTreasureMap:
+        return RuleId.BoardEffectCoinPerTreasureMap
       default:
         return
     }

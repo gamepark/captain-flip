@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
 import { LocationContext, LocationDescription } from '@gamepark/react-game'
@@ -23,10 +22,12 @@ export class PlayerCoinDescription extends LocationDescription {
         display: flex;
         align-self: center;
         justify-content: center;
-        color: black;
+        color: white;
         font-size: 2.5em;
-        font-weight: bold;
-        opacity: 0.7;
+        font-weight: 900;
+        paint-order: stroke fill;
+        -webkit-text-stroke: 0.06em #1a0e00;
+        text-shadow: none;
       }
     `
   }

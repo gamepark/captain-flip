@@ -1,8 +1,10 @@
-/** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
 import { ComponentType } from 'react'
 import { BoardEffectFlipHeader } from './BoardEffectFlipHeader'
 import { BoardEffectHeader } from './BoardEffectHeader'
+import { FlipCellHeader } from './FlipCellHeader'
+import { PassTreasureMapHeader } from './PassTreasureMapHeader'
+import { PlayFromCellHeader } from './PlayFromCellHeader'
 import { CarpenterEndOfGameHeader } from './CarpenterEndOfGameHeader'
 import { CartographerHeader } from './CartographerHeader'
 import { CookHeader } from './CookHeader'
@@ -37,4 +39,17 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.BoardEffectCoinPerDifferent]: BoardEffectHeader,
   [RuleId.BoardEffectCoinPerFullColumn]: BoardEffectHeader,
   [RuleId.BoardEffectFlip]: BoardEffectFlipHeader,
+  [RuleId.BoardEffectReplayIfAllDifferent]: BoardEffectHeader,
+  [RuleId.BoardEffectCoinPerDifferentAdjacent]: BoardEffectHeader,
+  [RuleId.BoardEffectCoinAndTreasureMap]: BoardEffectHeader,
+  [RuleId.BoardEffectCoinPerBomb]: BoardEffectHeader,
+  [RuleId.BoardEffectStealLeft]: BoardEffectHeader,
+  [RuleId.BoardEffectStealRight]: BoardEffectHeader,
+  [RuleId.BoardEffectFirstXThenYRow]: BoardEffectHeader,
+  [RuleId.BoardEffectEndOfGameRowSame]: BoardEffectHeader,
+  [RuleId.BoardEffectCoinPerTreasureMap]: BoardEffectHeader,
+  [RuleId.BoardEffectPassTreasureMap]: PassTreasureMapHeader,
+  [RuleId.BoardEffectFirstFlipThenY]: BoardEffectFlipHeader,
+  [RuleId.BoardEffectPlayFromCell]: PlayFromCellHeader,
+  [RuleId.BoardEffectFlipCell]: FlipCellHeader,
 }

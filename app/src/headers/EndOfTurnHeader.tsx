@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { EndOfTurnRule } from '@gamepark/captain-flip/rules/EndOfTurnRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'

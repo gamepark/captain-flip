@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
@@ -9,6 +9,10 @@ import BoardB from '../images/boards/BoardB.jpg'
 import BoardC from '../images/boards/BoardC.jpg'
 import BoardD from '../images/boards/BoardD.jpg'
 import BoardE from '../images/boards/BoardE.jpg'
+import BoardF from '../images/boards/BoardF.jpg'
+import BoardG from '../images/boards/BoardG.jpg'
+import BoardH from '../images/boards/BoardH.jpg'
+import BoardI from '../images/boards/BoardI.jpg'
 import Flag from '../images/boards/Flag.png'
 import { AdventureBoardHelp } from './help/AdventureBoardHelp'
 
@@ -22,9 +26,22 @@ export class AdventureBoardDescription extends BoardDescription {
     [BoardType.BoardC]: BoardC,
     [BoardType.BoardD]: BoardD,
     [BoardType.BoardE]: BoardE,
+    [BoardType.BoardF]: BoardF,
+    [BoardType.BoardG]: BoardG,
+    [BoardType.BoardH]: BoardH,
+    [BoardType.BoardI]: BoardI,
   }
 
   help = AdventureBoardHelp
+
+  getHelpDisplayExtraCss() {
+    // Hide the default board render on the left side of the help dialog.
+    // We render our own richer layout (board image + content) inside AdventureBoardHelp.
+    return css`
+      display: none;
+      width: 0;
+    `
+  }
 
   getImages() {
     const images = super.getImages()

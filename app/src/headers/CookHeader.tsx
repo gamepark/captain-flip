@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CookRule } from '@gamepark/captain-flip/rules/effect/CookRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
@@ -18,11 +17,11 @@ export const GainCoinHeader: FC<EffectHeaderProps> = (props) => {
   const name = usePlayerName(activePlayer)
   if (itsMe) {
     return (
-      <Trans defaults="header.coins.gain.you" values={{ effect, coins }} />
+      <Trans i18nKey="header.coins.gain.you" values={{ effect, coins }} />
     )
   }
 
   return (
-    <Trans defaults="header.coins.gain.player" values={{ player: name, effect, coins }} />
+    <Trans i18nKey="header.coins.gain.player" values={{ player: name, effect, coins }} />
   )
 }

@@ -3,5 +3,6 @@ export enum Memory {
   PlacedCard,
   Board,
   BoardEffect,
-  BoardEndOfGameEffect
+  BoardEndOfGameEffect,
+  CoinsGainedThisTurn
 }

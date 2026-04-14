@@ -1,14 +1,11 @@
-import { ClotheType, EyebrowType, EyeType, FacialHairType, GraphicType, MouthType, TopType } from '@gamepark/avataaars'
+import { ClotheType, EyebrowType, EyeType, FacialHairType, GraphicType, HairColorName, MouthType, SkinColor, TopType } from '@gamepark/avataaars'
 import ClotheColorName from '@gamepark/avataaars/dist/avatar/clothes/ClotheColorName'
-import SkinColor from '@gamepark/avataaars/dist/avatar/SkinColor'
-import HairColorName from '@gamepark/avataaars/dist/avatar/top/HairColorName'
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
-import { isCreateItemType } from '@gamepark/rules-api/dist/material/moves/items/CreateItem'
-import { isMoveItemType } from '@gamepark/rules-api/dist/material/moves/items/MoveItem'
+import { isCreateItemType, isMoveItemType } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { TutorialSetup } from './TutorialSetup'
 
@@ -42,20 +39,20 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
 
   steps: TutorialStep[] = [
     {
-      popup: { text: () => <Trans defaults="tuto.welcome"><strong/><em/></Trans> }
+      popup: { text: () => <Trans i18nKey="tuto.welcome"><strong/><em/></Trans> }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.goal"><strong/><em/></Trans> }
+      popup: { text: () => <Trans i18nKey="tuto.goal"><strong/><em/></Trans> }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.coins"><strong/><em/></Trans> }
+      popup: { text: () => <Trans i18nKey="tuto.coins"><strong/><em/></Trans> }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.draw"><strong/><em/></Trans> }
+      popup: { text: () => <Trans i18nKey="tuto.draw"><strong/><em/></Trans> }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.gunner"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.gunner"><strong/><em/></Trans>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -76,10 +73,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.popup"><strong/><em/></Trans> }
+      popup: { text: () => <Trans i18nKey="tuto.popup"><strong/><em/></Trans> }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.opponent"><strong/><em/></Trans> },
+      popup: { text: () => <Trans i18nKey="tuto.opponent"><strong/><em/></Trans> },
       move: {}
     },
     {
@@ -90,12 +87,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.you"><strong/><em/></Trans> },
+      popup: { text: () => <Trans i18nKey="tuto.you"><strong/><em/></Trans> },
       move: {}
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.lookout"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.lookout"><strong/><em/></Trans>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -110,7 +107,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.flip"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.flip"><strong/><em/></Trans>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -125,7 +122,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.lookout.flip"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.lookout.flip"><strong/><em/></Trans>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -143,7 +140,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.cartographer"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.cartographer"><strong/><em/></Trans>,
         position: { y: -25 }
       },
       focus: (game) => ({
@@ -162,7 +159,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.cartographer.effect"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.cartographer.effect"><strong/><em/></Trans>,
         position: { y: 20 }
       },
       focus: (game) => ({
@@ -176,7 +173,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent.2"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.opponent.2"><strong/><em/></Trans>
       },
       move: {}
     },
@@ -189,13 +186,13 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.you"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.you"><strong/><em/></Trans>
       },
       move: {}
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.swabby"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.swabby"><strong/><em/></Trans>,
         position: { y: -20 },
         size: { width: 100 }
       },
@@ -217,7 +214,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.column.completed"><strong/><em/></Trans>,
+        text: () => <Trans i18nKey="tuto.column.completed"><strong/><em/></Trans>,
         position: { x: 40 }
       },
       focus: (game) => ({
@@ -235,10 +232,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       move: {}
     },
     {
-      popup: { text: () => <Trans defaults="tuto.trigger-end"><strong/><em/></Trans> }
+      popup: { text: () => <Trans i18nKey="tuto.trigger-end"><strong/><em/></Trans> }
     },
     {
-      popup: { text: () => <Trans defaults="tuto.go"><strong/><em/></Trans> }
+      popup: { text: () => <Trans i18nKey="tuto.go"><strong/><em/></Trans> }
     }
   ]
 

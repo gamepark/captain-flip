@@ -6,7 +6,11 @@ export enum BoardType {
   BoardB,
   BoardC,
   BoardD,
-  BoardE
+  BoardE,
+  BoardF,
+  BoardG,
+  BoardH,
+  BoardI
 }
 
 export const boardTypes = getEnumValues(BoardType)

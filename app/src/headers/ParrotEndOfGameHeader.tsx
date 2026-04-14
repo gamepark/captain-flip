@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ParrotEndOfGameRule } from '@gamepark/captain-flip/rules/effect/end/ParrotEndOfGameRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'

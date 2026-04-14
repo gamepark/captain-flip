@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { MonkeyRule } from '@gamepark/captain-flip/rules/effect/MonkeyRule'
@@ -24,11 +23,11 @@ export const MonkeyHeader = () => {
 
   if (itsMe) {
     return (
-      <Trans defaults="header.monkey.you" />
+      <Trans i18nKey="header.monkey.you" />
     )
   }
 
   return (
-    <Trans defaults="header.monkey.player" values={{ player: name }} />
+    <Trans i18nKey="header.monkey.player" values={{ player: name }} />
   )
 }

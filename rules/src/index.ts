@@ -1,3 +1,5 @@
 export { CaptainFlipRules } from './CaptainFlipRules'
 export { CaptainFlipOptionsSpec } from './CaptainFlipOptions'
 export { CaptainFlipSetup } from './CaptainFlipSetup'
+export { TreasureMapType } from './material/TreasureMapType'
+export { CustomMoveType } from './material/CustomMoveType'

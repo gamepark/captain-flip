@@ -3,7 +3,7 @@ import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { EffectMemory } from '@gamepark/captain-flip/rules/effect/board/BaseBoardEffect'
 import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import sum from 'lodash/sum'
+import { sum } from 'es-toolkit/compat'
 import { EndOfGameCoinIfAllDifferentScoring } from './EndOfGameCoinIfAllDifferentScoring'
 import { EndOfGameCoinIfSameScoring } from './EndOfGameCoinIfSameScoring'
 

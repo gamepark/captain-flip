@@ -3,9 +3,8 @@ import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
 import { DropAreaDescription, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
-import { isMoveItemType } from '@gamepark/rules-api/dist/material/moves/items/MoveItem'
-import { MaterialMove } from '@gamepark/rules-api/dist/material/moves/MaterialMove'
-import isEqual from 'lodash/isEqual'
+import { isMoveItemType, MaterialMove } from '@gamepark/rules-api'
+import { isEqual } from 'es-toolkit'
 import { characterTileDescription } from '../../material/CharacterTileDescription'
 
 export class AdventureBoardCharacterTileDescription extends DropAreaDescription {

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { NavigatorRule } from '@gamepark/captain-flip/rules/effect/NavigatorRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'

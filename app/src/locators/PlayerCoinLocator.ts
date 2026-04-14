@@ -1,19 +1,23 @@
-/** @jsxImportSource @emotion/react */
 import { Coin } from '@gamepark/captain-flip/material/Coin'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { adventureBoardLocator } from './AdventureBoardLocator'
 import { PlayerCoinDescription } from './descriptions/PlayerCoinDescription'
+import { getViewPlayer, isPlayerVisible } from './ViewHelper'
 
 class PlayerCoinLocator extends PileLocator {
   locationDescription = new PlayerCoinDescription()
 
   getLocations(context: MaterialContext) {
-    return context.rules.players.map(player => ({
-      type: LocationType.PlayerCoin,
-      player
-    }))
+    const me = context.player ?? context.rules.players[0]
+    const viewed = getViewPlayer(context)
+    return context.rules.players
+      .filter(player => player === me || player === viewed)
+      .map(player => ({
+        type: LocationType.PlayerCoin,
+        player
+      }))
   }
 
   radius = 1.5
@@ -45,6 +49,10 @@ class PlayerCoinLocator extends PileLocator {
 
   getPileId(item: MaterialItem) {
     return `${item.location.player}-${item.id}`
+  }
+
+  hide(item: MaterialItem, context: ItemContext): boolean {
+    return !isPlayerVisible(item, context)
   }
 }
 

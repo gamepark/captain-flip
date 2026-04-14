@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { GunnerRule } from '@gamepark/captain-flip/rules/effect/GunnerRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'

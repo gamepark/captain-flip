@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
@@ -6,6 +5,12 @@ import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
 import { CoinHelper } from '@gamepark/captain-flip/rules/helper/CoinHelper'
 import { ScoringDescription } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
+import TotalCoin from '../images/coins/TotalCoin.png'
+import Carpenter from '../images/characters/Carpenter.jpg'
+import Gunner from '../images/characters/Gunner.jpg'
+import Lookout from '../images/characters/Lookout.jpg'
+import Parrot from '../images/characters/Parrot.jpg'
+import Swabby from '../images/characters/Swabby.jpg'
 import { CarpenterScoringRule } from './rules/CarpenterScoringRule'
 import { ColumnBonusScoringRule } from './rules/ColumnBonusScoringRule'
 import { LookoutScoringRule } from './rules/LookoutScoringRule'
@@ -48,40 +53,40 @@ export class CaptainFlipScoringDescription implements ScoringDescription<PlayerI
   getScoringHeader(key: ScoringKeys) {
     switch (key) {
       case ScoringKeys.Coins:
-        return <Trans defaults="scoring.coins"/>
+        return <div css={centerCss}><img src={TotalCoin} alt="" css={coinImgCss}/></div>
       case ScoringKeys.Swabby:
-        return <Trans defaults="swabby"/>
+        return <div css={centerCss}><img src={Swabby} alt="" css={characterImgCss}/></div>
       case ScoringKeys.Carpenter:
-        return <Trans defaults="carpenter"/>
+        return <div css={centerCss}><img src={Carpenter} alt="" css={characterImgCss}/></div>
       case ScoringKeys.Lookout:
-        return <Trans defaults="lookout"/>
+        return <div css={centerCss}><img src={Lookout} alt="" css={characterImgCss}/></div>
       case ScoringKeys.Parrot:
-        return <Trans defaults="parrot"/>
+        return <div css={centerCss}><img src={Parrot} alt="" css={characterImgCss}/></div>
       case ScoringKeys.Gunner:
-        return <Trans defaults="gunner"/>
+        return <div css={centerCss}><img src={Gunner} alt="" css={characterImgCss}/></div>
       case ScoringKeys.ColumnBonus:
-        return <Trans defaults="column-bonus"/>
+        return <Trans i18nKey="column-bonus"/>
       case ScoringKeys.Total:
       default:
-        return <div css={bold}><Trans defaults="scoring.total"/></div>
+        return <div css={bold}><Trans i18nKey="scoring.total"/></div>
     }
   }
 
   getScoringPlayerData(key: ScoringKeys, player: PlayerId, rules: CaptainFlipRules) {
     switch (key) {
       case ScoringKeys.Coins:
-        return new CoinHelper(rules.game, player).coins
+        return <div css={valueCss}>{new CoinHelper(rules.game, player).coins
           - this.getScoring(ScoringKeys.Parrot, player, rules)
           - this.getScoring(ScoringKeys.Swabby, player, rules)
           - this.getScoring(ScoringKeys.Lookout, player, rules)
           - this.getScoring(ScoringKeys.Carpenter, player, rules)
-          - this.getScoring(ScoringKeys.ColumnBonus, player, rules)
+          - this.getScoring(ScoringKeys.ColumnBonus, player, rules)}</div>
       case ScoringKeys.Total:
-        return <div css={bold}>{rules.getScore(player)}</div>
+        return <div css={[valueCss, bold]}>{rules.getScore(player)}</div>
       case ScoringKeys.Gunner:
-        return `x${this.getScoring(ScoringKeys.Gunner, player, rules)}`
+        return <div css={valueCss}>x{this.getScoring(ScoringKeys.Gunner, player, rules)}</div>
       default:
-        return this.getScoring(key, player, rules)
+        return <div css={valueCss}>{this.getScoring(key, player, rules)}</div>
     }
   }
 
@@ -108,4 +113,31 @@ export class CaptainFlipScoringDescription implements ScoringDescription<PlayerI
 
 const bold = css`
   font-weight: bold;
+`
+
+const valueCss = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`
+
+const centerCss = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`
+
+const characterImgCss = css`
+  height: 3.5em;
+  width: 3.5em;
+  object-fit: cover;
+  border-radius: 0.3em;
+`
+
+const coinImgCss = css`
+  height: 2.5em;
+  width: 2.5em;
+  object-fit: contain;
 `

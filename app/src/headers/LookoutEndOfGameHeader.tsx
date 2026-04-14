@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LookoutEndOfGameRule } from '@gamepark/captain-flip/rules/effect/end/LookoutEndOfGameRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'

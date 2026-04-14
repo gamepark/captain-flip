@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { SwabbyEndOfGameRule } from '@gamepark/captain-flip/rules/effect/end/SwabbyEndOfGameRule'
 import { useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'
