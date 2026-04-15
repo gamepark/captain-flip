@@ -4,16 +4,15 @@ import { ItemContext, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { adventureBoardLocator } from './AdventureBoardLocator'
 import { PlayerCoinDescription } from './descriptions/PlayerCoinDescription'
-import { getViewPlayer, isPlayerVisible } from './ViewHelper'
+import { getSides, isPlayerVisible } from './ViewHelper'
 
 class PlayerCoinLocator extends PileLocator {
   locationDescription = new PlayerCoinDescription()
 
   getLocations(context: MaterialContext) {
-    const me = context.player ?? context.rules.players[0]
-    const viewed = getViewPlayer(context)
+    const { left, right } = getSides(context)
     return context.rules.players
-      .filter(player => player === me || player === viewed)
+      .filter(player => player === left || player === right)
       .map(player => ({
         type: LocationType.PlayerCoin,
         player

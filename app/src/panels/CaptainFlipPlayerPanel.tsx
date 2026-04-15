@@ -12,23 +12,28 @@ import { FC, HTMLAttributes, useCallback, useEffect, useRef, useState } from 're
 import { useTranslation } from 'react-i18next'
 import Flag from '../images/boards/Flag.png'
 import TotalCoin from '../images/coins/TotalCoin.png'
-import TreasureMapToken from '../images/TreasureMapToken.png'
+import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
+import { treasureMapImages } from '../effects/treasureMapImages'
 import PlayerOne from '../images/panel/player-1.jpg'
 import PlayerTwo from '../images/panel/player-2.jpg'
 import PlayerThree from '../images/panel/player-3.jpg'
 import PlayerFour from '../images/panel/player-4.jpg'
 import PlayerFive from '../images/panel/player-5.jpg'
+import { encodeView, getSides } from '../locators/ViewHelper'
 import { BoardPreview } from './BoardPreview'
 import { getPanelCssPosition } from './PanelPosition'
+import { SidePickerPopup } from './SidePickerPopup'
 
 type CaptainFlipPlayerPanelProps = {
   player: Player
   isLeftNeighbor?: boolean
   isRightNeighbor?: boolean
+  isPickerOpen?: boolean
+  onRequestPicker?: (open: boolean) => void
 } & HTMLAttributes<HTMLDivElement>
 
 export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) => {
-  const { player, isLeftNeighbor, isRightNeighbor } = props
+  const { player, isLeftNeighbor, isRightNeighbor, isPickerOpen, onRequestPicker } = props
   const rules = useRules<CaptainFlipRules>()!
   const context = useMaterialContext()
   const play = usePlay()
@@ -38,10 +43,10 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
   const playerName = usePlayerName(player.id)
   const { t } = useTranslation()
 
-  const me = playerId ?? rules.players[0]
-  const defaultView = rules.players[(rules.players.indexOf(me) + 1) % rules.players.length]
-  const viewedPlayer = (rules as any).game.view ?? defaultView
-  const isViewed = player.id === viewedPlayer
+  const { left: leftPlayer, right: rightPlayer } = getSides({ rules, player: playerId } as any)
+  const isViewedLeft = player.id === leftPlayer
+  const isViewedRight = player.id === rightPlayer
+  const isViewed = isViewedLeft || isViewedRight
 
   const [isHovered, setIsHovered] = useState(false)
   const hoverTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -55,15 +60,27 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
   const isTurnToPlay = rules.isTurnToPlay(player.id)
   const isFirstPlayer = player.id === rules.players[0]
 
-  const treasureMapCount = rules.material(MaterialType.TreasureMapToken)
+  const playerTreasureMaps = rules.material(MaterialType.TreasureMapToken)
     .location(LocationType.PlayerTreasureMapToken)
     .player(player.id)
-    .length
+    .getItems()
 
   const onPanelClick = useCallback(() => {
-    if (isMe || rules.players.length <= 2) return
-    play(MaterialMoveBuilder.changeView(player.id), { transient: true })
-  }, [isMe, play, player.id, rules.players.length])
+    if (rules.players.length <= 2) return
+    onRequestPicker?.(!isPickerOpen)
+  }, [rules.players.length, isPickerOpen, onRequestPicker])
+
+  // Assign this player to a side. If they already occupy the other side,
+  // the two sides swap (rule b): the previous occupant moves across
+  // instead of being kicked out.
+  const assignSide = useCallback((targetSide: 'left' | 'right') => {
+    const newLeft  = targetSide === 'left'  ? player.id : (leftPlayer === player.id ? rightPlayer : leftPlayer)
+    const newRight = targetSide === 'right' ? player.id : (rightPlayer === player.id ? leftPlayer : rightPlayer)
+    play(MaterialMoveBuilder.changeView(encodeView(newLeft, newRight)), { transient: true })
+    onRequestPicker?.(false)
+  }, [player.id, leftPlayer, rightPlayer, play, onRequestPicker])
+
+  const onPickerClose = useCallback(() => onRequestPicker?.(false), [onRequestPicker])
 
   const onMouseEnter = useCallback(() => {
     hoverTimeout.current = setTimeout(() => setIsHovered(true), 800)
@@ -76,7 +93,7 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
 
   return (
     <div
-      css={[panelCss, panelPosition(getComputedIndex(context, player.id), rules.players.length), isViewed && rules.players.length > 2 && viewedPanelCss, !isMe && rules.players.length > 2 && clickableCss]}
+      css={[panelCss, panelPosition(getComputedIndex(context, player.id), rules.players.length), isViewed && rules.players.length > 2 && viewedPanelCss, rules.players.length > 2 && clickableCss]}
       onClick={onPanelClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -102,10 +119,15 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
             {isFirstPlayer && (
               <img src={Flag} alt="" css={flagImgCss} />
             )}
-            {treasureMapCount > 0 && (
+            {playerTreasureMaps.length > 0 && (
               <div css={mapsCss}>
-                {Array.from({ length: treasureMapCount }).map((_, i) => (
-                  <img key={i} src={TreasureMapToken} alt="" css={mapImgCss} />
+                {playerTreasureMaps.map((map, i) => (
+                  <img
+                    key={i}
+                    src={treasureMapImages[map.id as TreasureMapType] ?? treasureMapImages[TreasureMapType.Base]}
+                    alt=""
+                    css={mapImgCss}
+                  />
                 ))}
               </div>
             )}
@@ -128,11 +150,21 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
         <div css={neighborStripCss}>{t('neighbor.right')}</div>
       )}
 
-      {/* Board tray — revealed on hover after delay */}
-      {!isMe && (
+      {/* Board tray — revealed on hover after delay. Suppressed when
+          the side picker is open so the two don't stack visually. */}
+      {!isMe && !isPickerOpen && (
         <div css={[boardTrayCss, isHovered && boardTrayVisibleCss]}>
           <BoardPreview playerId={player.id} />
         </div>
+      )}
+
+      {/* Side picker — opened when the user clicks a clickable panel */}
+      {isPickerOpen && (
+        <SidePickerPopup
+          currentSide={isViewedLeft ? 'left' : isViewedRight ? 'right' : undefined}
+          onPick={assignSide}
+          onClose={onPickerClose}
+        />
       )}
     </div>
   )
@@ -174,12 +206,6 @@ const bgCss = (image: string) => css`
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
     border-radius: inherit;
-  }
-`
-
-const inactivePanelCss = css`
-  & > div:first-of-type {
-    filter: brightness(0.6) saturate(0.5);
   }
 `
 

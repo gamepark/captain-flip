@@ -3,16 +3,13 @@ import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { usePlayerId, usePlayers, useRules } from '@gamepark/react-game'
-import { FC } from 'react'
-import { getViewPlayer } from '../locators/ViewHelper'
+import { FC, useState } from 'react'
 import { CaptainFlipPlayerPanel } from './CaptainFlipPlayerPanel'
 
 export const PlayerPanels: FC = () => {
   const players = usePlayers({ sortFromMe: true })
   const rules = useRules<CaptainFlipRules>()!
   const me = usePlayerId()
-  const context = { rules, player: me } as any
-  const viewedPlayer = getViewPlayer(context)
   const allPlayers = rules.players
   const n = allPlayers.length
   const boardType = rules.remind<BoardType>(Memory.Board)
@@ -22,6 +19,10 @@ export const PlayerPanels: FC = () => {
   const leftNeighborId = showNeighbors ? allPlayers[(myIndex - 1 + n) % n] : undefined
   const rightNeighborId = showNeighbors ? allPlayers[(myIndex + 1) % n] : undefined
 
+  // At most one side picker may be open at a time across all panels.
+  // The panel holds no local state for this — it asks the parent.
+  const [openPickerFor, setOpenPickerFor] = useState<PlayerId | undefined>(undefined)
+
   return (
     <>
       {players.map((player) =>
@@ -30,6 +31,8 @@ export const PlayerPanels: FC = () => {
           player={player}
           isLeftNeighbor={player.id === leftNeighborId}
           isRightNeighbor={player.id === rightNeighborId}
+          isPickerOpen={openPickerFor === player.id}
+          onRequestPicker={(open) => setOpenPickerFor(open ? player.id : undefined)}
         />
       )}
     </>
