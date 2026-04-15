@@ -3,7 +3,6 @@ import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { Character } from '../../../material/tiles/Character'
 import { getCharacter } from '../../GetCharacter'
-import { TreasureMapHelper } from '../../helper/TreasureMapHelper'
 import { RuleId } from '../../RuleId'
 import { CoinRule } from '../CoinRule'
 
@@ -13,15 +12,12 @@ export class ParrotEndOfGameRule extends CoinRule {
     const moves: MaterialMove[] = []
     moves.push(...super.onRuleStart())
 
-    // Inflamed map: +5 coins at end of game
-    const mapHelper = new TreasureMapHelper(this.game, this.player)
-    if (mapHelper.hasInflamedMap()) {
-      moves.push(...this.gainCoinsMoves(5))
-    }
-
     const nextPlayer = this.nextPlayer
     if (nextPlayer === this.game.players[0]) {
-      moves.push(this.startRule(RuleId.BoardEndOfEffect))
+      // All players have been scored for parrots — hand over to the
+      // Inflamed end-of-game phase. That rule knows how to bypass
+      // itself entirely if no player holds the Burned treasure map.
+      moves.push(this.startPlayerTurn(RuleId.InflamedEndOfGame, nextPlayer))
     } else {
       moves.push(this.startPlayerTurn(RuleId.ParrotEndOfGame, nextPlayer))
     }

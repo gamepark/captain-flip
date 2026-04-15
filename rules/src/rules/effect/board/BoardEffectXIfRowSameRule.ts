@@ -5,9 +5,9 @@ import { MaterialType } from '../../../material/MaterialType'
 import { getCharacter } from '../../GetCharacter'
 import { BaseBoardEffect } from './BaseBoardEffect'
 
-type BoardEffectEndOfGameRowSame = { type: BoardSpaceType, value: number, row: number }
+type BoardEffectXIfRowSame = { type: BoardSpaceType, value: number, row: number }
 
-export class BoardEffectEndOfGameRowSameRule extends BaseBoardEffect<BoardEffectEndOfGameRowSame> {
+export class BoardEffectXIfRowSameRule extends BaseBoardEffect<BoardEffectXIfRowSame> {
   getCoins() {
     const effect = this.effect.effect
     const row = effect.row

@@ -20,7 +20,10 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
 
   setupMaterial(options: CaptainFlipOptions) {
     const board = options.board ?? BoardType.BoardA
-    const treasureMap = options.treasureMap ?? TreasureMapType.Base
+    // If no treasure map variant was picked in the options, draw one
+    // at random so every game still starts with a treasure map on the
+    // board (base game behaviour).
+    const treasureMap = options.treasureMap ?? sample(treasureMapTypes)
     this.setupClothBag()
     this.setupPlayerBoards(board)
     this.setupTreasureMapToken(board, treasureMap)

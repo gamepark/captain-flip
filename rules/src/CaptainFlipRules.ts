@@ -9,6 +9,7 @@ import {
   PositiveSequenceStrategy,
   TimeLimit
 } from '@gamepark/rules-api'
+import { hasBombWhenFilled, isBombEffect } from './material/board/description/BoardSpaceGuards'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Character } from './material/tiles/Character'
@@ -28,7 +29,7 @@ import { BoardEffectCoinAndTreasureMapRule } from './rules/effect/board/BoardEff
 import { BoardEffectCoinPerBombRule } from './rules/effect/board/BoardEffectCoinPerBombRule'
 import { BoardEffectCoinPerTreasureMapRule } from './rules/effect/board/BoardEffectCoinPerTreasureMapRule'
 import { BoardEffectFirstXThenYRowRule } from './rules/effect/board/BoardEffectFirstXThenYRowRule'
-import { BoardEffectEndOfGameRowSameRule } from './rules/effect/board/BoardEffectEndOfGameRowSameRule'
+import { BoardEffectXIfRowSameRule } from './rules/effect/board/BoardEffectXIfRowSameRule'
 import { BoardEffectFirstFlipThenYRule } from './rules/effect/board/BoardEffectFirstFlipThenYRule'
 import { BoardEffectFlipCellRule } from './rules/effect/board/BoardEffectFlipCellRule'
 import { BoardEffectPassTreasureMapRule } from './rules/effect/board/BoardEffectPassTreasureMapRule'
@@ -40,6 +41,7 @@ import { BoardEndOfGameCoinIfSameRule } from './rules/effect/board/BoardEndOfGam
 import { CartographerRule } from './rules/effect/CartographerRule'
 import { CookRule } from './rules/effect/CookRule'
 import { CarpenterEndOfGameRule } from './rules/effect/end/CarpenterEndOfGameRule'
+import { InflamedEndOfGameRule } from './rules/effect/end/InflamedEndOfGameRule'
 import { LookoutEndOfGameRule } from './rules/effect/end/LookoutEndOfGameRule'
 import { ParrotEndOfGameRule } from './rules/effect/end/ParrotEndOfGameRule'
 import { SwabbyEndOfGameRule } from './rules/effect/end/SwabbyEndOfGameRule'
@@ -81,6 +83,7 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
     [RuleId.BoardEffectCoinPerFullColumn]: BoardEffectCoinPerFullColumnRule,
     [RuleId.CarpenterEndOfGame]: CarpenterEndOfGameRule,
     [RuleId.ParrotEndOfGame]: ParrotEndOfGameRule,
+    [RuleId.InflamedEndOfGame]: InflamedEndOfGameRule,
     [RuleId.SwabbyEndOfGame]: SwabbyEndOfGameRule,
     [RuleId.LookoutEndOfGame]: LookoutEndOfGameRule,
     [RuleId.BoardEndOfEffect]: BoardEndOfGameEffectRule,
@@ -94,7 +97,7 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
     [RuleId.BoardEffectCoinPerBomb]: BoardEffectCoinPerBombRule,
     [RuleId.BoardEffectCoinPerTreasureMap]: BoardEffectCoinPerTreasureMapRule,
     [RuleId.BoardEffectFirstXThenYRow]: BoardEffectFirstXThenYRowRule,
-    [RuleId.BoardEffectEndOfGameRowSame]: BoardEffectEndOfGameRowSameRule,
+    [RuleId.BoardEffectXIfRowSame]: BoardEffectXIfRowSameRule,
     [RuleId.BoardEffectStealLeft]: BoardEffectStealLeftRule,
     [RuleId.BoardEffectStealRight]: BoardEffectStealRightRule,
     [RuleId.BoardEffectPassTreasureMap]: BoardEffectPassTreasureMapRule,
@@ -118,6 +121,7 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
       [LocationType.Cell]: new FillGapStrategy()
     },
     [MaterialType.TreasureMapToken]: {
+      [LocationType.TreasureMapToken]: new FillGapStrategy(),
       [LocationType.PlayerTreasureMapToken]: new PositiveSequenceStrategy()
     }
   }
@@ -150,27 +154,26 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
       .filter((item) => getCharacter(item) === Character.Gunner)
       .length
 
-    // Count uncovered bomb symbols on board
     const helper = new BoardHelper(this.game)
-    for (const place of helper.places) {
-      if (!place.effect?.bomb) continue
-      const occupied = this.material(MaterialType.CharacterTile)
+    const isSpaceOccupied = (x: number, y: number) =>
+      this.material(MaterialType.CharacterTile)
         .location(LocationType.AdventureBoardCharacterTile)
         .player(player)
-        .filter((item) => item.location.x === place.x && item.location.y === place.y)
+        .filter((item) => item.location.x === x && item.location.y === y)
         .length > 0
-      if (!occupied) count++
-    }
 
-    // Count bombWhenFilled symbols (active when covered)
     for (const place of helper.places) {
-      if (!place.effect?.bombWhenFilled) continue
-      const occupied = this.material(MaterialType.CharacterTile)
-        .location(LocationType.AdventureBoardCharacterTile)
-        .player(player)
-        .filter((item) => item.location.x === place.x && item.location.y === place.y)
-        .length > 0
-      if (occupied) count++
+      // Fixed bombs (Board I): count only while the space stays
+      // uncovered — dropping a tile on top hides the pictogram.
+      if (isBombEffect(place.effect) && !isSpaceOccupied(place.x, place.y)) {
+        count++
+        continue
+      }
+      // `bombWhenFilled` modifiers: flip on when the space IS
+      // covered (e.g. TreasureMap with bombWhenFilled=true).
+      if (hasBombWhenFilled(place.effect) && isSpaceOccupied(place.x, place.y)) {
+        count++
+      }
     }
 
     // Count bombs from Inflamed treasure map

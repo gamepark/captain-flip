@@ -1,26 +1,21 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { LocationType } from '../../material/LocationType'
-import { MaterialType } from '../../material/MaterialType'
+import { ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { TreasureMapPickHelper } from '../helper/TreasureMapPickHelper'
 import { RuleId } from '../RuleId'
 
 export class CartographerRule extends PlayerTurnRule {
   onRuleStart() {
-    const token = this.treasureMapToken
-    const moves: MaterialMove[] = []
-    if (token.getItem()?.location.player !== this.player) {
-      moves.push(
-        this.material(MaterialType.TreasureMapToken).moveItem({
-          type: LocationType.PlayerTreasureMapToken,
-          player: this.player
-        })
-      )
-    }
-
-    moves.push(this.startRule(RuleId.BoardEffect))
-    return moves
+    return new TreasureMapPickHelper(this.game, this.player)
+      .onRuleStartWithNext(this.startRule(RuleId.BoardEffect))
   }
 
-  get treasureMapToken() {
-    return this.material(MaterialType.TreasureMapToken)
+  getPlayerMoves() {
+    return new TreasureMapPickHelper(this.game, this.player).getPickMoves()
+  }
+
+  afterItemMove(move: ItemMove) {
+    if (TreasureMapPickHelper.isPickMove(move)) {
+      return [this.startRule(RuleId.BoardEffect)]
+    }
+    return []
   }
 }

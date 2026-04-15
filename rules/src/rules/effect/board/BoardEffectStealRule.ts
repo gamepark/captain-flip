@@ -17,19 +17,26 @@ abstract class BoardEffectStealRule extends BaseBoardEffect<BoardEffectSteal> {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const neighbor = this.getNeighbor()
-    if (neighbor !== undefined) {
-      const stolen = this.computeSteal(neighbor)
-      if (stolen > 0) {
-        const available = new BoardHelper(this.game).getPlayerCoin(neighbor)
-        const actual = Math.min(stolen, available)
-        if (actual > 0) {
-          moves.push(...this.material(MaterialType.Coin).money(coinValues).removeMoney(actual, { type: LocationType.PlayerCoin, player: neighbor }))
-          moves.push(...this.gainCoinsMoves(actual))
-        }
-      }
+    const actual = this.getCoins()
+    if (neighbor !== undefined && actual > 0) {
+      moves.push(...this.material(MaterialType.Coin).money(coinValues).removeMoney(actual, { type: LocationType.PlayerCoin, player: neighbor }))
+      moves.push(...this.gainCoinsMoves(actual))
     }
     moves.push(this.goNext())
     return moves
+  }
+
+  /** Actual amount stolen from the neighbor: computed intent, capped
+   *  by how many coins the victim actually owns. Exposed so log
+   *  components can instantiate the rule and read the same amount the
+   *  backend will apply. */
+  getCoins() {
+    const neighbor = this.getNeighbor()
+    if (neighbor === undefined) return 0
+    const stolen = this.computeSteal(neighbor)
+    if (stolen <= 0) return 0
+    const available = new BoardHelper(this.game).getPlayerCoin(neighbor)
+    return Math.min(stolen, available)
   }
 
   computeSteal(neighbor: PlayerId) {

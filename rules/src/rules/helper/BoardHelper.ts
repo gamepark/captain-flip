@@ -171,6 +171,8 @@ export class BoardHelper extends MaterialRulesPart {
         return RuleId.BoardEffectFlipCell
       case BoardSpaceType.FirstXThenYRow:
         return RuleId.BoardEffectFirstXThenYRow
+      case BoardSpaceType.XIfRowSame:
+        return RuleId.BoardEffectXIfRowSame
       case BoardSpaceType.CoinPerTreasureMap:
         return RuleId.BoardEffectCoinPerTreasureMap
       default:

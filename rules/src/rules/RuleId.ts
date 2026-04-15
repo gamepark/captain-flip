@@ -34,6 +34,7 @@ export enum RuleId {
   BoardEffectPlayFromCell,
   BoardEffectFlipCell,
   BoardEffectFirstXThenYRow,
-  BoardEffectEndOfGameRowSame,
+  BoardEffectXIfRowSame,
   BoardEffectCoinPerTreasureMap,
+  InflamedEndOfGame,
 }

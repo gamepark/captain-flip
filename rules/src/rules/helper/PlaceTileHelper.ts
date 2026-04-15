@@ -83,6 +83,7 @@ export class PlaceTileHelper extends MaterialRulesPart {
         .player(this.player)
         .filter((item) => item.location.y === row)
         .length
+      console.log(rowTiles, rowPlaces.length)
       if (rowTiles >= rowPlaces.length) {
         this.addBoardEffect(rowEffect, { x: location.x!, y: row })
       }

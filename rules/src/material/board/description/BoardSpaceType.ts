@@ -11,7 +11,7 @@ export enum BoardSpaceType {
   Replay,
   Flip,
   CoinPerDifferentAdjacent,
-  EndOfGameRowSame,
+  XIfRowSame,
   FirstXThenYRow,
   ReplayIfAllDifferent,
   PlayFromCell,

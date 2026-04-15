@@ -16,6 +16,6 @@ export const BoardFDescription: BoardDescription = {
   ],
   rowEffects: [
     { type: BoardSpaceType.FirstXThenYRow, first: 5, then: 2, row: 1 },
-    { type: BoardSpaceType.EndOfGameRowSame, value: 5, endOfGame: true, row: 0 }
+    { type: BoardSpaceType.XIfRowSame, value: 5, row: 0 }
   ]
 }

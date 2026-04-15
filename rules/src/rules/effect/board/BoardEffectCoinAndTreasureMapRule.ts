@@ -1,7 +1,6 @@
-import { MaterialMove } from '@gamepark/rules-api'
+import { ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { BoardSpaceType } from '../../../material/board/description/BoardSpaceType'
-import { LocationType } from '../../../material/LocationType'
-import { MaterialType } from '../../../material/MaterialType'
+import { TreasureMapPickHelper } from '../../helper/TreasureMapPickHelper'
 import { BaseBoardEffect } from './BaseBoardEffect'
 
 type BoardEffectCoinAndTreasureMap = { type: BoardSpaceType, value: number }
@@ -9,17 +8,33 @@ type BoardEffectCoinAndTreasureMap = { type: BoardSpaceType, value: number }
 export class BoardEffectCoinAndTreasureMapRule extends BaseBoardEffect<BoardEffectCoinAndTreasureMap> {
   onRuleStart() {
     const moves: MaterialMove[] = []
-    moves.push(...super.onRuleStart())
-    const token = this.material(MaterialType.TreasureMapToken)
-    if (token.getItem()?.location.player !== this.player) {
-      moves.push(
-        token.moveItem({
-          type: LocationType.PlayerTreasureMapToken,
-          player: this.player
-        })
-      )
+    // Inline the coin gain — we skip BaseBoardEffect's super call
+    // because it would append goNext() eagerly, and we need to
+    // control the treasure-map pick flow ourselves.
+    moves.push(...this.gainCoinsMoves(this.getCoins()))
+
+    const pickMoves = new TreasureMapPickHelper(this.game, this.player).getPickMoves()
+    if (pickMoves.length === 0) {
+      // No map to take → just the coins + next
+      moves.push(this.goNext())
+      return moves
     }
+    // 1 pick → auto-play, 2+ picks → wait for getPlayerMoves.
+    // Either way, `afterItemMove` below handles the goNext() call
+    // once the pick move lands.
+    moves.push(...pickMoves)
     return moves
+  }
+
+  getPlayerMoves() {
+    return new TreasureMapPickHelper(this.game, this.player).getPickMoves()
+  }
+
+  afterItemMove(move: ItemMove): MaterialMove[] {
+    if (TreasureMapPickHelper.isPickMove(move)) {
+      return [this.goNext()]
+    }
+    return []
   }
 
   getCoins() {
