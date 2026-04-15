@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { DevToolsHub, GameTable, GameTableNavigation, usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
+import { BoardNameLabels } from './panels/BoardNameLabels'
 import { PlayerPanels } from './panels/PlayerPanels'
 
 type GameDisplayProps = {
@@ -18,11 +19,13 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
       xMin={-32}
       xMax={32}
       yMin={-5}
+      css={{ border: '1px solid #ccc' }}
       yMax={26}
       margin={{ top: 7, left: 0, right: 0, bottom: 0 }}
     >
       <GameTableNavigation css={[navigationCss, isDev ? navigationDevCss : navigationProdCss]} scaleStep={0.2}/>
       <PlayerPanels/>
+      <BoardNameLabels/>
       {isDev && <DevToolsHub/>}
     </GameTable>
   </>
