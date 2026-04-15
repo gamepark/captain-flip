@@ -46,7 +46,7 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.BoardEffectStealLeft]: BoardEffectHeader,
   [RuleId.BoardEffectStealRight]: BoardEffectHeader,
   [RuleId.BoardEffectFirstXThenYRow]: BoardEffectHeader,
-  [RuleId.BoardEffectEndOfGameRowSame]: BoardEffectHeader,
+  [RuleId.BoardEffectXIfRowSame]: BoardEffectHeader,
   [RuleId.BoardEffectCoinPerTreasureMap]: BoardEffectHeader,
   [RuleId.BoardEffectPassTreasureMap]: PassTreasureMapHeader,
   [RuleId.BoardEffectFirstFlipThenY]: BoardEffectFlipHeader,

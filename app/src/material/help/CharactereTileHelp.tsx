@@ -21,7 +21,6 @@ const ink = '#2b1d10'
 const inkSoft = '#4b3520'
 const inkFaint = '#6a4c2b'
 const accent = '#8b1e1e'
-const paper0 = '#f3e7cc'
 const brassHi = '#f2d07a'
 const brassGold = '#a47428'
 const brassDark = '#5b3d12'
@@ -37,8 +36,6 @@ const characterImages: Record<Character, string> = {
   [Character.Parrot]: Parrot,
   [Character.Lookout]: Lookout
 }
-
-const romanNumerals = ['I', 'II', 'III', 'IV', 'V']
 
 export const CharacterTileHelp: FC<MaterialHelpProps> = (props) => {
   const { item, itemIndex, closeDialog } = props
@@ -83,7 +80,6 @@ export const CharacterTileHelp: FC<MaterialHelpProps> = (props) => {
 
         {effects.map((effect, index) => (
           <div key={effect.key} css={effectRowCss}>
-            <div css={effectBadgeCss}>{romanNumerals[index]}</div>
             <div css={[effectCardCss, effect.endgame && effectCardEndgameCss, index % 2 === 1 && effectCardAltRotationCss]}>
               <span css={effectTagCss}>
                 <Trans i18nKey={effect.tag}/>
@@ -300,39 +296,10 @@ const flourishMarkCss = css`
   font-weight: 900;
 `
 
-/* ---------- Effect rows : roman numeral badge + tilted card ---------- */
+/* ---------- Effect rows : tilted cards ---------- */
 const effectRowCss = css`
   position: relative;
   margin: 0 0 0.9em;
-  padding: 0 0 0 3.2em;
-`
-
-const effectBadgeCss = css`
-  position: absolute;
-  top: -0.1em;
-  left: 0;
-  width: 2.3em;
-  height: 2.3em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-style: italic;
-  font-weight: 900;
-  font-size: 1em;
-  color: ${accent};
-  background: ${paper0};
-  border: 1px double ${inkSoft};
-  border-radius: 50%;
-  box-shadow: 2px 2px 0 rgba(139, 30, 30, 0.18);
-  z-index: 2;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: -0.25em;
-    border: 1px dashed rgba(106, 76, 43, 0.45);
-    border-radius: 50%;
-  }
 `
 
 const effectCardCss = css`
@@ -392,7 +359,7 @@ const flipRowCss = css`
   display: flex;
   align-items: center;
   gap: 0.8em;
-  margin: 1.1em 0 0.8em 3.2em;
+  margin: 1.1em 0 0.8em;
   padding-top: 0.7em;
   border-top: 1px dashed rgba(106, 76, 43, 0.45);
   font-style: italic;
@@ -409,7 +376,7 @@ const flipRowCss = css`
 /* ---------- Quote ---------- */
 const quoteCss = css`
   position: relative;
-  margin: 1.4em 0 0 3.2em;
+  margin: 1.4em 0 0;
   padding: 0 0 0 1em;
   border-left: 3px solid ${accent};
   font-size: 1em;

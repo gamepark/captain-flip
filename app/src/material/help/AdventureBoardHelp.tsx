@@ -9,6 +9,7 @@ import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { MaterialHelpProps, Picture, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
+import { getEffectImage } from '../../effects/effectIcon'
 import BoardA from '../../images/boards/BoardA.jpg'
 import BoardB from '../../images/boards/BoardB.jpg'
 import BoardC from '../../images/boards/BoardC.jpg'
@@ -19,44 +20,6 @@ import BoardG from '../../images/boards/BoardG.jpg'
 import BoardH from '../../images/boards/BoardH.jpg'
 import BoardI from '../../images/boards/BoardI.jpg'
 import Flag from '../../images/boards/Flag.png'
-import BoardACoin3 from '../../images/effect/BoardACoin3.png'
-import BoardACoin5 from '../../images/effect/BoardACoin5.png'
-import BoardATreasureMap from '../../images/effect/BoardATreasureMap.png'
-import BoardETreasureMap from '../../images/effect/BoardETreasureMap.png'
-import BoardB0Then2 from '../../images/effect/BoardB0Then2.png'
-import BoardB1Then0 from '../../images/effect/BoardB1Then0.png'
-import BoardB2Then1 from '../../images/effect/BoardB2Then1.png'
-import BoardB4Then2 from '../../images/effect/BoardB4Then2.png'
-import BoardB6Then3 from '../../images/effect/BoardB6Then3.png'
-import BoardCCoin4 from '../../images/effect/BoardCCoin4.jpg'
-import BoardCCoin6 from '../../images/effect/BoardCCoin6.jpg'
-import BoardCTreasureMap from '../../images/effect/BoardCTreasureMap.png'
-import BoardDCoin3 from '../../images/effect/BoardDCoin3.png'
-import BoardDCoinFull from '../../images/effect/BoardDCoinFull.png'
-import BoardDCoinPerDiff from '../../images/effect/BoardDCoinPerDiff.png'
-import BoardDCost from '../../images/effect/BoardDCost.png'
-import BoardEFlip from '../../images/effect/BoardEFlip.png'
-import BoardEReplay from '../../images/effect/BoardEReplay.png'
-import BoardECoin3 from '../../images/effect/BoardECoin3.png'
-import BoardECoin4 from '../../images/effect/BoardECoin4.png'
-import Board1PerAdjacent from '../../images/effect/Board1PerAdjacent.png'
-import Board2CoinPerTreasureMapLine from '../../images/effect/Board2CoinPerTreasureMapLine.png'
-import Board2PerBomb from '../../images/effect/Board2PerBomb.png'
-import Board3CPlusMap from '../../images/effect/Board3CPlusMap.png'
-import Board5CoinIfAllEqualsLine from '../../images/effect/Board5CoinIfAllEqualsLine.png'
-import Board5Then2 from '../../images/effect/Board5Then2.png'
-import Board5Then2Line from '../../images/effect/Board5Then2Line.png'
-import BoardBombDiag from '../../images/effect/BoardBombDiag.png'
-import BoardCoin3 from '../../images/effect/BoardCoin3.png'
-import BoardDrawIfAllDifferent from '../../images/effect/BoardDrawIfAllDifferent.png'
-import BoardFlipAnd2Coins from '../../images/effect/BoardFlipAnd2Coins.png'
-import BoardFlipCellTile from '../../images/effect/BoardFlipCellTile.png'
-import BoardMoveTreasureMapLeftRight from '../../images/effect/BoardMoveTreasureMapLeftRight.png'
-import BoardPlaceTileInCell from '../../images/effect/BoardPlaceTileInCell.png'
-import BoardSextanIcon from '../../images/effect/BoardSextanIcon.png'
-import BoardSteal1CToLeftForTieIdentical from '../../images/effect/BoardSteal1CToLeftForTieIdentical.png'
-import BoardSteal1CToRightForTieIdentical from '../../images/effect/BoardSteal1CToRightForTieIdentical.png'
-import BombIcon from '../../images/effect/BombIcon.png'
 
 const boardImages: Record<BoardType, string> = {
   [BoardType.BoardA]: BoardA,
@@ -203,108 +166,6 @@ const EffectExplaination: FC<EffectExplainationProps> = (props) => {
   )
 }
 
-const getEffectImage = (board: BoardType, effect: BoardSpaceEffect) => {
-  switch (effect.type) {
-    case BoardSpaceType.CoinsX:
-      if (board === BoardType.BoardA) {
-        if (effect.value === 3) return BoardACoin3
-        if (effect.value === 5) return BoardACoin5
-      }
-
-      if (board === BoardType.BoardD) {
-        if (effect.value === 3) return BoardDCoin3
-      }
-      if (board === BoardType.BoardE) {
-        if (effect.value === 3) return BoardECoin3
-        if (effect.value === 4) return BoardECoin4
-      }
-      if (effect.value === 3) return BoardCoin3
-      break
-    case BoardSpaceType.TreasureMap:
-      if (board === BoardType.BoardA) {
-        return BoardATreasureMap
-      }
-
-      if (board === BoardType.BoardE) {
-        return BoardETreasureMap
-      }
-
-      return BoardCTreasureMap
-    case BoardSpaceType.EndOfGameCoinIfSame:
-      if (board === BoardType.BoardC) {
-        return BoardCCoin6
-      }
-      break
-    case BoardSpaceType.EndOfGameCoinIfAllDifferent:
-      if (board === BoardType.BoardC) {
-        return BoardCCoin4
-      }
-      break
-    case BoardSpaceType.Cost:
-      if (board === BoardType.BoardD) {
-        return BoardDCost
-      }
-      break
-    case BoardSpaceType.FirstXThenY:
-      if (board === BoardType.BoardB) {
-        if (effect.first === 1 && effect.then === 0) return BoardB1Then0
-        if (effect.first === 2 && effect.then === 1) return BoardB2Then1
-        if (effect.first === 6 && effect.then === 3) return BoardB6Then3
-        if (effect.first === 0 && effect.then === 2) return BoardB0Then2
-        if (effect.first === 4 && effect.then === 2) return BoardB4Then2
-      }
-      if (effect.first === 5 && effect.then === 2) return Board5Then2
-      break
-    case BoardSpaceType.CoinPerFullColumn:
-      return BoardDCoinFull
-    case BoardSpaceType.CoinPerDifferent:
-      return BoardDCoinPerDiff
-    case BoardSpaceType.Flip:
-      return BoardEFlip
-    case BoardSpaceType.Replay:
-      return BoardEReplay
-    case BoardSpaceType.CoinPerDifferentAdjacent:
-      return Board1PerAdjacent
-    case BoardSpaceType.ReplayIfAllDifferent:
-      return BoardDrawIfAllDifferent
-    case BoardSpaceType.FirstXThenYRow:
-      if (effect.first === 5 && effect.then === 2) return Board5Then2Line
-      break
-    case BoardSpaceType.EndOfGameRowSame:
-      if (effect.value === 5) return Board5CoinIfAllEqualsLine
-      break
-    case BoardSpaceType.FlipCell:
-      return BoardFlipCellTile
-    case BoardSpaceType.PlayFromCell:
-      return BoardPlaceTileInCell
-    case BoardSpaceType.CoinAndTreasureMap:
-      return Board3CPlusMap
-    case BoardSpaceType.CoinPerTreasureMap:
-      return Board2CoinPerTreasureMapLine
-    case BoardSpaceType.PassTreasureMap:
-      return BoardMoveTreasureMapLeftRight
-    case BoardSpaceType.FirstFlipThenY:
-      return BoardFlipAnd2Coins
-    case BoardSpaceType.CoinPerBomb:
-      return Board2PerBomb
-    case BoardSpaceType.StealLeft:
-      return BoardSteal1CToLeftForTieIdentical
-    case BoardSpaceType.StealRight:
-      return BoardSteal1CToRightForTieIdentical
-    case BoardSpaceType.Sextant:
-      return BoardSextanIcon
-    case BoardSpaceType.None:
-      if (effect.sextant) return BoardSextanIcon
-      if (effect.bomb) return BombIcon
-      break
-    case BoardSpaceType.Bomb:
-      if (effect._fromTreasureMap) return BoardBombDiag
-      return BombIcon
-  }
-
-  return
-}
-
 const getEffectDesc = (effect: BoardSpaceEffect) => {
   switch (effect.type) {
     case BoardSpaceType.CoinsX:
@@ -399,7 +260,7 @@ const getEffectDesc = (effect: BoardSpaceEffect) => {
           <strong/>
         </Trans>
       )
-    case BoardSpaceType.EndOfGameRowSame:
+    case BoardSpaceType.XIfRowSame:
       return (
         <Trans i18nKey="effect.row-same" values={{ number: effect.value }}>
           <strong/>
