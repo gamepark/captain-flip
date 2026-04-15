@@ -335,16 +335,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/ecma402-abstract@npm:1.11.4":
-  version: 1.11.4
-  resolution: "@formatjs/ecma402-abstract@npm:1.11.4"
-  dependencies:
-    "@formatjs/intl-localematcher": "npm:0.2.25"
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/c25d56a54f7c6a356c8475ba76ba5357bbf8cb035ab1da5a6b3b75b41a49dae6e1790271bb619e8d09aca52f1daa3e28d5fa2297297fdef5e986e213be4c84b7
-  languageName: node
-  linkType: hard
-
 "@formatjs/ecma402-abstract@npm:3.2.0":
   version: 3.2.0
   resolution: "@formatjs/ecma402-abstract@npm:3.2.0"
@@ -356,30 +346,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/fast-memoize@npm:1.2.1":
-  version: 1.2.1
-  resolution: "@formatjs/fast-memoize@npm:1.2.1"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/ec3d5f256ab5c889d7061f58a6c178908b3cec43831d26efdbf79db7f31a6045ab7d4448cf1829de213fa05bec144b795a632249d6a6cd566f7eb7f98daec574
-  languageName: node
-  linkType: hard
-
 "@formatjs/fast-memoize@npm:3.1.1":
   version: 3.1.1
   resolution: "@formatjs/fast-memoize@npm:3.1.1"
   checksum: 10c0/79b24dc1389a49b2b2fb9e90a2ba922a4057d4b74e7bc33a3811f0dc94a5a868d28e8e37917b68c2f831070d11dfd0889de686f269bf5214085a44efc1c25a8c
-  languageName: node
-  linkType: hard
-
-"@formatjs/icu-messageformat-parser@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@formatjs/icu-messageformat-parser@npm:2.1.0"
-  dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.11.4"
-    "@formatjs/icu-skeleton-parser": "npm:1.3.6"
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/d4d432df5232143e343a613a691abf4253f3e97a1fc0edc04b8dcdf2a88628f52fe5a47ed3e4c90ab20d843b6b4ac4c84cb883d040487d576181bfcae7f760f1
   languageName: node
   linkType: hard
 
@@ -393,31 +363,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/icu-skeleton-parser@npm:1.3.6":
-  version: 1.3.6
-  resolution: "@formatjs/icu-skeleton-parser@npm:1.3.6"
-  dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.11.4"
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/47aed8193fb632e005a361c229725e2cd9e21844ef1c73995f2e64c67a15dd6c35897760a63af2345f1cbc1807d9ff8b3d90bc9d8c5d985ebfe877e079fdba27
-  languageName: node
-  linkType: hard
-
 "@formatjs/icu-skeleton-parser@npm:2.1.3":
   version: 2.1.3
   resolution: "@formatjs/icu-skeleton-parser@npm:2.1.3"
   dependencies:
     "@formatjs/ecma402-abstract": "npm:3.2.0"
   checksum: 10c0/6a8ed06c722bce1d73d54b2d72462bfe46b752f43d09e3d8c14649ef775b06f3c7f8d36274e67e6cfb95800bf43230a2595a7e1790922ebb683711201fcbccc8
-  languageName: node
-  linkType: hard
-
-"@formatjs/intl-localematcher@npm:0.2.25":
-  version: 0.2.25
-  resolution: "@formatjs/intl-localematcher@npm:0.2.25"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/a49d5d1a09ff5d02b3c14176783f0e26978895878a35b986fafdf8ecbaa474d669eb1ee1b7a257167cb8df54d5001011d6abde691bc7f75fd123e070e87c194a
   languageName: node
   linkType: hard
 
@@ -483,15 +434,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/avataaars@npm:^2.2.0":
-  version: 2.3.1
-  resolution: "@gamepark/avataaars@npm:2.3.1"
-  peerDependencies:
-    react: ">=18"
-  checksum: 10c0/0e8113ed1909fbb4d23c36ed526ba6b658f1afbb2129a0fcc251eb18aab44620e9810892a91d772bf7976c5a11fb1d0788ddd76fde2f1d914db7dff2b97e28dc
-  languageName: node
-  linkType: hard
-
 "@gamepark/avataaars@npm:^3.0.0":
   version: 3.0.0
   resolution: "@gamepark/avataaars@npm:3.0.0"
@@ -511,16 +453,16 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.2.0"
     "@fortawesome/free-solid-svg-icons": "npm:^7.2.0"
     "@fortawesome/react-fontawesome": "npm:^3.3.0"
-    "@gamepark/avataaars": "npm:^2.2.0"
+    "@gamepark/avataaars": "npm:^3.0.0"
     "@gamepark/react-game": "npm:~7.7.8"
-    "@gamepark/rules-api": "npm:~7.6.1"
+    "@gamepark/rules-api": "npm:~7.6.2"
     "@types/node": "npm:^25.5.0"
     "@types/react": "npm:^19.2.14"
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react-swc": "npm:^4.3.0"
     es-toolkit: "npm:^1.45.1"
     i18next: "npm:^25.10.10"
-    intl-messageformat: "npm:^9.9.1"
+    intl-messageformat: "npm:^11.1.2"
     react: "npm:^19.2.4"
     react-dom: "npm:^19.2.4"
     react-i18next: "npm:^16.6.6"
@@ -536,7 +478,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@gamepark/captain-flip@workspace:rules"
   dependencies:
-    "@gamepark/rules-api": "npm:~7.6.1"
+    "@gamepark/rules-api": "npm:~7.6.2"
     es-toolkit: "npm:^1.45.1"
   peerDependencies:
     "@gamepark/rules-api": ">=7"
@@ -571,9 +513,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:~7.7.8":
-  version: 7.7.8
-  resolution: "@gamepark/react-game@npm:7.7.8"
+"@gamepark/react-game@portal:/C:/Users/pbeau/Documents/GamePark/react-game::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@gamepark/react-game@portal:/C:/Users/pbeau/Documents/GamePark/react-game::locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
@@ -607,16 +549,15 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
-  checksum: 10c0/011f62984d1c8bf742c77e486a4e7f379dfa988de7bc311bf344cb5247809d78f8c2edffb58120f0a7d11640d3bd456c436b862a8ad4fbbf7a9d65d896436f80
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@gamepark/rules-api@npm:~7.6.1":
-  version: 7.6.1
-  resolution: "@gamepark/rules-api@npm:7.6.1"
+"@gamepark/rules-api@npm:~7.6.2":
+  version: 7.6.2
+  resolution: "@gamepark/rules-api@npm:7.6.2"
   peerDependencies:
     es-toolkit: ^1.39.10
-  checksum: 10c0/72c4034c6aac593ee4987ed04cbad449224307d404ea2d3e9b1e74c2f59edc7d76fc09ece3f354ac45d2361300a420418451de559d018456f86b2b48dae7c16b
+  checksum: 10c0/33ac8fbd413e56dadbeb9d29bb5c73295cab34577484b122dfd5d063087d350825597ac0636bb9e48524eb6ce849218728dd24fadacd4955147435e2982a58b9
   languageName: node
   linkType: hard
 
@@ -2158,18 +2099,6 @@ __metadata:
     "@formatjs/fast-memoize": "npm:3.1.1"
     "@formatjs/icu-messageformat-parser": "npm:3.5.3"
   checksum: 10c0/0f0a92324ef61c885902ff41c99754a65f0cc5cbe25d690c1771605117df4f97a786bb06dec50f12a7047e4cb2fab1f2516002df32e93be6ac02e1967e928e44
-  languageName: node
-  linkType: hard
-
-"intl-messageformat@npm:^9.9.1":
-  version: 9.13.0
-  resolution: "intl-messageformat@npm:9.13.0"
-  dependencies:
-    "@formatjs/ecma402-abstract": "npm:1.11.4"
-    "@formatjs/fast-memoize": "npm:1.2.1"
-    "@formatjs/icu-messageformat-parser": "npm:2.1.0"
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/d50b220ae943278a4403cb004e3776f288b5c2a2673b0dc11347d9b9d4e0361c3c33288cea54189a69b42c64a35171608c9c25ed55d6a9a6ec7f7af5e7782541
   languageName: node
   linkType: hard
 
