@@ -1,14 +1,19 @@
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
-import { PileLocator } from '@gamepark/react-game'
-import { MaterialContext } from '@gamepark/react-game'
+import { MaterialContext, PileLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 
 class CoinPileLocator extends PileLocator {
   radius = 1
 
+  isThereTreasureMapOnInitialPosition(context: MaterialContext)  {
+    return context.rules.material(MaterialType.TreasureMapToken)
+      .location(LocationType.TreasureMapToken).length > 0
+
+  }
+
   getCoordinates(location: Location, context: MaterialContext) {
-    const isOnInitialPosition = context.rules.material(MaterialType.TreasureMapToken).getItem()!.location.type === LocationType.TreasureMapToken
+    const isOnInitialPosition = this.isThereTreasureMapOnInitialPosition(context)
     let coordinates = { x: 0, y: isOnInitialPosition ? 7 : 5, z: 0 }
 
     const deltaX = 2.5
@@ -28,6 +33,10 @@ class CoinPileLocator extends PileLocator {
     }
 
     return coordinates
+  }
+
+  getPositionDependencies(location: Location, context: MaterialContext): unknown {
+    return [super.getPositionDependencies(location, context), this.isThereTreasureMapOnInitialPosition(context)]
   }
 }
 

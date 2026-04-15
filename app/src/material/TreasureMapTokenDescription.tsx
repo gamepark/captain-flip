@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
 import { TokenDescription } from '@gamepark/react-game'
 import TreasureMapToken from '../images/TreasureMapToken.png'
@@ -26,6 +27,17 @@ export class TreasureMapTokenDescription extends TokenDescription {
   }
 
   help = TreasureMapTokenHelp
+
+  getHelpDisplayExtraCss() {
+    // Hide the default token render on the left side of the help
+    // dialog — our TreasureMapTokenHelp renders its own richer
+    // layout (framed map + content) so we don't want the framework
+    // to show a duplicate image next to it.
+    return css`
+      display: none;
+      width: 0;
+    `
+  }
 }
 
 export const treasureMapTokenDescription = new TreasureMapTokenDescription()
