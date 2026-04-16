@@ -4,6 +4,24 @@ import { defineConfig, loadEnv, PluginOption } from 'vite'
 import { imagetools } from 'vite-imagetools'
 import { version } from './package.json'
 
+function translationHmrPlugin(): PluginOption {
+  return {
+    name: 'translation-hmr',
+    configureServer(server) {
+      const translationDir = path.resolve(__dirname, 'public/translation')
+      let timeout: ReturnType<typeof setTimeout>
+      server.watcher.on('change', (file) => {
+        if (file.startsWith(translationDir) && file.endsWith('.json')) {
+          clearTimeout(timeout)
+          timeout = setTimeout(() => {
+            server.ws.send({ type: 'custom', event: 'translation-update' })
+          }, 100)
+        }
+      })
+    }
+  }
+}
+
 function localeUrlPlugin(): PluginOption {
   return {
     name: 'locale-url',
@@ -14,9 +32,6 @@ function localeUrlPlugin(): PluginOption {
         if (address) {
           const url = address.local[0] ?? `http://localhost:3000/`
           console.log(`  ➜  Game: \x1b[36m${url}?locale=${locale}\x1b[0m`)
-          for (const net of address.network) {
-            console.log(`  ➜  Network: \x1b[36m${net}?locale=${locale}\x1b[0m`)
-          }
         }
       }
     }
@@ -46,6 +61,6 @@ export default defineConfig(({ mode }) => {
       'process.env.PUSHER_KEY': JSON.stringify(env.VITE_PUSHER_KEY),
       'process.env.VERSION': JSON.stringify(version)
     },
-    plugins: [react({ jsxImportSource: '@emotion/react' }), imagetools({ defaultDirectives: () => new URLSearchParams({ format: 'webp' }) }), localeUrlPlugin()]
+    plugins: [react({ jsxImportSource: '@emotion/react' }), imagetools({ defaultDirectives: () => new URLSearchParams({ format: 'webp' }) }), translationHmrPlugin(), localeUrlPlugin()]
   }
 })
