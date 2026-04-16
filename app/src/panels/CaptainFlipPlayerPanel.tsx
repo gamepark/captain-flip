@@ -39,7 +39,6 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
   const play = usePlay()
   const animations = useAnimations((a) => isCreateItemType(MaterialType.Coin)(a.move) || isDeleteItemType(MaterialType.Coin)(a.move))
   const playerId = usePlayerId()
-  const isMe = playerId !== undefined && player.id === playerId
   const playerName = usePlayerName(player.id)
   const { t } = useTranslation()
 
@@ -83,7 +82,7 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
   const onPickerClose = useCallback(() => onRequestPicker?.(false), [onRequestPicker])
 
   const onMouseEnter = useCallback(() => {
-    hoverTimeout.current = setTimeout(() => setIsHovered(true), 800)
+    hoverTimeout.current = setTimeout(() => setIsHovered(true), 500)
   }, [])
 
   const onMouseLeave = useCallback(() => {
@@ -121,14 +120,19 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
             )}
             {playerTreasureMaps.length > 0 && (
               <div css={mapsCss}>
-                {playerTreasureMaps.map((map, i) => (
-                  <img
-                    key={i}
-                    src={treasureMapImages[map.id as TreasureMapType] ?? treasureMapImages[TreasureMapType.Base]}
-                    alt=""
-                    css={mapImgCss}
-                  />
-                ))}
+                {playerTreasureMaps.map((map, i) => {
+                  const rotation = map.id === TreasureMapType.AllDirections && typeof map.location.rotation === 'number'
+                    ? map.location.rotation * 90
+                    : 0
+                  return (
+                    <img
+                      key={i}
+                      src={treasureMapImages[map.id as TreasureMapType] ?? treasureMapImages[TreasureMapType.Base]}
+                      alt=""
+                      css={[mapImgCss, rotation && mapRotatedCss(rotation)]}
+                    />
+                  )
+                })}
               </div>
             )}
           </div>
@@ -152,7 +156,7 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
 
       {/* Board tray — revealed on hover after delay. Suppressed when
           the side picker is open so the two don't stack visually. */}
-      {!isMe && !isPickerOpen && (
+      {!isPickerOpen && (
         <div css={[boardTrayCss, isHovered && boardTrayVisibleCss]}>
           <BoardPreview playerId={player.id} />
         </div>
@@ -335,7 +339,8 @@ const timerCss = css`
 const bottomRowCss = css`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0.3em;
   flex: 1;
 `
 
@@ -369,6 +374,11 @@ const mapImgCss = css`
   height: 3.5em;
   width: auto;
   filter: drop-shadow(0 0.1em 0.2em rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s ease;
+`
+
+const mapRotatedCss = (deg: number) => css`
+  transform: rotate(${deg}deg);
 `
 
 // ---- Board tray (hover reveal) ----

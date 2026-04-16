@@ -36,7 +36,7 @@ export class EndOfTurnRule extends CoinRule {
     const allDirectionsMaps = helper.playerMaps.filter((item) => item.id === TreasureMapType.AllDirections)
     if (allDirectionsMaps.length > 0) {
       const map = allDirectionsMaps.getItem()!
-      const currentRotation = typeof map.location.rotation === 'number' ? map.location.rotation : 0
+      const currentRotation = map.location.rotation ?? 0
       moves.push(allDirectionsMaps.moveItem({
         ...map.location,
         rotation: (currentRotation + 1) % 4
