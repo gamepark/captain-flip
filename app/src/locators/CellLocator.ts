@@ -28,10 +28,8 @@ class CellLocator extends Locator {
     return [`rotateZ(${sign * this.getRotateZ(item.location)}deg)`]
   }
 
-  placeItem(item: MaterialItem, context: ItemContext): string[] {
-    const transforms = super.placeItem(item, context)
-    if (!isPlayerVisible(item, context)) return [...transforms, 'scale(0.001)']
-    return transforms
+  ignore(item: MaterialItem, context: ItemContext): boolean {
+    return !isPlayerVisible(item, context)
   }
 }
 

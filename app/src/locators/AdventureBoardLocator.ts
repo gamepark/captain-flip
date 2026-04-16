@@ -7,15 +7,11 @@ class AdventureBoardLocator extends Locator {
     const { left, right } = getSides(context)
     if (location.player === left)  return { x: -19, y: 13 }
     if (location.player === right) return { x:  19, y: 13 }
-    // Hidden boards (not currently on either deck) are parked at the
-    // center so they don't stack invisibly under the right-side board.
     return { x: 0, y: 13 }
   }
 
-  placeItem(item: MaterialItem, context: ItemContext): string[] {
-    const transforms = super.placeItem(item, context)
-    if (!isPlayerVisible(item, context)) return [...transforms, 'scale(0.001)']
-    return transforms
+  ignore(item: MaterialItem, context: ItemContext): boolean {
+    return !isPlayerVisible(item, context)
   }
 }
 

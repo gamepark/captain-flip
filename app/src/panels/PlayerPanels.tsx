@@ -4,9 +4,11 @@ import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { usePlayerId, usePlayers, useRules } from '@gamepark/react-game'
 import { FC, useState } from 'react'
+import { useAutoViewOnDrag } from '../hooks/useAutoViewOnDrag'
 import { CaptainFlipPlayerPanel } from './CaptainFlipPlayerPanel'
 
 export const PlayerPanels: FC = () => {
+  useAutoViewOnDrag()
   const players = usePlayers({ sortFromMe: true })
   const rules = useRules<CaptainFlipRules>()!
   const me = usePlayerId()

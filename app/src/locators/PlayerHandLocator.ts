@@ -1,19 +1,23 @@
 import { HandLocator, ItemContext } from '@gamepark/react-game'
 import { MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
-import { adventureBoardLocator } from './AdventureBoardLocator'
 import { isPlayerVisible } from './ViewHelper'
 
 class PlayerHandLocator extends HandLocator {
   getCoordinates(location: Location, context: MaterialContext) {
-    const { x = 0, y = 0 } = adventureBoardLocator.getCoordinates(location, context)
-    return { x: x < 0 ? x + 15 : x - 15, y: y - 0.7, z: 5 }
+    const me = context.player ?? context.rules.players[0]
+    // My own hand is always centered between the two boards so I can
+    // see it even when my board isn't in one of the two visible slots.
+    if (location.player === me) return { x: 0, y: 12.3, z: 5 }
+    // Other players' hands are hidden (they're only visible during
+    // animations orchestrated by the framework).
+    return { x: 0, y: 12.3, z: 5 }
   }
 
-  placeItem(item: MaterialItem, context: ItemContext): string[] {
-    const transforms = super.placeItem(item, context)
-    if (!isPlayerVisible(item, context)) return [...transforms, 'scale(0.001)']
-    return transforms
+  ignore(item: MaterialItem, context: ItemContext): boolean {
+    const me = context.player ?? context.rules.players[0]
+    if (item.location.player === me) return false
+    return !isPlayerVisible(item, context)
   }
 }
 

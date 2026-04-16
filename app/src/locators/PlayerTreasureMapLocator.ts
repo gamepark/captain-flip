@@ -29,10 +29,12 @@ class PlayerTreasureMapLocator extends ListLocator {
     }
   }
 
-  placeItem(item: MaterialItem, context: ItemContext): string[] {
-    const transforms = super.placeItem(item, context)
-    if (!isPlayerVisible(item, context)) return [...transforms, 'scale(0.001)']
-    return transforms
+  getRotateZ(location: Location): number {
+    return  (location.rotation ?? 0) * 90
+  }
+
+  ignore(item: MaterialItem, context: ItemContext): boolean {
+    return !isPlayerVisible(item, context)
   }
 }
 
