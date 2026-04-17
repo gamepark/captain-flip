@@ -57,11 +57,6 @@ const MapChoice: FC<{ move: MoveItem, rules: CaptainFlipRules, onChosen: () => v
   const { t } = useTranslation()
   const item = rules.material(MaterialType.TreasureMapToken).getItem(move.itemIndex)
   const type = (item?.id as TreasureMapType) ?? TreasureMapType.Base
-  const rotation = type === TreasureMapType.AllDirections
-    && item?.location.type === LocationType.PlayerTreasureMapToken
-    && typeof item.location.rotation === 'number'
-    ? item.location.rotation * 90
-    : 0
 
   const srcIsPlayer = item?.location.type === LocationType.PlayerTreasureMapToken
   const srcPlayer = srcIsPlayer ? item?.location.player : undefined
@@ -73,7 +68,7 @@ const MapChoice: FC<{ move: MoveItem, rules: CaptainFlipRules, onChosen: () => v
         <img
           src={treasureMapImages[type] ?? treasureMapImages[TreasureMapType.Base]}
           alt=""
-          css={[mapImgCss, rotation && mapRotatedCss(rotation)]}
+          css={mapImgCss}
         />
       </PlayMoveButton>
       <div css={captionCss}>
@@ -145,10 +140,6 @@ const mapImgCss = css`
   width: auto;
   display: block;
   filter: drop-shadow(0 0.15em 0.3em rgba(0, 0, 0, 0.4));
-`
-
-const mapRotatedCss = (deg: number) => css`
-  transform: rotate(${deg}deg);
 `
 
 const captionCss = css`

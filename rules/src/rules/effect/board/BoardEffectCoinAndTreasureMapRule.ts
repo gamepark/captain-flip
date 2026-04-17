@@ -19,10 +19,10 @@ export class BoardEffectCoinAndTreasureMapRule extends BaseBoardEffect<BoardEffe
       moves.push(this.goNext())
       return moves
     }
-    // 1 pick → auto-play, 2+ picks → wait for getPlayerMoves.
-    // Either way, `afterItemMove` below handles the goNext() call
-    // once the pick move lands.
-    moves.push(...pickMoves)
+    // 1 pick → auto-play. 2+ picks → wait for the player to choose via
+    // getPlayerMoves; we must NOT push them here or the framework would
+    // auto-play all of them. Either way, afterItemMove handles goNext().
+    if (pickMoves.length === 1) moves.push(...pickMoves)
     return moves
   }
 

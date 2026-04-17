@@ -34,6 +34,81 @@ captainFlipAnimations
   .move((move) => isCreateItemType(MaterialType.Coin)(move) || isDeleteItemType(MaterialType.Coin)(move))
   .duration(1)
 
+// Coin transfer (moveMoney): neither player visible → panel to panel
+captainFlipAnimations
+  .configure((move, context) => {
+    if (!isMoveItemType(MaterialType.Coin)(move)) return false
+    const item = context.rules.material(MaterialType.Coin).getItem(move.itemIndex)
+    if (!item.location.player || !move.location.player) return false
+    const srcVisible = isPlayerVisible(item, context as any)
+    const destVisible = isPlayerVisible({ location: move.location } as any, context as any)
+    return !srcVisible && !destVisible
+  })
+  .duration(2200)
+  .trajectory((_context, move) => {
+    const dest = (move as any).location
+    return {
+      elevation: false,
+      waypoints: [
+        { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
+        { at: 0.15, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
+        { at: 0.3, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
+        { at: 0.55, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
+        { at: 0.75, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
+        { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: dest.player }) }
+      ]
+    }
+  })
+
+// Coin transfer (moveMoney): source visible, dest not visible → below dest → panel dest
+captainFlipAnimations
+  .configure((move, context) => {
+    if (!isMoveItemType(MaterialType.Coin)(move)) return false
+    const item = context.rules.material(MaterialType.Coin).getItem(move.itemIndex)
+    if (!item.location.player || !move.location.player) return false
+    const srcVisible = isPlayerVisible(item, context as any)
+    const destVisible = isPlayerVisible({ location: move.location } as any, context as any)
+    return srcVisible && !destVisible
+  })
+  .duration(1500)
+  .trajectory((_context, move) => {
+    const dest = (move as any).location
+    return {
+      elevation: false,
+      waypoints: [
+        { at: 0.35, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
+        { at: 0.65, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
+        { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: dest.player }) }
+      ]
+    }
+  })
+
+// Coin transfer (moveMoney): source not visible, dest visible → panel source → below source → dest
+captainFlipAnimations
+  .configure((move, context) => {
+    if (!isMoveItemType(MaterialType.Coin)(move)) return false
+    const item = context.rules.material(MaterialType.Coin).getItem(move.itemIndex)
+    if (!item.location.player || !move.location.player) return false
+    const srcVisible = isPlayerVisible(item, context as any)
+    const destVisible = isPlayerVisible({ location: move.location } as any, context as any)
+    return !srcVisible && destVisible
+  })
+  .duration(1500)
+  .trajectory((_context, _move) => ({
+    elevation: false,
+    waypoints: [
+      { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
+      { at: 0.15, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
+      { at: 0.4, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) }
+    ]
+  }))
+
+// Coin transfer (moveMoney): both visible → normal animation
+captainFlipAnimations
+  .when()
+  .move(isMoveItemType(MaterialType.Coin))
+  .duration(0.8)
+
 // Treasure map: non-vu → non-vu (below source → below dest → panel dest)
 captainFlipAnimations
   .configure((move, context) => {
@@ -49,12 +124,12 @@ captainFlipAnimations
     return {
       elevation: false,
       waypoints: [
-        { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
-        { at: 0.15, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
-        { at: 0.3, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
-        { at: 0.55, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
-        { at: 0.75, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
-        { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: dest.player }) }
+        { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player, rotation: item.location.rotation }) },
+        { at: 0.15, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player, rotation: item.location.rotation }) },
+        { at: 0.3, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player, rotation: item.location.rotation }) },
+        { at: 0.55, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
+        { at: 0.75, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
+        { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) }
       ]
     }
   })
@@ -75,9 +150,9 @@ captainFlipAnimations
     return {
       elevation: false,
       waypoints: [
-        { at: 0.35, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
-        { at: 0.65, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player }) },
-        { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: dest.player }) }
+        { at: 0.35, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
+        { at: 0.65, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
+        { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) }
       ]
     }
   })
@@ -96,9 +171,9 @@ captainFlipAnimations
   .trajectory((_context, _move) => ({
     elevation: false,
     waypoints: [
-      { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
-      { at: 0.15, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) },
-      { at: 0.4, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player }) }
+      { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player, rotation: item.location.rotation }) },
+      { at: 0.15, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player, rotation: item.location.rotation }) },
+      { at: 0.4, locator: belowPlayerPanelLocator, location: (item) => ({ player: item.location.player, rotation: item.location.rotation }) }
     ]
   }))
 
@@ -131,16 +206,22 @@ captainFlipAnimations
     const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)
     return item.location.type === LocationType.AdventureBoardCharacterTile && move.location.type === LocationType.AdventureBoardCharacterTile
   })
-  .duration(1400)
+  .duration(2200)
   .trajectory((_context, move) => {
     const dest = (move as any).location
     return {
       elevation: false,
       waypoints: [
+        // descent : panel (tiny) -> below panel (normal size)
         { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: dest.player, rotation: item.location.rotation }) },
-        { at: 0.25, locator: belowPlayerPanelLocator, location: (item) => ({ player: dest.player, rotation: item.location.rotation }) },
-        { at: 0.5, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
-        { at: 0.8, locator: onPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
+        { at: 0.2, locator: belowPlayerPanelLocator, location: (item) => ({ player: dest.player, rotation: item.location.rotation }) },
+        // pause with the original face visible
+        { at: 0.4, locator: belowPlayerPanelLocator, location: (item) => ({ player: dest.player, rotation: item.location.rotation }) },
+        // flip : change rotation while holding position
+        { at: 0.6, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
+        // pause with the new face visible
+        { at: 0.8, locator: belowPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) },
+        // back up into the panel
         { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: dest.player, rotation: dest.rotation }) }
       ]
     }
@@ -181,17 +262,7 @@ captainFlipAnimations
     return item.location.type === LocationType.ClothBag && move.location.type === LocationType.PlayerHand
   })
   .duration(1200)
-  .trajectory((_context, move) => {
-    const dest = (move as any).location
-    return {
-      elevation: false,
-      waypoints: [
-        // rise above bag — short pause since the tile is going into the player's visible hand
-        { at: 0.3, locator: onTopOfBagLocator, location: () => ({ rotation: dest.rotation }) },
-        { at: 0.45, locator: onTopOfBagLocator, location: () => ({ rotation: dest.rotation }) }
-      ]
-    }
-  })
+  .trajectory(() => ({ elevation: false }))
 
 // Flip in hand for a NON-VIEWED player: the tile drops out of the panel
 // (scaling up from 0.001), pauses, flips, pauses again, then goes back up
