@@ -3,7 +3,7 @@ import { CoinRule } from '@gamepark/captain-flip/rules/effect/CoinRule'
 import { useRules } from '@gamepark/react-game'
 import { useTranslation } from 'react-i18next'
 import { GainCoinHeader } from './GainCoinHeader'
-import { GetTreasureMap } from './GetTreasureMap'
+import { GetTreasureMap, PickTreasureMapFlow } from './GetTreasureMap'
 
 
 export const BoardEffectHeader = () => {
@@ -13,7 +13,15 @@ export const BoardEffectHeader = () => {
   const coins = delegate.getCoins() ?? 0
 
   if (coins) {
-    return <GainCoinHeader effect={t('column-bonus')} coins={coins}/>
+    // Coins + treasure map (e.g. BoardEffectCoinAndTreasureMap): we
+    // show the coin gain text and still surface the pick dialog when
+    // more than one map is available.
+    return (
+      <>
+        <GainCoinHeader effect={t('column-bonus')} coins={coins}/>
+        <PickTreasureMapFlow/>
+      </>
+    )
   }
 
   return <GetTreasureMap effect={t('column-bonus')} />

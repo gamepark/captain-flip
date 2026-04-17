@@ -13,26 +13,45 @@ type EffectHeaderProps = {
   effect: string,
 }
 
-export const GetTreasureMap: FC<EffectHeaderProps> = ({ effect }) => {
+/** Popup + minimized toast that appears whenever the current player has
+ *  2+ legal picks for a treasure map. Decoupled from the header text so
+ *  it can be rendered on top of any header (coins, column bonus, …). */
+export const PickTreasureMapFlow: FC = () => {
   const { t } = useTranslation()
   const me = usePlayerId()
-  const rules = useRules<CaptainFlipRules>()!
-  const activePlayer = rules.game.rule?.player
-  const itsMe = me && activePlayer === me
-  const name = usePlayerName(activePlayer)
-
   const pickMoves = useLegalMoves<MoveItem>(
     (m: any) => isMoveItemType(MaterialType.TreasureMapToken)(m)
       && m.location.type === LocationType.PlayerTreasureMapToken
       && m.location.player === me
   )
-  const hasChoice = itsMe && pickMoves.length >= 2
+  const hasChoice = me !== undefined && pickMoves.length >= 2
 
   const [minimized, setMinimized] = useState(false)
   const [chosen, setChosen] = useState(false)
 
-  const showDialog = hasChoice && !chosen && !minimized
-  const showToast = hasChoice && !chosen && minimized
+  if (!hasChoice || chosen) return null
+  if (minimized) {
+    return (
+      <MinimizedToast
+        title={t('pick-map.minimized', 'Choose a Treasure Map')}
+        onClick={() => setMinimized(false)}
+      />
+    )
+  }
+  return (
+    <PickTreasureMapDialog
+      onMinimize={() => setMinimized(true)}
+      onChosen={() => setChosen(true)}
+    />
+  )
+}
+
+export const GetTreasureMap: FC<EffectHeaderProps> = ({ effect }) => {
+  const me = usePlayerId()
+  const rules = useRules<CaptainFlipRules>()!
+  const activePlayer = rules.game.rule?.player
+  const itsMe = me && activePlayer === me
+  const name = usePlayerName(activePlayer)
 
   return (
     <>
@@ -41,18 +60,7 @@ export const GetTreasureMap: FC<EffectHeaderProps> = ({ effect }) => {
       ) : (
         <Trans i18nKey="header.map.player" values={{ player: name, effect }} />
       )}
-      {showDialog && (
-        <PickTreasureMapDialog
-          onMinimize={() => setMinimized(true)}
-          onChosen={() => setChosen(true)}
-        />
-      )}
-      {showToast && (
-        <MinimizedToast
-          title={t('pick-map.minimized', 'Choose a Treasure Map')}
-          onClick={() => setMinimized(false)}
-        />
-      )}
+      <PickTreasureMapFlow />
     </>
   )
 }

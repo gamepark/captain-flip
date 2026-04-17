@@ -342,6 +342,9 @@ const bottomRowCss = css`
   justify-content: flex-start;
   gap: 0.3em;
   flex: 1;
+  /* Reserve the map slot height so the panel keeps the same total
+   * height whether the player holds a treasure map or not. */
+  min-height: 3.5em;
 `
 
 const flagImgCss = css`
