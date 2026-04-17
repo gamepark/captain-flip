@@ -22,11 +22,15 @@ export class TreasureMapPickHelper extends MaterialRulesPart {
     this.player = player
   }
 
-  /** One MoveItem per treasure map still sitting on the central area,
-   *  ready to be handed to the player. */
+  /** One MoveItem per treasure map currently available to take —
+   *  whether it's still on the central area or already held by
+   *  another player. "Take the Treasure Map" means wherever it is. */
   getPickMoves() {
     return this.material(MaterialType.TreasureMapToken)
-      .location(LocationType.TreasureMapToken)
+      .filter((item) =>
+        item.location.type === LocationType.TreasureMapToken
+        || (item.location.type === LocationType.PlayerTreasureMapToken && item.location.player !== this.player)
+      )
       .moveItems({
         type: LocationType.PlayerTreasureMapToken,
         player: this.player
@@ -50,7 +54,8 @@ export class TreasureMapPickHelper extends MaterialRulesPart {
   onRuleStartWithNext(next: any) {
     const moves = this.getPickMoves()
     if (moves.length === 0) return [next]
-    return moves
+    if (moves.length === 1) return moves
+    return []
   }
 
   /** Check whether an `ItemMove` is the "take a treasure map" move

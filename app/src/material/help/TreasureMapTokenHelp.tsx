@@ -1,9 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { LocationType } from '@gamepark/captain-flip/material/LocationType'
+import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
-import { MaterialHelpProps } from '@gamepark/react-game'
+import { MaterialHelpProps, PlayMoveButton, useLegalMoves, usePlayerId } from '@gamepark/react-game'
+import { isMoveItemType, MoveItem } from '@gamepark/rules-api'
 import { FC } from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { treasureMapImages } from '../../effects/treasureMapImages'
 
 /* palette shared with the rest of the parchment help family */
@@ -34,10 +37,21 @@ const getTexts = (type: TreasureMapType): { title: string; effect: string } => {
 }
 
 export const TreasureMapTokenHelp: FC<MaterialHelpProps> = (props) => {
-  const { item } = props
+  const { item, itemIndex, closeDialog } = props
+  const { t } = useTranslation()
+  const me = usePlayerId()
   const type = (item.id ?? TreasureMapType.Base) as TreasureMapType
   const texts = getTexts(type)
   const image = treasureMapImages[type]
+
+  // If the current player has a legal move to pick THIS exact map,
+  // expose a button so they can take it straight from the help popup.
+  const pickMove = useLegalMoves<MoveItem>(
+    (m: any) => isMoveItemType(MaterialType.TreasureMapToken)(m)
+      && m.itemIndex === itemIndex
+      && m.location.type === LocationType.PlayerTreasureMapToken
+      && m.location.player === me
+  )[0]
 
   return (
     <div css={dialogCss}>
@@ -78,6 +92,12 @@ export const TreasureMapTokenHelp: FC<MaterialHelpProps> = (props) => {
             </p>
           </div>
         </div>
+
+        {pickMove && (
+          <PlayMoveButton move={pickMove} onPlay={closeDialog} css={takeButtonCss}>
+            {t('pick-map.take', 'Take this map')}
+          </PlayMoveButton>
+        )}
       </section>
     </div>
   )
@@ -274,6 +294,24 @@ const effectCardCss = css`
     font-weight: 800;
     color: ${ink};
   }
+`
+
+const takeButtonCss = css`
+  margin-top: 0.3em;
+  padding: 0.55em 1.2em;
+  font-size: 1.05em;
+  font-weight: 700;
+  font-style: italic;
+  color: #f3e7cc;
+  background: linear-gradient(180deg, #8b1e1e, #5a0e0e);
+  border: 1px solid rgba(43, 29, 16, 0.6);
+  border-radius: 0.3em;
+  cursor: pointer;
+  box-shadow: 0 0.15em 0.35em rgba(0, 0, 0, 0.35);
+  transition: filter 150ms ease, transform 120ms ease;
+
+  &:hover { filter: brightness(1.1); transform: translateY(-0.05em); }
+  &:active { transform: translateY(0.05em); }
 `
 
 const effectTagCss = css`
