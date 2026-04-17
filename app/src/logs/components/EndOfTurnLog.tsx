@@ -3,7 +3,9 @@ import { css } from '@emotion/react'
 import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
 import { TreasureMapHelper } from '@gamepark/captain-flip/rules/helper/TreasureMapHelper'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
+import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { MaterialGame, MaterialItem } from '@gamepark/rules-api'
+import { usePlayerName } from '@gamepark/react-game'
 import { FC, Fragment } from 'react'
 import { Trans } from 'react-i18next'
 import { treasureMapImages } from '../../effects/treasureMapImages'
@@ -51,6 +53,10 @@ export const EndOfTurnLog: FC<Props> = ({ move, context }) => {
   const coinsGainedThisTurn = (game as any).memory?.[Memory.CoinsGainedThisTurn] ?? 0
   const gamblerTriggered = hasGambler && coinsGainedThisTurn === 0
 
+  // Kraken: find the richest opponent and check if the steal triggers.
+  const krakenCoins = mapsHelper.getKrakenCoins()
+  const krakenTarget = hasKraken ? findRichestOpponent(game, playerId) : undefined
+
   return (
     <>
       <span css={endTurnTagCss}><Trans i18nKey="log.end-turn.tag"/></span>
@@ -86,9 +92,14 @@ export const EndOfTurnLog: FC<Props> = ({ move, context }) => {
           <Trans i18nKey="log.end-turn.gambler" components={commonComponents}/>
         </div>
       )}
-      {hasKraken && (
+      {hasKraken && krakenCoins > 0 && (
         <div css={metaCss}>
-          <Trans i18nKey="log.end-turn.kraken" components={commonComponents}/>
+          <KrakenLine target={krakenTarget}/>
+        </div>
+      )}
+      {hasKraken && krakenCoins === 0 && (
+        <div css={metaCss}>
+          <KrakenNoStealLine/>
         </div>
       )}
     </>
@@ -148,3 +159,52 @@ const mapIconCss = css`
   object-fit: contain;
   margin: 0 0.1em;
 `
+
+const krakenMapCss = css`
+  display: inline-block;
+  vertical-align: middle;
+  width: 2.5em;
+  height: 2.5em;
+  object-fit: contain;
+  margin: 0 0.15em;
+`
+
+function findRichestOpponent(game: MaterialGame, playerId: PlayerId): PlayerId | undefined {
+  const players = game.players.filter((p) => p !== playerId)
+  let richest: PlayerId | undefined
+  let richestCoins = 0
+  for (const p of players) {
+    const coins = new TreasureMapHelper(game, p).getPlayerCoins()
+    if (coins > richestCoins) {
+      richestCoins = coins
+      richest = p
+    }
+  }
+  return richest
+}
+
+const KrakenLine: FC<{ target?: PlayerId }> = ({ target }) => {
+  const targetName = usePlayerName(target) || ''
+  return (
+    <Trans
+      i18nKey="log.end-turn.kraken"
+      values={{ target: targetName }}
+      defaults="<img/> steals <num>1</num><coin/> from <who>{target}</who>"
+      components={{
+        ...commonComponents,
+        who: <span css={whoCss}/>,
+        img: <img src={treasureMapImages[TreasureMapType.Kraken]} alt="" css={krakenMapCss}/>
+      }}
+    />
+  )
+}
+
+const KrakenNoStealLine: FC = () => (
+  <Trans
+    i18nKey="log.end-turn.kraken.nothing"
+    defaults="<img/> nothing to steal"
+    components={{
+      img: <img src={treasureMapImages[TreasureMapType.Kraken]} alt="" css={krakenMapCss}/>
+    }}
+  />
+)

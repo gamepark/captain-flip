@@ -54,6 +54,20 @@ export class TreasureMapHelper extends MaterialRulesPart {
     return coins
   }
 
+  getKrakenCoins() {
+    if (!this.hasMap(TreasureMapType.Kraken)) return 0
+    const players = this.game.players.filter((p) => p !== this.player)
+    if (players.length === 0) return 0
+    const myCoins = this.getPlayerCoins()
+    let richestCoins = 0
+    for (const p of players) {
+      const coins = new TreasureMapHelper(this.game, p).getPlayerCoins()
+      if (coins > richestCoins) richestCoins = coins
+    }
+    if (myCoins > richestCoins || richestCoins === 0) return 0
+    return 1
+  }
+
   getAllDirectionsCoins(map: { location: { rotation?: boolean | number } }) {
     const rotation = typeof map.location.rotation === 'number' ? map.location.rotation : 0
     const values = [1, 2, 1, 3]

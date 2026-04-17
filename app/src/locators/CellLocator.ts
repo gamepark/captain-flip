@@ -28,7 +28,7 @@ class CellLocator extends Locator {
     return [`rotateZ(${sign * this.getRotateZ(item.location)}deg)`]
   }
 
-  ignore(item: MaterialItem, context: ItemContext): boolean {
+  hide(item: MaterialItem, context: ItemContext): boolean {
     return !isPlayerVisible(item, context)
   }
 }

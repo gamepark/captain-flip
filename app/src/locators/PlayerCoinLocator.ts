@@ -50,7 +50,7 @@ class PlayerCoinLocator extends PileLocator {
     return `${item.location.player}-${item.id}`
   }
 
-  ignore(item: MaterialItem, context: ItemContext): boolean {
+  hide(item: MaterialItem, context: ItemContext): boolean {
     return !isPlayerVisible(item, context)
   }
 }

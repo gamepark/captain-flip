@@ -2,6 +2,7 @@ import { getDistanceBetweenSquares, isMoveItemType, ItemMove, MaterialMove } fro
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { getCharacter } from '../GetCharacter'
+import { TreasureMapHelper } from '../helper/TreasureMapHelper'
 import { Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 import { CharacterEffect } from './CharacterEffect'
@@ -12,7 +13,7 @@ export class MonkeyRule extends CoinRule {
     const adjacentCards = this.adjacentCards
     const moves: MaterialMove[] = []
     moves.push(...super.onRuleStart())
-    if (!adjacentCards.length) {
+    if (!adjacentCards.length || new TreasureMapHelper(this.game, this.player).hasCursedMap()) {
       moves.push(this.startRule(RuleId.BoardEffect))
     }
 
@@ -24,6 +25,7 @@ export class MonkeyRule extends CoinRule {
   }
 
   getPlayerMoves() {
+    if (new TreasureMapHelper(this.game, this.player).hasCursedMap()) return []
     const adjacentCards = this.adjacentCards
     return adjacentCards.moveItems((item) => ({
       ...item.location,

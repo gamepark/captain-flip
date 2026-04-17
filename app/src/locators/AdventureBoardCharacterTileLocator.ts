@@ -47,7 +47,7 @@ class AdventureBoardCharacterTileLocator extends Locator {
     }
   }
 
-  ignore(item: MaterialItem, context: ItemContext): boolean {
+  hide(item: MaterialItem, context: ItemContext): boolean {
     return !isPlayerVisible(item, context)
   }
 }

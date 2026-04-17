@@ -74,10 +74,11 @@ export class EndOfTurnRule extends CoinRule {
     if (myCoins > richestCoins) return []
     if (richest === undefined || richestCoins === 0) return []
 
-    return [
-      ...this.material(MaterialType.Coin).money(coinValues).removeMoney(1, { type: LocationType.PlayerCoin, player: richest }),
-      ...this.gainCoinsMoves(1)
-    ]
+    return this.material(MaterialType.Coin).money(coinValues).moveMoney(
+      { type: LocationType.PlayerCoin, player: richest },
+      { type: LocationType.PlayerCoin, player: this.player },
+      1
+    )
   }
 
   get mustGoToScoring() {

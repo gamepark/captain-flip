@@ -22,16 +22,19 @@ export class BoardEffectPassTreasureMapRule extends BaseBoardEffect {
       const moves: MaterialMove[] = []
       const players = this.game.players
 
-      for (const player of players) {
-        const maps = this.material(MaterialType.TreasureMapToken)
+      // Capture refs BEFORE mutating locations — otherwise subsequent
+      // queries would pick up maps that just moved. Same pattern as
+      // the "passing cards" guidance in CLAUDE.md.
+      const byPlayer = players.map((player) => ({
+        player,
+        neighbor: players[(players.indexOf(player) + direction + players.length) % players.length],
+        maps: this.material(MaterialType.TreasureMapToken)
           .location(LocationType.PlayerTreasureMapToken)
           .player(player)
+      }))
+
+      for (const { maps, neighbor } of byPlayer) {
         if (maps.length === 0) continue
-
-        const playerIndex = players.indexOf(player)
-        const neighborIndex = (playerIndex + direction + players.length) % players.length
-        const neighbor = players[neighborIndex]
-
         moves.push(...maps.moveItems({
           type: LocationType.PlayerTreasureMapToken,
           player: neighbor

@@ -4,6 +4,7 @@ import { BoardSpaceType } from '../../../material/board/description/BoardSpaceTy
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { getCharacter } from '../../GetCharacter'
+import { TreasureMapHelper } from '../../helper/TreasureMapHelper'
 import { Memory } from '../../Memory'
 import { CharacterEffect } from '../CharacterEffect'
 import { BaseBoardEffect } from './BaseBoardEffect'
@@ -12,6 +13,7 @@ type BoasEffectFlip = { type: BoardSpaceType, isAllDifferent?: boolean }
 export class BoasEffectFlipRule extends BaseBoardEffect<BoasEffectFlip> {
   onRuleStart() {
     const moves: MaterialMove[] = []
+    if (new TreasureMapHelper(this.game, this.player).hasCursedMap()) return [this.goNext()]
     if (this.effect.effect.isAllDifferent) {
       const characters = this.effectColumnTiles
       const countDifferent = uniqBy(characters, (item) => getCharacter(item))?.length ?? 0
@@ -22,6 +24,7 @@ export class BoasEffectFlipRule extends BaseBoardEffect<BoasEffectFlip> {
   }
 
   getPlayerMoves() {
+    if (new TreasureMapHelper(this.game, this.player).hasCursedMap()) return []
     return this.material(MaterialType.CharacterTile)
       .location(LocationType.AdventureBoardCharacterTile)
       .player(this.player)

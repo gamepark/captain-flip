@@ -10,7 +10,7 @@ class AdventureBoardLocator extends Locator {
     return { x: 0, y: 13 }
   }
 
-  ignore(item: MaterialItem, context: ItemContext): boolean {
+  hide(item: MaterialItem, context: ItemContext): boolean {
     return !isPlayerVisible(item, context)
   }
 }

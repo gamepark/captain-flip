@@ -14,7 +14,7 @@ class PlayerHandLocator extends HandLocator {
     return { x: 0, y: 12.3, z: 5 }
   }
 
-  ignore(item: MaterialItem, context: ItemContext): boolean {
+  hide(item: MaterialItem, context: ItemContext): boolean {
     const me = context.player ?? context.rules.players[0]
     if (item.location.player === me) return false
     return !isPlayerVisible(item, context)
