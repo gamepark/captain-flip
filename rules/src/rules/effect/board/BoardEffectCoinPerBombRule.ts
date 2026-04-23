@@ -1,3 +1,4 @@
+import { hasBombWhenFilled, isBombEffect } from '../../../material/board/description/BoardSpaceGuards'
 import { BoardSpaceType } from '../../../material/board/description/BoardSpaceType'
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
@@ -26,7 +27,7 @@ export class BoardEffectCoinPerBombRule extends BaseBoardEffect<BoardEffectCoinP
 
     // Count uncovered bomb symbols on board
     for (const place of helper.places) {
-      if (!place.effect?.bomb) continue
+      if (!isBombEffect(place.effect)) continue
       const occupied = this.material(MaterialType.CharacterTile)
         .location(LocationType.AdventureBoardCharacterTile)
         .player(this.player)
@@ -37,7 +38,7 @@ export class BoardEffectCoinPerBombRule extends BaseBoardEffect<BoardEffectCoinP
 
     // Count bombWhenFilled symbols (active when covered)
     for (const place of helper.places) {
-      if (!place.effect?.bombWhenFilled) continue
+      if (!hasBombWhenFilled(place.effect)) continue
       const occupied = this.material(MaterialType.CharacterTile)
         .location(LocationType.AdventureBoardCharacterTile)
         .player(this.player)

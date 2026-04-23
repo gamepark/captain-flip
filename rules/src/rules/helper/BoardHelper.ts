@@ -86,6 +86,13 @@ export class BoardHelper extends MaterialRulesPart {
     return tiles.length === maxTileCount
   }
 
+  isColumnTop(x: number, y: number) {
+    const columnPlaces = this.places.filter((p) => p.x === x)
+    if (!columnPlaces.length) return false
+    const maxY = maxBy(columnPlaces, (place) => place.y)!.y
+    return y === maxY
+  }
+
   get boardDescription() {
     const board = this.remind(Memory.Board)
 

@@ -19,8 +19,13 @@ abstract class BoardEffectStealRule extends BaseBoardEffect<BoardEffectSteal> {
     const neighbor = this.getNeighbor()
     const actual = this.getCoins()
     if (neighbor !== undefined && actual > 0) {
-      moves.push(...this.material(MaterialType.Coin).money(coinValues).removeMoney(actual, { type: LocationType.PlayerCoin, player: neighbor }))
-      moves.push(...this.gainCoinsMoves(actual))
+      moves.push(
+        ...this.material(MaterialType.Coin).money(coinValues).moveMoney(
+          { type: LocationType.PlayerCoin, player: neighbor },
+          { type: LocationType.PlayerCoin, player: this.player },
+          actual
+        )
+      )
     }
     moves.push(this.goNext())
     return moves

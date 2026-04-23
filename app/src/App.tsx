@@ -1,4 +1,6 @@
-import { FailuresDialog, FullscreenDialog, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, useGame } from '@gamepark/react-game'
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
+import { FailuresDialog, FullscreenDialog, LiveLogContainer, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'
 import { useEffect, useState } from 'react'
 import { GameDisplay } from './GameDisplay'
@@ -14,13 +16,13 @@ export default function App() {
   const loading = !game || isJustDisplayed || isImagesLoading
   return (
     <>
-      { !!game && <GameDisplay players={game.players.length} /> }
-      <LoadingScreen display={loading}/>
-      <MaterialHeader rulesStepsHeaders={Headers} loading={loading}/>
+      {!!game && <GameDisplay players={game.players.length} />}
+      <LoadingScreen display={loading} />
+      <MaterialHeader rulesStepsHeaders={Headers} loading={loading} />
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
-      <Menu/>
-      <FailuresDialog/>
-      <FullscreenDialog/>
+      <Menu />
+      <FailuresDialog />
+      <FullscreenDialog />
     </>
   )
 }

@@ -4,5 +4,6 @@ export enum Memory {
   Board,
   BoardEffect,
   BoardEndOfGameEffect,
-  CoinsGainedThisTurn
+  CoinsGainedThisTurn,
+  PendingCharacterEffect
 }

@@ -49,24 +49,37 @@ export class PlaceTileHelper extends MaterialRulesPart {
         if (effect.type === BoardSpaceType.Cost) {
           moves.push(...this.material(MaterialType.Coin).money(coinValues).removeMoney(effect.cost, { type: LocationType.PlayerCoin, player: this.player }))
         } else if (effect.type !== BoardSpaceType.None && effect.type !== BoardSpaceType.Sextant && effect.type !== BoardSpaceType.Bomb) {
-          this.addBoardEffect(effect, move.location)
+          const immediate = !helper.isColumnTop(move.location.x!, move.location.y!)
+          this.addBoardEffect(effect, move.location, immediate)
         }
       }
 
       this.checkRowEffects(helper, move.location)
 
-      nextRule = CharacterEffect[character] ?? RuleId.BoardEffect
+      const characterRule = CharacterEffect[character]
+      if (characterRule !== undefined) {
+        this.memorize(Memory.PendingCharacterEffect, characterRule)
+      } else {
+        this.forget(Memory.PendingCharacterEffect)
+      }
+      nextRule = RuleId.BoardEffect
     }
     return { moves, nextRule }
   }
 
-  addBoardEffect(effect: BoardSpaceEffect, location: Partial<Location>) {
+  addBoardEffect(effect: BoardSpaceEffect, location: Partial<Location>, immediate: boolean = false) {
     const effects = this.remind(Memory.BoardEffect) ?? []
-    effects.push({
+    const entry = {
       effect: effect,
       x: location.x!,
       y: location.y!,
-    })
+      immediate
+    }
+    if (immediate) {
+      effects.unshift(entry)
+    } else {
+      effects.push(entry)
+    }
     this.memorize(Memory.BoardEffect, effects)
   }
 

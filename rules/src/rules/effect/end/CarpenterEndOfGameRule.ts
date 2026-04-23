@@ -1,4 +1,5 @@
 import { MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isBombEffect } from '../../../material/board/description/BoardSpaceGuards'
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
 import { Character } from '../../../material/tiles/Character'
@@ -40,7 +41,7 @@ export class CarpenterEndOfGameRule extends CoinRule {
     // Check uncovered bomb symbols on board
     const helper = new BoardHelper(this.game)
     for (const place of helper.places) {
-      if (!place.effect?.bomb) continue
+      if (!isBombEffect(place.effect)) continue
       const occupied = this.material(MaterialType.CharacterTile)
         .location(LocationType.AdventureBoardCharacterTile)
         .player(this.player)

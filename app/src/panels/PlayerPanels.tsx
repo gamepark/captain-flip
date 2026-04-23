@@ -15,7 +15,7 @@ export const PlayerPanels: FC = () => {
   const allPlayers = rules.players
   const n = allPlayers.length
   const boardType = rules.remind<BoardType>(Memory.Board)
-  const showNeighbors = me !== undefined && boardType === BoardType.BoardH && n > 2
+  const showNeighbors = me !== undefined && [BoardType.BoardI, BoardType.BoardH].includes(boardType) && n > 2
 
   const myIndex = allPlayers.indexOf(me ?? allPlayers[0])
   const leftNeighborId = showNeighbors ? allPlayers[(myIndex - 1 + n) % n] : undefined
