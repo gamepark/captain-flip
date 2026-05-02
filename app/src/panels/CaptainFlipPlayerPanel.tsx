@@ -5,11 +5,10 @@ import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { CoinHelper } from '@gamepark/captain-flip/rules/helper/CoinHelper'
 import { Player } from '@gamepark/react-client'
-import { Avatar, PlayerTimer, usePlayerName, usePlayerId, usePlay } from '@gamepark/react-game'
+import { Avatar, PlayerTimer, usePlayerName, usePlay } from '@gamepark/react-game'
 import { getRelativePlayerIndex, useMaterialContext, useAnimations, useRules, MaterialContext } from '@gamepark/react-game'
-import { isCreateItemType, isDeleteItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
-import { FC, HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { isCreateItemType, isDeleteItemType } from '@gamepark/rules-api'
+import { FC, HTMLAttributes, useCallback, useEffect, useState } from 'react'
 import Flag from '../images/boards/Flag.png'
 import TotalCoin from '../images/coins/TotalCoin.png'
 import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
@@ -19,36 +18,27 @@ import PlayerTwo from '../images/panel/player-2.jpg'
 import PlayerThree from '../images/panel/player-3.jpg'
 import PlayerFour from '../images/panel/player-4.jpg'
 import PlayerFive from '../images/panel/player-5.jpg'
-import { encodeView, getSides } from '../locators/ViewHelper'
-import { BoardPreview } from './BoardPreview'
-import { getPanelCssPosition } from './PanelPosition'
-import { SidePickerPopup } from './SidePickerPopup'
+import { getPanelCssPosition, getPanelFontSize } from './PanelPosition'
 
 type CaptainFlipPlayerPanelProps = {
   player: Player
-  isLeftNeighbor?: boolean
-  isRightNeighbor?: boolean
-  isPickerOpen?: boolean
-  onRequestPicker?: (open: boolean) => void
-} & HTMLAttributes<HTMLDivElement>
+  panelSlot?: number
+  isViewed?: boolean
+  onPanelClick?: () => void
+} & Omit<HTMLAttributes<HTMLDivElement>, 'onClick'>
 
 export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) => {
-  const { player, isLeftNeighbor, isRightNeighbor, isPickerOpen, onRequestPicker } = props
+  const { player, panelSlot, isViewed: isViewedProp, onPanelClick: onPanelClickProp } = props
   const rules = useRules<CaptainFlipRules>()!
   const context = useMaterialContext()
-  const play = usePlay()
   const animations = useAnimations((a) => isCreateItemType(MaterialType.Coin)(a.move) || isDeleteItemType(MaterialType.Coin)(a.move))
-  const playerId = usePlayerId()
   const playerName = usePlayerName(player.id)
-  const { t } = useTranslation()
 
-  const { left: leftPlayer, right: rightPlayer } = getSides({ rules, player: playerId } as any)
-  const isViewedLeft = player.id === leftPlayer
-  const isViewedRight = player.id === rightPlayer
-  const isViewed = isViewedLeft || isViewedRight
+  const playerCount = rules.players.length
+  const useMini = playerCount > 2
 
-  const [isHovered, setIsHovered] = useState(false)
-  const hoverTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const isViewed = !!isViewedProp
+  const slot = panelSlot ?? getComputedIndex(context, player.id)
 
   const [coins, setCoins] = useState<number>(new CoinHelper(rules.game, player.id).coins)
   useEffect(() => {
@@ -65,37 +55,13 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
     .getItems()
 
   const onPanelClick = useCallback(() => {
-    if (rules.players.length <= 2) return
-    onRequestPicker?.(!isPickerOpen)
-  }, [rules.players.length, isPickerOpen, onRequestPicker])
-
-  // Assign this player to a side. If they already occupy the other side,
-  // the two sides swap (rule b): the previous occupant moves across
-  // instead of being kicked out.
-  const assignSide = useCallback((targetSide: 'left' | 'right') => {
-    const newLeft  = targetSide === 'left'  ? player.id : (leftPlayer === player.id ? rightPlayer : leftPlayer)
-    const newRight = targetSide === 'right' ? player.id : (rightPlayer === player.id ? leftPlayer : rightPlayer)
-    play(MaterialMoveBuilder.changeView(encodeView(newLeft, newRight)), { transient: true })
-    onRequestPicker?.(false)
-  }, [player.id, leftPlayer, rightPlayer, play, onRequestPicker])
-
-  const onPickerClose = useCallback(() => onRequestPicker?.(false), [onRequestPicker])
-
-  const onMouseEnter = useCallback(() => {
-    hoverTimeout.current = setTimeout(() => setIsHovered(true), 500)
-  }, [])
-
-  const onMouseLeave = useCallback(() => {
-    clearTimeout(hoverTimeout.current)
-    setIsHovered(false)
-  }, [])
+    onPanelClickProp?.()
+  }, [onPanelClickProp])
 
   return (
     <div
-      css={[panelCss, panelPosition(getComputedIndex(context, player.id), rules.players.length), isViewed && rules.players.length > 2 && viewedPanelCss, rules.players.length > 2 && clickableCss]}
+      css={[panelCss, useMini && multiPanelCss(getPanelFontSize(playerCount)), panelPosition(slot, playerCount), isViewed && playerCount > 2 && viewedPanelCss, playerCount > 2 && clickableCss]}
       onClick={onPanelClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
     >
       {/* Background */}
       <div css={bgCss(getBackground(player.id))} />
@@ -146,30 +112,6 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
         </div>
       </div>
 
-      {/* Neighbor indicator — only on board H */}
-      {isLeftNeighbor && (
-        <div css={neighborStripCss}>{t('neighbor.left')}</div>
-      )}
-      {isRightNeighbor && (
-        <div css={neighborStripCss}>{t('neighbor.right')}</div>
-      )}
-
-      {/* Board tray — revealed on hover after delay. Suppressed when
-          the side picker is open so the two don't stack visually. */}
-      {!isPickerOpen && (
-        <div css={[boardTrayCss, isHovered && boardTrayVisibleCss]}>
-          <BoardPreview playerId={player.id} />
-        </div>
-      )}
-
-      {/* Side picker — opened when the user clicks a clickable panel */}
-      {isPickerOpen && (
-        <SidePickerPopup
-          currentSide={isViewedLeft ? 'left' : isViewedRight ? 'right' : undefined}
-          onPick={assignSide}
-          onClose={onPickerClose}
-        />
-      )}
     </div>
   )
 }
@@ -186,6 +128,16 @@ const panelCss = css`
   transform: translateZ(100em);
   border-radius: 2em 1em 1em 1em;
   box-shadow: 0 0 0.5em black;
+  transition: top 0.2s ease, left 0.2s ease, font-size 0.2s ease;
+`
+
+const multiPanelCss = (fontSize: number) => css`
+  font-size: ${fontSize}em;
+`
+
+const reducedPanelCss = css`
+  transform-origin: top center;
+  transform: translateZ(100em) scale(0.92);
 `
 
 const clickableCss = css`
@@ -382,27 +334,6 @@ const mapImgCss = css`
 
 const mapRotatedCss = (deg: number) => css`
   transform: rotate(${deg}deg);
-`
-
-// ---- Board tray (hover reveal) ----
-
-const boardTrayCss = css`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 60;
-  opacity: 0;
-  transform: translateY(-0.5em);
-  pointer-events: none;
-  transition: opacity 0.2s ease 0s, transform 0.2s ease 0s;
-`
-
-const boardTrayVisibleCss = css`
-  opacity: 1;
-  transform: translateY(0.3em);
-  pointer-events: auto;
-  transition: opacity 0.2s ease, transform 0.2s ease;
 `
 
 // ---- Positioning ----

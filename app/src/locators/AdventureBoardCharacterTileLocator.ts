@@ -1,17 +1,17 @@
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
-import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
-import { Location, MaterialItem } from '@gamepark/rules-api'
+import { Locator, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
 import { AdventureBoardCharacterTileDescription } from './descriptions/AdventureBoardCharacterTileDescription'
-import { isPlayerVisible } from './ViewHelper'
 
 class AdventureBoardCharacterTileLocator extends Locator {
   parentItemType = MaterialType.AdventureBoard
   locationDescription = new AdventureBoardCharacterTileDescription()
 
   getParentItem(location: Location, context: MaterialContext) {
-    return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()
+    const description = context.material[MaterialType.AdventureBoard]
+    return description?.getStaticItems(context).find(item => item.location.player === location.player)
   }
 
   getPositionOnParent(location: Location, context: MaterialContext) {
@@ -47,9 +47,6 @@ class AdventureBoardCharacterTileLocator extends Locator {
     }
   }
 
-  hide(item: MaterialItem, context: ItemContext): boolean {
-    return !isPlayerVisible(item, context)
-  }
 }
 
 export const adventureBoardCharacterTileLocator = new AdventureBoardCharacterTileLocator()

@@ -2,7 +2,8 @@ import { css } from '@emotion/react'
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
-import { BoardDescription, ItemContext } from '@gamepark/react-game'
+import { Memory } from '@gamepark/captain-flip/rules/Memory'
+import { BoardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import BoardA from '../images/boards/BoardA.jpg'
 import BoardB from '../images/boards/BoardB.jpg'
@@ -43,10 +44,29 @@ export class AdventureBoardDescription extends BoardDescription {
     `
   }
 
+  getItemExtraCss() {
+    // Smooth transition when switching the viewed player so the boards
+    // glide to their new spots in sync with the panels.
+    return css`
+      transition: transform 0.2s ease;
+    `
+  }
+
   getImages() {
     const images = super.getImages()
     images.push(Flag)
     return images
+  }
+
+  getStaticItems(context: MaterialContext) {
+    const board = context.rules.remind<BoardType>(Memory.Board) ?? BoardType.BoardA
+    return context.rules.players.map((player) => ({
+      id: board,
+      location: {
+        type: LocationType.AdventureBoard,
+        player: player as number
+      }
+    }))
   }
 
   getLocations(item: MaterialItem, context: ItemContext) {

@@ -6,7 +6,6 @@ import { Location } from '@gamepark/rules-api'
 import { isMoveItemType, MaterialMove } from '@gamepark/rules-api'
 import { isEqual } from 'es-toolkit'
 import { characterTileDescription } from '../../material/CharacterTileDescription'
-import { isPlayerVisible } from '../../locators/ViewHelper'
 
 export class AdventureBoardCharacterTileDescription extends DropAreaDescription {
   constructor() {
@@ -14,7 +13,6 @@ export class AdventureBoardCharacterTileDescription extends DropAreaDescription 
   }
 
   canShortClick(move: MaterialMove, location: Location, context: MaterialContext) {
-    if (!isPlayerVisible({ location } as any, context as any)) return false
     if (
       context.rules.game.rule?.id === RuleId.Monkey
       || !isMoveItemType(MaterialType.CharacterTile)(move)
