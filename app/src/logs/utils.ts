@@ -1,6 +1,6 @@
-import { LocationType } from '@gamepark/captain-flip/material/LocationType'
-import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
+import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { CoinRule } from '@gamepark/captain-flip/rules/effect/CoinRule'
+import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { MaterialGame } from '@gamepark/rules-api'
 
 /** Instantiate a concrete rule class (Cook, Gunner, BoardEffectCoinX, ...)
@@ -32,22 +32,9 @@ export const getRuleCoins = <T extends CoinRule>(
   return rule.getCoins() ?? 0
 }
 
-/** Estimate the current round number from the number of placed
- *  character tiles divided by the number of players. */
-export const getRound = (game: any): number => {
-  const placed = game.items[MaterialType.CharacterTile]?.filter(
-    (i: any) => i.location?.type === LocationType.AdventureBoardCharacterTile
-  ).length ?? 0
-  const players = game.players?.length ?? 1
-  return Math.floor(placed / players) + 1
-}
-
-export const hasTreasureMapType = (game: any, playerId: number, type: number): boolean => {
-  const tokens = game.items[MaterialType.TreasureMapToken] ?? []
-  return tokens.some(
-    (t: any) =>
-      t.location?.type === LocationType.PlayerTreasureMapToken &&
-      t.location.player === playerId &&
-      t.id === type
-  )
+/** Current round number — incremented by EndOfTurnRule when the
+ *  last player of a round just finished. Tile-counting heuristics
+ *  don't work because Parrot/Monkey can place several tiles per turn. */
+export const getRound = (game: MaterialGame): number => {
+  return new CaptainFlipRules(game).remind<number>(Memory.Round) ?? 1
 }

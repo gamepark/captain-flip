@@ -25,12 +25,12 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
     // board (base game behaviour).
     const treasureMap = options.treasureMap ?? sample(treasureMapTypes)
     this.setupClothBag()
-    this.setupPlayerBoards(board)
     this.setupTreasureMapToken(board, treasureMap)
     if (board === BoardType.BoardG) {
       this.setupCells()
     }
     this.memorize(Memory.Board, board)
+    this.memorize(Memory.Round, 1)
   }
 
   setupTreasureMapToken(board: BoardType, type: TreasureMapType) {
@@ -63,19 +63,6 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
           rotation: item.location.rotation
         }))
       }
-    }
-  }
-
-  setupPlayerBoards(board: BoardType) {
-    for (const player of this.players) {
-      this.material(MaterialType.AdventureBoard)
-        .createItem({
-          id: board,
-          location: {
-            type: LocationType.AdventureBoard,
-            player: player
-          }
-        })
     }
   }
 

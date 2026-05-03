@@ -20,7 +20,7 @@ export class EndOfTurnRule extends CoinRule {
 
     // Gambler: 2 coins if no coins gained this turn
     if (helper.hasMap(TreasureMapType.Gambler)) {
-      const coinsAtStart = this.remind(Memory.CoinsGainedThisTurn) ?? 0
+      const coinsAtStart = this.remind(Memory.CoinsAtStartOfTurn) ?? 0
       const coinsNow = helper.getPlayerCoins()
       if (coinsNow <= coinsAtStart) {
         moves.push(...this.gainCoinsMoves(2))
@@ -46,7 +46,14 @@ export class EndOfTurnRule extends CoinRule {
     if (this.mustGoToScoring) {
       moves.push(this.startPlayerTurn(RuleId.SwabbyEndOfGame, this.game.players[0]))
     } else {
-      moves.push(this.startPlayerTurn(RuleId.DrawCharacterTile, this.nextPlayer))
+      // Round increments when the next player is the first-player flag
+      // holder (game.players[0] in this codebase). Same idiom as the
+      // end-of-game rules (Swabby/Parrot/Lookout/Carpenter/Inflamed).
+      const nextPlayer = this.nextPlayer
+      if (nextPlayer === this.game.players[0]) {
+        this.memorize(Memory.Round, (this.remind<number>(Memory.Round) ?? 1) + 1)
+      }
+      moves.push(this.startPlayerTurn(RuleId.DrawCharacterTile, nextPlayer))
     }
     return moves
   }
@@ -89,7 +96,7 @@ export class EndOfTurnRule extends CoinRule {
   onRuleEnd() {
     this.forget(Memory.PlacedCard)
     this.forget(Memory.BoardEffect)
-    this.forget(Memory.CoinsGainedThisTurn)
+    this.forget(Memory.CoinsAtStartOfTurn)
     return []
   }
 }

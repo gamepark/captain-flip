@@ -2,15 +2,15 @@ import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
 import { ItemContext, ListLocator, MaterialContext, isItemContext } from '@gamepark/react-game'
-import { Location, MaterialItem } from '@gamepark/rules-api'
-import { isPlayerVisible } from './ViewHelper'
+import { Location } from '@gamepark/rules-api'
 
 class PlayerTreasureMapLocator extends ListLocator {
   parentItemType = MaterialType.AdventureBoard
   gap = { x: 5 }
 
-  getParentItem(location: Location, { rules }: ItemContext) {
-    return rules.material(MaterialType.AdventureBoard).player(location.player).getItem()!
+  getParentItem(location: Location, context: ItemContext) {
+    const description = context.material[MaterialType.AdventureBoard]
+    return description?.getStaticItems(context).find(item => item.location.player === location.player) as any
   }
 
   getPositionOnParent(location: Location, context: MaterialContext) {
@@ -26,16 +26,12 @@ class PlayerTreasureMapLocator extends ListLocator {
       case BoardType.BoardI:
         return { x: 32, y: 0 }
       default:
-        return  { x: 25, y: 2.5 }
+        return { x: 25, y: 2.5 }
     }
   }
 
   getRotateZ(location: Location): number {
-    return  (location.rotation ?? 0) * 90
-  }
-
-  hide(item: MaterialItem, context: ItemContext): boolean {
-    return !isPlayerVisible(item, context)
+    return (location.rotation ?? 0) * 90
   }
 }
 

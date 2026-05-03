@@ -3,6 +3,7 @@ import ClotheColorName from '@gamepark/avataaars/dist/avatar/clothes/ClotheColor
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
+import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
 import { isCreateItemType, isMoveItemType } from '@gamepark/rules-api'
@@ -12,9 +13,19 @@ import { TutorialSetup } from './TutorialSetup'
 const me = 1
 const opponent = 2
 
+/** AdventureBoard is now a static item (not in `game.items`). The
+ *  tutorial uses BoardA, so we expose a ready-made focus entry. */
+const meBoardStaticItem = {
+  type: MaterialType.AdventureBoard,
+  item: {
+    id: BoardType.BoardA,
+    location: { type: LocationType.AdventureBoard, player: me }
+  }
+}
+
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
   version = 3
-  options = { player: 2, board: BoardType.BoardA }
+  options = { player: 2, board: BoardType.BoardA, treasureMap: TreasureMapType.Base }
   setup = new TutorialSetup()
 
   players = [
@@ -57,9 +68,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -97,9 +108,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -112,9 +123,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -127,9 +138,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -145,9 +156,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -198,9 +209,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           top: 7
         }
@@ -220,8 +231,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.CharacterTile).player(me)
-          //this.material(game, MaterialType.AdventureBoard).player(me)
         ],
+        staticItems: [meBoardStaticItem],
         locations: [
           this.location(LocationType.BoardEffect).player(me).location
         ],

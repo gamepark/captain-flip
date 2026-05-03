@@ -1,11 +1,12 @@
-import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
-import { Memory } from '@gamepark/captain-flip/rules/Memory'
-import { usePlayerId, usePlayers, useRules } from '@gamepark/react-game'
-import { FC, useState } from 'react'
+import { usePlay, usePlayerId, usePlayers, useRules } from '@gamepark/react-game'
+import { MaterialMoveBuilder } from '@gamepark/rules-api'
+import { FC, useCallback } from 'react'
 import { useAutoViewOnDrag } from '../hooks/useAutoViewOnDrag'
+import { getViewedPlayer, isMiniLayout } from '../locators/ViewHelper'
 import { CaptainFlipPlayerPanel } from './CaptainFlipPlayerPanel'
+import { getPanelSlot } from './PanelPosition'
 
 export const PlayerPanels: FC = () => {
   useAutoViewOnDrag()
@@ -14,29 +15,32 @@ export const PlayerPanels: FC = () => {
   const me = usePlayerId()
   const allPlayers = rules.players
   const n = allPlayers.length
-  const boardType = rules.remind<BoardType>(Memory.Board)
-  const showNeighbors = me !== undefined && [BoardType.BoardI, BoardType.BoardH].includes(boardType) && n > 2
+  const isMini = isMiniLayout({ rules, player: me } as any)
+  const viewed = getViewedPlayer({ rules, player: me } as any)
+  const viewedIndex = allPlayers.indexOf(viewed)
+  const play = usePlay()
 
-  const myIndex = allPlayers.indexOf(me ?? allPlayers[0])
-  const leftNeighborId = showNeighbors ? allPlayers[(myIndex - 1 + n) % n] : undefined
-  const rightNeighborId = showNeighbors ? allPlayers[(myIndex + 1) % n] : undefined
-
-  // At most one side picker may be open at a time across all panels.
-  // The panel holds no local state for this — it asks the parent.
-  const [openPickerFor, setOpenPickerFor] = useState<PlayerId | undefined>(undefined)
+  const onPanelClick = useCallback((player: PlayerId) => {
+    if (!isMini || player === viewed) return
+    play(MaterialMoveBuilder.changeView(player), { transient: true })
+  }, [isMini, viewed, play])
 
   return (
     <>
-      {players.map((player) =>
-        <CaptainFlipPlayerPanel
-          key={player.id}
-          player={player}
-          isLeftNeighbor={player.id === leftNeighborId}
-          isRightNeighbor={player.id === rightNeighborId}
-          isPickerOpen={openPickerFor === player.id}
-          onRequestPicker={(open) => setOpenPickerFor(open ? player.id : undefined)}
-        />
-      )}
+      {players.map((player) => {
+        const playerIndex = allPlayers.indexOf(player.id)
+        const slot = isMini ? getPanelSlot(playerIndex, viewedIndex, n) : players.findIndex(p => p.id === player.id)
+        const isViewed = isMini && player.id === viewed
+        return (
+          <CaptainFlipPlayerPanel
+            key={player.id}
+            player={player}
+            panelSlot={slot}
+            isViewed={isViewed}
+            onPanelClick={() => onPanelClick(player.id)}
+          />
+        )
+      })}
     </>
   )
 }

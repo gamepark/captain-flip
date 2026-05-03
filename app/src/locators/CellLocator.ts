@@ -1,13 +1,13 @@
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
-import { isPlayerVisible } from './ViewHelper'
 
 class CellLocator extends Locator {
   parentItemType = MaterialType.AdventureBoard
 
   getParentItem(location: Location, context: MaterialContext) {
-    return context.rules.material(MaterialType.AdventureBoard).player(location.player).getItem()
+    const description = context.material[MaterialType.AdventureBoard]
+    return description?.getStaticItems(context).find(item => item.location.player === location.player)
   }
 
   getPositionOnParent(location: Location) {
@@ -26,10 +26,6 @@ class CellLocator extends Locator {
   getHoverTransform(item: MaterialItem, _context: ItemContext) {
     const sign = item.location.rotation ? 1 : -1
     return [`rotateZ(${sign * this.getRotateZ(item.location)}deg)`]
-  }
-
-  hide(item: MaterialItem, context: ItemContext): boolean {
-    return !isPlayerVisible(item, context)
   }
 }
 

@@ -7,7 +7,13 @@ import { RuleId } from './RuleId'
 
 export class DrawCharacterTileRule extends PlayerTurnRule {
   onRuleStart() {
-    this.memorize(Memory.CoinsGainedThisTurn, new BoardHelper(this.game).getPlayerCoin(this.player))
+    // Snapshot only on the FIRST entry of the turn — Parrot/Monkey
+    // can re-enter this rule mid-turn, and re-snapshotting then would
+    // wipe out coins already gained earlier in the turn (breaking
+    // Gambler's "no coins gained" condition).
+    if (this.remind(Memory.CoinsAtStartOfTurn) === undefined) {
+      this.memorize(Memory.CoinsAtStartOfTurn, new BoardHelper(this.game).getPlayerCoin(this.player))
+    }
     const tiles = this.clothBagTiles
     const moves: MaterialMove[] = []
     moves.push(

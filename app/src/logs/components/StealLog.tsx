@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { BoardSpaceEffect } from '@gamepark/captain-flip/material/board/description/BoardCommon'
 import { BoardEffectStealLeftRule, BoardEffectStealRightRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectStealRule'
@@ -41,7 +42,7 @@ export const StealLog: FC<Props> = ({ move, context }) => {
   // Trailing icon = the steal board space effect
   const effectMemory = (rule as any).effect as { effect: BoardSpaceEffect } | undefined
   const effect = effectMemory?.effect
-  const board = (context.game as any).memory?.[Memory.Board] as BoardType | undefined
+  const board = new CaptainFlipRules(context.game).remind<BoardType>(Memory.Board)
   const icon = (effect && board !== undefined)
     ? <EffectIcon board={board} effect={effect}/>
     : <span/>
