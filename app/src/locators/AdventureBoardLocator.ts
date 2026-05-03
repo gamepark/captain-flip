@@ -1,4 +1,4 @@
-import { Locator, MaterialContext } from '@gamepark/react-game'
+import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { getCurrentMiniScale, getMiniBoardTablePosition, getPanelSlot, getPanelTablePosition } from '../panels/PanelPosition'
 import { getViewedPlayer, isMiniLayout } from './ViewHelper'
@@ -25,7 +25,7 @@ class AdventureBoardLocator extends Locator {
     return { x: 0, y: 13 }
   }
 
-  placeItem(item: MaterialItem, context: import('@gamepark/react-game').ItemContext) {
+  placeItem(item: MaterialItem, context: ItemContext) {
     const transform = super.placeItem(item, context)
     if (isMiniLayout(context) && item.location.player !== getViewedPlayer(context)) {
       const scale = getCurrentMiniScale(context.rules.players.length)

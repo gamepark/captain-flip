@@ -12,7 +12,7 @@ import { MaterialContext } from '@gamepark/react-game'
 
 export function getViewedPlayer(context: MaterialContext): PlayerId {
   const players = context.rules.players
-  const view = (context.rules as any).game.view
+  const view = context.rules.game.view
   if (typeof view === 'number' && players.includes(view as PlayerId)) {
     return view as PlayerId
   }

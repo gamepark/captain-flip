@@ -37,6 +37,19 @@ captainFlipAnimations
   })
   .duration(0.6)
 
+// Tile placement (hand or cell → AdventureBoard cell). Force a flat
+// trajectory — the framework default adds a Z arc that, on mini
+// boards, looks exaggerated next to the shrunk final tile.
+captainFlipAnimations
+  .configure((move, context) => {
+    if (!isMoveItemType(MaterialType.CharacterTile)(move)) return false
+    if (move.location.type !== LocationType.AdventureBoardCharacterTile) return false
+    const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)
+    return item.location.type !== LocationType.AdventureBoardCharacterTile
+  })
+  .duration(800)
+  .trajectory(() => ({ elevation: false, waypoints: [] }))
+
 // Pioche (2-3p): slide flat to the top of the bag, then straight to the hand.
 captainFlipAnimations
   .configure((move, context) => {

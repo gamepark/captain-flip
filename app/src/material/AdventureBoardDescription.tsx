@@ -46,9 +46,11 @@ export class AdventureBoardDescription extends BoardDescription {
 
   getItemExtraCss() {
     // Smooth transition when switching the viewed player so the boards
-    // glide to their new spots in sync with the panels.
+    // glide to their new spots in sync with the panels. `!important`
+    // overrides any framework-injected `transition: none` that comes
+    // with the default animation pipeline.
     return css`
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease !important;
     `
   }
 
@@ -60,11 +62,19 @@ export class AdventureBoardDescription extends BoardDescription {
 
   getStaticItems(context: MaterialContext) {
     const board = context.rules.remind<BoardType>(Memory.Board) ?? BoardType.BoardA
+    // Stash the currently viewed player into `location.x` (an unused
+    // coordinate for AdventureBoard). The framework's StaticItemDisplay
+    // memoises by deep-equality on the static item, and ignores
+    // getPositionDependencies — so we have to vary the item itself to
+    // invalidate the memo when the view switches. Without this, the
+    // boards jump instantly instead of gliding to their new spots.
+    const view = context.rules.game.view
     return context.rules.players.map((player) => ({
       id: board,
       location: {
         type: LocationType.AdventureBoard,
-        player: player as number
+        player: player as number,
+        x: typeof view === 'number' ? view : 0
       }
     }))
   }
