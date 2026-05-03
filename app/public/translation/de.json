@@ -18,7 +18,7 @@
   "log.board.pass-map-right": "<who>{player}</who> reicht die Schatzkarte<map></map> nach <right></right>",
   "log.end-turn.tag": "Zugende",
   "log.end-turn.body": "<maps/> : <who>{player}</who> erhält <num>{coins}</num><coin/>",
-  "log.end-turn.gambler": "<strong>Spieler</strong>-Bonus: +<num>2</num><coin/> <i>(in diesem Zug keine Münzen verdient)</i>",
+  "log.end-turn.gambler": "<img/> +<num>2</num><coin/> <i>(in diesem Zug keine Münzen verdient)</i>",
   "log.end-turn.kraken": "<strong>Kraken</strong>-Bonus: stiehlt 1 Münze vom reichsten Spieler",
   "log.score.gunner-zero": "(3 Kanoniere → 0)",
   "direction.left": "Links",

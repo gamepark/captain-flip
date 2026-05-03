@@ -18,7 +18,7 @@
   "log.board.pass-map-right": "<who>{player}</who> passa la Mappa del Tesoro<map></map> a <right></right>",
   "log.end-turn.tag": "Fine del turno",
   "log.end-turn.body": "<maps/> : <who>{player}</who> guadagna <num>{coins}</num><coin/>",
-  "log.end-turn.gambler": "Bonus <strong>Scommettitore</strong>: +<num>2</num><coin/> <i>(nessuna moneta guadagnata in questo turno)</i>",
+  "log.end-turn.gambler": "<img/> +<num>2</num><coin/> <i>(nessuna moneta guadagnata in questo turno)</i>",
   "log.end-turn.kraken": "Bonus <strong>Kraken</strong>: ruba 1 moneta al giocatore più ricco",
   "log.score.gunner-zero": "(3 Artiglieri → 0)",
   "direction.left": "Sinistra",

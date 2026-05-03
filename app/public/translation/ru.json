@@ -18,7 +18,7 @@
   "log.board.pass-map-right": "<who>{player}</who> передаёт Карту Сокровищ<map></map> <right></right>",
   "log.end-turn.tag": "Конец хода",
   "log.end-turn.body": "<maps/> : <who>{player}</who> получает <num>{coins}</num><coin/>",
-  "log.end-turn.gambler": "Бонус <strong>Игрок</strong>: +<num>2</num><coin/> <i>(нет монет, заработанных в этом ходу)</i>",
+  "log.end-turn.gambler": "<img/> +<num>2</num><coin/> <i>(нет монет, заработанных в этом ходу)</i>",
   "log.end-turn.kraken": "Бонус <strong>Кракен</strong>: крадёт 1 монету у самого богатого игрока",
   "log.score.gunner-zero": "(3 Канонира → 0)",
   "direction.left": "Налево",

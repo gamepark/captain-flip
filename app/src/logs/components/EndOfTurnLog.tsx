@@ -94,7 +94,13 @@ export const EndOfTurnLog: FC<Props> = ({ move, context }) => {
       )}
       {gamblerTriggered && (
         <div css={metaCss}>
-          <Trans i18nKey="log.end-turn.gambler" components={commonComponents}/>
+          <Trans
+            i18nKey="log.end-turn.gambler"
+            components={{
+              ...commonComponents,
+              img: <img src={treasureMapImages[TreasureMapType.Gambler]} alt="" css={krakenMapCss}/>
+            }}
+          />
         </div>
       )}
       {hasKraken && krakenCoins > 0 && (

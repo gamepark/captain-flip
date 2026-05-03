@@ -18,7 +18,7 @@
   "log.board.pass-map-right": "<who>{player}</who> passes the Treasure Map<map></map> to the <right></right>",
   "log.end-turn.tag": "End of turn",
   "log.end-turn.body": "<maps/> : <who>{player}</who> gains <num>{coins}</num><coin/>",
-  "log.end-turn.gambler": "<strong>Gambler</strong> bonus: +<num>2</num><coin/> <i>(no coins earned this turn)</i>",
+  "log.end-turn.gambler": "<img/> +<num>2</num><coin/> <i>(no coins earned this turn)</i>",
   "log.end-turn.kraken": "<img/> steals <num>1</num><coin/> from <who>{target}</who>",
   "log.end-turn.kraken.nothing": "<img/> nothing to steal",
   "log.score.gunner-zero": "(3 Gunners → 0)",
