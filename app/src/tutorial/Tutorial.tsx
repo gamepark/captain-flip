@@ -3,6 +3,7 @@ import ClotheColorName from '@gamepark/avataaars/dist/avatar/clothes/ClotheColor
 import { BoardType } from '@gamepark/captain-flip/material/board/Board'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
+import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { MaterialTutorial, TutorialStep } from '@gamepark/react-game'
 import { isCreateItemType, isMoveItemType } from '@gamepark/rules-api'
@@ -24,7 +25,7 @@ const meBoardStaticItem = {
 
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
   version = 3
-  options = { player: 2, board: BoardType.BoardA }
+  options = { player: 2, board: BoardType.BoardA, treasureMap: TreasureMapType.Base }
   setup = new TutorialSetup()
 
   players = [

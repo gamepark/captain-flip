@@ -13,7 +13,9 @@ class PlayerHandLocator extends HandLocator {
       }
       return { x: centralX - 17.8, y: 12.7, z: 5 }
     }
-    return { x: 0, y: 12.3, z: 5 }
+    // y matches onTopOfBag (clothBag.y - 8 = 12) so the pioche tile
+    // lands flat without a visible drop after the waypoint.
+    return { x: 0, y: 12, z: 5 }
   }
 }
 
