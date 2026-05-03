@@ -11,6 +11,8 @@
   "log.take-map": "<who>{player}</who> nimmt eine <strong>Schatzkarte</strong> <map/>",
   "log.coins.gain": "<who>{player}</who> erhält <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> verliert <num>{coins}</num><coin/> <icon/>",
+  "log.column-bonus.tag": "Spalten-Bonus",
+  "log.row-bonus.tag": "Reihen-Bonus",
   "log.coins.steal": "<thief>{thief}</thief> stiehlt <num>{coins}</num><coin/> von <victim>{victim}</victim> <icon/>",
   "log.board.pass-map-left": "<who>{player}</who> reicht die Schatzkarte<map></map> nach <left></left>",
   "log.board.pass-map-right": "<who>{player}</who> reicht die Schatzkarte<map></map> nach <right></right>",

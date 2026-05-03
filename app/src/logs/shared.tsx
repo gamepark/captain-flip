@@ -1,9 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { Character } from '@gamepark/captain-flip/material/tiles/Character'
+import { EffectMemory } from '@gamepark/captain-flip/rules/effect/board/BaseBoardEffect'
+import { BoardHelper } from '@gamepark/captain-flip/rules/helper/BoardHelper'
+import { Memory } from '@gamepark/captain-flip/rules/Memory'
+import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
 import { MaterialLogProps, usePlayerName } from '@gamepark/react-game'
+import { isStartRule, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC, ReactNode } from 'react'
 import { Trans } from 'react-i18next'
+import { accent } from '../theme/palette'
 import Carpenter from '../images/characters/Carpenter.jpg'
 import Cartographer from '../images/characters/Cartographer.jpg'
 import Cook from '../images/characters/Cook.jpg'
@@ -113,6 +120,88 @@ const clickableLineCss = css`
     transform: scale(1.08);
   }
 `
+
+/* ---------- Column / row bonus badge ----------
+ * Inline tag rendered before a log entry to mark that the effect
+ * triggers because a column (or, on Boards F/H, a row) was filled. */
+export type BonusKind = 'column' | 'row'
+
+export const BonusBadge: FC<{ kind: BonusKind }> = ({ kind }) => (
+  <span css={bonusBadgeCss}>
+    <Trans i18nKey={kind === 'column' ? 'log.column-bonus.tag' : 'log.row-bonus.tag'}/>
+  </span>
+)
+
+const bonusBadgeCss = css`
+  display: inline-block;
+  padding: 0 0.4em;
+  margin-right: 0.4em;
+  font-size: 0.7em;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: ${accent};
+  border: 0.06em solid ${accent};
+  background: rgba(243, 231, 204, 0.55);
+  vertical-align: 0.2em;
+`
+
+/** Rule IDs that correspond to a board-effect handler (an entry of
+ *  the Memory.BoardEffect queue is being processed). Excludes the
+ *  BoardEffect / BoardEndOfEffect dispatchers themselves and every
+ *  character-effect rule (Cartographer, Cook, Monkey, ...). */
+const BOARD_EFFECT_RULES: ReadonlySet<RuleId> = new Set([
+  RuleId.BoardEffectCoinX,
+  RuleId.BoardEffectTreasureMap,
+  RuleId.BoardEffectFirstXThenY,
+  RuleId.BoardEndOfGameCoinIfSame,
+  RuleId.BoardEndOfGameCoinIfAllDifferent,
+  RuleId.BoardEffectCoinPerDifferent,
+  RuleId.BoardEffectCoinPerFullColumn,
+  RuleId.BoardEffectFlip,
+  RuleId.BoardEffectReplay,
+  RuleId.BoardEffectReplayIfAllDifferent,
+  RuleId.BoardEffectCoinPerDifferentAdjacent,
+  RuleId.BoardEffectCoinAndTreasureMap,
+  RuleId.BoardEffectCoinPerBomb,
+  RuleId.BoardEffectStealLeft,
+  RuleId.BoardEffectStealRight,
+  RuleId.BoardEffectPassTreasureMap,
+  RuleId.BoardEffectFirstFlipThenY,
+  RuleId.BoardEffectPlayFromCell,
+  RuleId.BoardEffectFlipCell,
+  RuleId.BoardEffectFirstXThenYRow,
+  RuleId.BoardEffectXIfRowSame,
+  RuleId.BoardEffectCoinPerTreasureMap
+])
+
+/** Detect whether the current move corresponds to a column-top (or
+ *  row-completion) board effect — i.e. an entry of Memory.BoardEffect
+ *  queued with `immediate === false`.
+ *
+ *  - StartRule(<board-effect-rule>): the rule is about to process the
+ *    queue head — use `move.id` as the active rule.
+ *  - MoveItem / CustomMove: a board-effect rule is currently running —
+ *    use `game.rule.id` as the active rule.
+ *
+ *  In either case the queue head is the entry being processed, so we
+ *  read `Memory.BoardEffect[0]` from the same `game` snapshot. */
+export function getBonusKind(game: MaterialGame, move: MaterialMove): BonusKind | undefined {
+  const activeRuleId = isStartRule(move)
+    ? (move.id as RuleId)
+    : ((game as any).rule?.id as RuleId | undefined)
+  if (activeRuleId === undefined || !BOARD_EFFECT_RULES.has(activeRuleId)) return undefined
+  const rules = new CaptainFlipRules(game)
+  const queue = rules.remind<EffectMemory[]>(Memory.BoardEffect)
+  const top = queue?.[0]
+  if (!top || top.immediate !== false) return undefined
+  const description = new BoardHelper(game).boardDescription
+  const rowEffects = description.rowEffects ?? []
+  const isRow = rowEffects.some(
+    (re) => re.type === top.effect.type && (re as any).row === top.y
+  )
+  return isRow ? 'row' : 'column'
+}
 
 /* ---------- Common components map for <Trans> ----------
  * Every NAMED tag we use in translation strings ends up here.

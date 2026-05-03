@@ -11,6 +11,8 @@
   "log.take-map": "<who>{player}</who> берёт <strong>Карту Сокровищ</strong> <map/>",
   "log.coins.gain": "<who>{player}</who> получает <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> теряет <num>{coins}</num><coin/> <icon/>",
+  "log.column-bonus.tag": "Бонус колонки",
+  "log.row-bonus.tag": "Бонус ряда",
   "log.coins.steal": "<thief>{thief}</thief> крадёт <num>{coins}</num><coin/> у <victim>{victim}</victim> <icon/>",
   "log.board.pass-map-left": "<who>{player}</who> передаёт Карту Сокровищ<map></map> <left></left>",
   "log.board.pass-map-right": "<who>{player}</who> передаёт Карту Сокровищ<map></map> <right></right>",

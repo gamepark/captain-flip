@@ -31,6 +31,7 @@ import {
   MaterialGame,
   MaterialMove
 } from '@gamepark/rules-api'
+import { ComponentType, FC } from 'react'
 import { CoinGainLog } from './components/CoinGainLog'
 import { DrawOrFlipTileLog } from './components/DrawOrFlipTileLog'
 import { EndOfTurnLog, shouldShowEndOfTurnLog } from './components/EndOfTurnLog'
@@ -39,10 +40,23 @@ import { PassMapLeftLog } from './components/PassMapLeftLog'
 import { PassMapRightLog } from './components/PassMapRightLog'
 import { PlaceTileLog } from './components/PlaceTileLog'
 import { PlayerScoreBreakdownLog } from './components/PlayerScoreBreakdownLog'
+import { BonusBadge, BonusKind, getBonusKind, Props } from './shared'
 import { StealLog } from './components/StealLog'
 import { TakeTreasureMapLog } from './components/TakeTreasureMapLog'
 import { TurnSeparatorLog } from './components/TurnSeparatorLog'
 import { VictoryLog } from './components/VictoryLog'
+
+/** Wrap a log Component with a "column / row bonus" badge prefix when
+ *  the underlying board effect was queued because a column or row
+ *  was completed. The badge is rendered inline before the original
+ *  content so the dispatcher can keep its single-Component contract. */
+const withBonusBadge = (Inner: ComponentType<Props>, kind: BonusKind): FC<Props> =>
+  (props) => (
+    <>
+      <BonusBadge kind={kind}/>
+      <Inner {...props}/>
+    </>
+  )
 import {
   endOfGameHeaderCss,
   endTurnCardCss,
@@ -138,7 +152,9 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
       // Intercepted before the generic CoinGainLog dispatch so we can
       // mention both thief and victim in a single line.
       if (id === RuleId.BoardEffectStealLeft || id === RuleId.BoardEffectStealRight) {
-        return { Component: StealLog, depth: 1, css: depthTint }
+        const stealKind = getBonusKind(context.game, move)
+        const Component = stealKind ? withBonusBadge(StealLog, stealKind) : StealLog
+        return { Component, depth: 1, css: depthTint }
       }
 
       // Every other StartRule is logged ONLY if it produces coins.
@@ -151,15 +167,21 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
       const rule = new RuleClass(context.game)
       const coins = rule.getCoins?.() ?? 0
       if (coins === 0) return undefined
-      return { Component: CoinGainLog, depth: 1, css: depthTint }
+      const coinKind = getBonusKind(context.game, move)
+      const CoinComponent = coinKind ? withBonusBadge(CoinGainLog, coinKind) : CoinGainLog
+      return { Component: CoinComponent, depth: 1, css: depthTint }
     }
 
     /* ---------- Custom moves (pass treasure map direction) ---------- */
     if (isCustomMoveType(CustomMoveType.PassLeft)(move)) {
-      return { Component: PassMapLeftLog, depth: 1, css: depthTint }
+      const kind = getBonusKind(context.game, move)
+      const Component = kind ? withBonusBadge(PassMapLeftLog, kind) : PassMapLeftLog
+      return { Component, depth: 1, css: depthTint }
     }
     if (isCustomMoveType(CustomMoveType.PassRight)(move)) {
-      return { Component: PassMapRightLog, depth: 1, css: depthTint }
+      const kind = getBonusKind(context.game, move)
+      const Component = kind ? withBonusBadge(PassMapRightLog, kind) : PassMapRightLog
+      return { Component, depth: 1, css: depthTint }
     }
 
     /* ---------- Item moves ---------- */
@@ -178,8 +200,12 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
           .getItem(move.itemIndex)
           ?.location.type
         if (sourceLocationType === LocationType.AdventureBoardCharacterTile) {
-          // Same board → different rotation = flip on board
-          return { Component: FlipOnBoardLog, depth: 1, css: depthTint }
+          // Same board → different rotation = flip on board. Tag the
+          // line with a column/row badge when the flip comes from a
+          // board-effect rule processing a deferred entry.
+          const flipKind = getBonusKind(context.game, move)
+          const Component = flipKind ? withBonusBadge(FlipOnBoardLog, flipKind) : FlipOnBoardLog
+          return { Component, depth: 1, css: depthTint }
         }
         // Hand or Cell → Board = real placement
         return {
@@ -213,6 +239,12 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
       // us drop the redundant Cartographer / BoardEffectTreasureMap
       // start-rule entries.
       if (move.location.type === LocationType.PlayerTreasureMapToken) {
+        const mapKind = getBonusKind(context.game, move)
+        if (mapKind) {
+          // Column / row bonus context → render as a sub-effect of the
+          // placement (depth 1, no avatar) to match the other badged logs.
+          return { Component: withBonusBadge(TakeTreasureMapLog, mapKind), depth: 1, css: depthTint }
+        }
         return {
           Component: TakeTreasureMapLog,
           player: move.location.player,

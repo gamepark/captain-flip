@@ -11,6 +11,8 @@
   "log.take-map": "<who>{player}</who> toma un <strong>Mapa del Tesoro</strong> <map/>",
   "log.coins.gain": "<who>{player}</who> gana <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> pierde <num>{coins}</num><coin/> <icon/>",
+  "log.column-bonus.tag": "Bono de columna",
+  "log.row-bonus.tag": "Bono de fila",
   "log.coins.steal": "<thief>{thief}</thief> roba <num>{coins}</num><coin/> a <victim>{victim}</victim> <icon/>",
   "log.board.pass-map-left": "<who>{player}</who> pasa el Mapa del Tesoro<map></map> a la <left></left>",
   "log.board.pass-map-right": "<who>{player}</who> pasa el Mapa del Tesoro<map></map> a la <right></right>",

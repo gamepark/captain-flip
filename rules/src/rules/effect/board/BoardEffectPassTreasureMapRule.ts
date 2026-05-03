@@ -18,7 +18,10 @@ export class BoardEffectPassTreasureMapRule extends BaseBoardEffect {
 
   onCustomMove(move: CustomMove) {
     if (isCustomMoveType(CustomMoveType.PassLeft)(move) || isCustomMoveType(CustomMoveType.PassRight)(move)) {
-      const direction = isCustomMoveType(CustomMoveType.PassLeft)(move) ? -1 : 1
+      // Captain Flip convention: PassLeft hands maps to the next
+      // player in turn order (myIndex + 1, the "left neighbor" at
+      // the table); PassRight to the previous player (myIndex - 1).
+      const direction = isCustomMoveType(CustomMoveType.PassLeft)(move) ? 1 : -1
       const moves: MaterialMove[] = []
       const players = this.game.players
 
