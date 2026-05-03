@@ -46,13 +46,14 @@ export class EndOfTurnRule extends CoinRule {
     if (this.mustGoToScoring) {
       moves.push(this.startPlayerTurn(RuleId.SwabbyEndOfGame, this.game.players[0]))
     } else {
-      // Round increments when the last player just finished their turn,
-      // so the next player (= first player) starts a new round.
-      const isLastPlayerOfRound = this.player === this.game.players[this.game.players.length - 1]
-      if (isLastPlayerOfRound) {
+      // Round increments when the next player is the first-player flag
+      // holder (game.players[0] in this codebase). Same idiom as the
+      // end-of-game rules (Swabby/Parrot/Lookout/Carpenter/Inflamed).
+      const nextPlayer = this.nextPlayer
+      if (nextPlayer === this.game.players[0]) {
         this.memorize(Memory.Round, (this.remind<number>(Memory.Round) ?? 1) + 1)
       }
-      moves.push(this.startPlayerTurn(RuleId.DrawCharacterTile, this.nextPlayer))
+      moves.push(this.startPlayerTurn(RuleId.DrawCharacterTile, nextPlayer))
     }
     return moves
   }
