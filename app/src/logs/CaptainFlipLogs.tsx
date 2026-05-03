@@ -40,6 +40,7 @@ import { PassMapLeftLog } from './components/PassMapLeftLog'
 import { PassMapRightLog } from './components/PassMapRightLog'
 import { PlaceTileLog } from './components/PlaceTileLog'
 import { PlayerScoreBreakdownLog } from './components/PlayerScoreBreakdownLog'
+import { RotateTreasureMapLog } from './components/RotateTreasureMapLog'
 import { BonusBadge, BonusKind, getBonusKind, Props } from './shared'
 import { StealLog } from './components/StealLog'
 import { TakeTreasureMapLog } from './components/TakeTreasureMapLog'
@@ -239,6 +240,23 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
       // us drop the redundant Cartographer / BoardEffectTreasureMap
       // start-rule entries.
       if (move.location.type === LocationType.PlayerTreasureMapToken) {
+        // AllDirections rotation: source AND destination are the same
+        // player's PlayerTreasureMapToken slot — only the rotation
+        // changes. Render a dedicated "rotates one notch" log instead
+        // of the take-map line.
+        const rules = new CaptainFlipRules(context.game)
+        const sourceLocation = rules.material(MaterialType.TreasureMapToken).getItem(move.itemIndex)?.location
+        if (
+          sourceLocation?.type === LocationType.PlayerTreasureMapToken
+          && sourceLocation.player === move.location.player
+        ) {
+          return {
+            Component: RotateTreasureMapLog,
+            player: move.location.player,
+            depth: 0,
+            css: playerEntryCss(context.game, move.location.player)
+          }
+        }
         const mapKind = getBonusKind(context.game, move)
         if (mapKind) {
           // Column / row bonus context → render as a sub-effect of the

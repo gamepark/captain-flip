@@ -9,6 +9,7 @@
   "log.place": "<who>{player}</who> posiziona <tile/> nella colonna <strong>{column}</strong>, riga <strong>{row}</strong>",
   "log.place.with-cost": "<who>{player}</who> posiziona <tile/> nella colonna <strong>{column}</strong>, riga <strong>{row}</strong> <i>(costo: <num>{cost}</num><coin/>)</i>",
   "log.take-map": "<who>{player}</who> prende una <strong>Mappa del Tesoro</strong> <map/>",
+  "log.rotate-map": "<who>{player}</who> ruota la sua Mappa del Tesoro di uno scatto <map/>",
   "log.coins.gain": "<who>{player}</who> guadagna <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> perde <num>{coins}</num><coin/> <icon/>",
   "log.column-bonus.tag": "Bonus colonna",

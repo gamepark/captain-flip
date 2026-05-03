@@ -9,6 +9,7 @@
   "log.place": "<who>{player}</who> places <tile/> at column <strong>{column}</strong>, row <strong>{row}</strong>",
   "log.place.with-cost": "<who>{player}</who> places <tile/> at column <strong>{column}</strong>, row <strong>{row}</strong> <i>(cost: <num>{cost}</num><coin/>)</i>",
   "log.take-map": "<who>{player}</who> takes a <strong>Treasure Map</strong> <map/>",
+  "log.rotate-map": "<who>{player}</who> rotates their Treasure Map one notch <map/>",
   "log.coins.gain": "<who>{player}</who> gains <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> loses <num>{coins}</num><coin/> <icon/>",
   "log.column-bonus.tag": "Column bonus",

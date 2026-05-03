@@ -9,6 +9,7 @@
   "log.place": "<who>{player}</who> кладёт <tile/> в столбец <strong>{column}</strong>, ряд <strong>{row}</strong>",
   "log.place.with-cost": "<who>{player}</who> кладёт <tile/> в столбец <strong>{column}</strong>, ряд <strong>{row}</strong> <i>(стоимость: <num>{cost}</num><coin/>)</i>",
   "log.take-map": "<who>{player}</who> берёт <strong>Карту Сокровищ</strong> <map/>",
+  "log.rotate-map": "<who>{player}</who> поворачивает свою Карту Сокровищ на одно деление <map/>",
   "log.coins.gain": "<who>{player}</who> получает <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> теряет <num>{coins}</num><coin/> <icon/>",
   "log.column-bonus.tag": "Бонус колонки",

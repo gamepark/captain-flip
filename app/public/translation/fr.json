@@ -9,6 +9,7 @@
   "log.place": "<who>{player}</who> place <tile/> en colonne <strong>{column}</strong>, ligne <strong>{row}</strong>",
   "log.place.with-cost": "<who>{player}</who> place <tile/> en colonne <strong>{column}</strong>, ligne <strong>{row}</strong> <i>(coût : <num>{cost}</num><coin/>)</i>",
   "log.take-map": "<who>{player}</who> prend une <strong>Carte au trésor</strong> <map/>",
+  "log.rotate-map": "<who>{player}</who> tourne sa Carte au trésor d'un cran <map/>",
   "log.coins.gain": "<who>{player}</who> gagne <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> perd <num>{coins}</num><coin/> <icon/>",
   "log.column-bonus.tag": "Bonus de colonne",

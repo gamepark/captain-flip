@@ -9,6 +9,7 @@
   "log.place": "<who>{player}</who> legt <tile/> in Spalte <strong>{column}</strong>, Reihe <strong>{row}</strong>",
   "log.place.with-cost": "<who>{player}</who> legt <tile/> in Spalte <strong>{column}</strong>, Reihe <strong>{row}</strong> <i>(Kosten: <num>{cost}</num><coin/>)</i>",
   "log.take-map": "<who>{player}</who> nimmt eine <strong>Schatzkarte</strong> <map/>",
+  "log.rotate-map": "<who>{player}</who> dreht seine Schatzkarte um eine Stufe <map/>",
   "log.coins.gain": "<who>{player}</who> erhält <num>{coins}</num><coin/> <icon/>",
   "log.coins.loss": "<who>{player}</who> verliert <num>{coins}</num><coin/> <icon/>",
   "log.column-bonus.tag": "Spalten-Bonus",
