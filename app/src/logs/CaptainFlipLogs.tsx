@@ -3,6 +3,7 @@ import { CustomMoveType } from '@gamepark/captain-flip/material/CustomMoveType'
 import { LocationType } from '@gamepark/captain-flip/material/LocationType'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { BoardEffectCoinAndTreasureMapRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectCoinAndTreasureMapRule'
+import { BoardEffectStealLeftRule, BoardEffectStealRightRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectStealRule'
 import { BoardEffectCoinPerBombRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectCoinPerBombRule'
 import { BoardEffectCoinPerDifferentAdjacentRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectCoinPerDifferentAdjacentRule'
 import { BoardEffectCoinPerDifferentRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectCoinPerDifferentRule'
@@ -149,28 +150,24 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
         return { Component: EndOfTurnLog, depth: 0, css: endTurnCardCss }
       }
 
-      // Steal effects → dedicated narrative line "X steals N from Y".
-      // Intercepted before the generic CoinGainLog dispatch so we can
-      // mention both thief and victim in a single line.
-      if (id === RuleId.BoardEffectStealLeft || id === RuleId.BoardEffectStealRight) {
-        const stealKind = getBonusKind(context.game, move)
-        const Component = stealKind ? withBonusBadge(StealLog, stealKind) : StealLog
-        return { Component, depth: 1, css: depthTint }
-      }
-
-      // Every other StartRule is logged ONLY if it produces coins.
-      // We instantiate the rule class via the RuleId mapping and peek
-      // at its `getCoins()` — visual-only effects return 0 and are
-      // silenced here, their side-effects are logged by their own
-      // MoveItem / CustomMove events.
+      // Every StartRule that maps to a CoinRule is logged ONLY if it
+      // produces coins. Steal rules go through the same gate — this is
+      // the only place where we silence them when the victim is broke
+      // or has no matching characters. Visual-only effects (Flip,
+      // FlipCell, PassTreasureMap, …) are absent from the map and fall
+      // through to `return undefined`.
       const RuleClass = coinRuleForId[id as RuleId]
       if (!RuleClass) return undefined
       const rule = new RuleClass(context.game)
       const coins = rule.getCoins?.() ?? 0
       if (coins === 0) return undefined
-      const coinKind = getBonusKind(context.game, move)
-      const CoinComponent = coinKind ? withBonusBadge(CoinGainLog, coinKind) : CoinGainLog
-      return { Component: CoinComponent, depth: 1, css: depthTint }
+      const kind = getBonusKind(context.game, move)
+      // Steal effects get a narrative line ("X steals N from Y"); the
+      // rest goes through the generic gain/loss line.
+      const isSteal = id === RuleId.BoardEffectStealLeft || id === RuleId.BoardEffectStealRight
+      const Inner = isSteal ? StealLog : CoinGainLog
+      const Component = kind ? withBonusBadge(Inner, kind) : Inner
+      return { Component, depth: 1, css: depthTint }
     }
 
     /* ---------- Custom moves (pass treasure map direction) ---------- */
@@ -303,4 +300,6 @@ const coinRuleForId: Partial<Record<RuleId, new (game: MaterialGame) => CoinRule
   [RuleId.BoardEndOfGameCoinIfSame]: BoardEndOfGameCoinIfSameRule,
   [RuleId.BoardEndOfGameCoinIfAllDifferent]: BoardEndOfGameCoinIfAllDifferentRule,
   [RuleId.BoardEffectXIfRowSame]: BoardEffectXIfRowSameRule,
+  [RuleId.BoardEffectStealLeft]: BoardEffectStealLeftRule,
+  [RuleId.BoardEffectStealRight]: BoardEffectStealRightRule,
 }

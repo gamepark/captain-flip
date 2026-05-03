@@ -37,18 +37,35 @@ captainFlipAnimations
   })
   .duration(0.6)
 
-// Tile placement (hand or cell → AdventureBoard cell). Force a flat
-// trajectory — the framework default adds a Z arc that, on mini
-// boards, looks exaggerated next to the shrunk final tile.
+// Tile placement (2-3p): flat trajectory. Boards sit side-by-side with
+// the bag below, no obstacle to fly over.
 captainFlipAnimations
   .configure((move, context) => {
     if (!isMoveItemType(MaterialType.CharacterTile)(move)) return false
     if (move.location.type !== LocationType.AdventureBoardCharacterTile) return false
+    if (context.rules.players.length >= 4) return false
     const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)
     return item.location.type !== LocationType.AdventureBoardCharacterTile
   })
   .duration(800)
   .trajectory(() => ({ elevation: false, waypoints: [] }))
+
+// Tile placement (4-5p): parabolic arc tall enough to clear the bag,
+// since the hand sits next to it and the tile would otherwise glide
+// straight through the bag on the way to the board.
+captainFlipAnimations
+  .configure((move, context) => {
+    if (!isMoveItemType(MaterialType.CharacterTile)(move)) return false
+    if (move.location.type !== LocationType.AdventureBoardCharacterTile) return false
+    if (context.rules.players.length < 4) return false
+    const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)
+    return item.location.type !== LocationType.AdventureBoardCharacterTile
+  })
+  .duration(800)
+  .trajectory(() => ({
+    elevation: { height: 12, shape: 'parabolic' },
+    waypoints: []
+  }))
 
 // Pioche (2-3p): slide flat to the top of the bag, then straight to the hand.
 captainFlipAnimations
@@ -65,7 +82,10 @@ captainFlipAnimations
     return {
       elevation: false,
       waypoints: [
-        { at: 0.35, locator: onTopOfBagLocator, location: () => ({ rotation: dest.rotation }), elevation: 0 }
+        // Elevation 10em at the on-top-of-bag waypoint lifts the tile
+        // above the bag so it visibly clears it on the way to the
+        // hand instead of glitching through it.
+        { at: 0.35, locator: onTopOfBagLocator, location: () => ({ rotation: dest.rotation }), elevation: 10 }
       ]
     }
   })
