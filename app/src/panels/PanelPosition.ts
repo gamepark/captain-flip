@@ -157,12 +157,13 @@ export function getPanelSlot(playerIndex: number, viewedIndex: number, playerCou
   if (playerCount <= 2) return playerIndex
   if (playerIndex === viewedIndex) return 1
 
-  // Turn-order layout around the viewed player:
-  //   slot 0 = prev (turn-order predecessor of viewed)
+  // Turn-order layout around the viewed player (clockwise around the
+  // table, reading left to right):
+  //   slot 0 = next (turn-order successor of viewed)
   //   slot 1 = viewed
-  //   slot 2 = next, slot 3 = next-next, ...
+  //   slot 2 = prev, slot 3 = prev-prev, ...
   // For 5p the last slot (4) floats below the rightmost top-row mini.
-  const offset = (playerIndex - viewedIndex + playerCount) % playerCount
+  const offset = (viewedIndex - playerIndex + playerCount) % playerCount
   if (offset === playerCount - 1) return 0
   return offset + 1
 }
