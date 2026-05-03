@@ -30,6 +30,7 @@ export class CaptainFlipSetup extends MaterialGameSetup<PlayerId, MaterialType, 
       this.setupCells()
     }
     this.memorize(Memory.Board, board)
+    this.memorize(Memory.Round, 1)
   }
 
   setupTreasureMapToken(board: BoardType, type: TreasureMapType) {

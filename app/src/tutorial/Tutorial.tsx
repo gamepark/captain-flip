@@ -12,6 +12,16 @@ import { TutorialSetup } from './TutorialSetup'
 const me = 1
 const opponent = 2
 
+/** AdventureBoard is now a static item (not in `game.items`). The
+ *  tutorial uses BoardA, so we expose a ready-made focus entry. */
+const meBoardStaticItem = {
+  type: MaterialType.AdventureBoard,
+  item: {
+    id: BoardType.BoardA,
+    location: { type: LocationType.AdventureBoard, player: me }
+  }
+}
+
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
   version = 3
   options = { player: 2, board: BoardType.BoardA }
@@ -57,9 +67,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -97,9 +107,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -112,9 +122,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -127,9 +137,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -145,9 +155,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           bottom: 5
         }
@@ -198,9 +208,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => ({
         materials: [
-          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand),
-          this.material(game, MaterialType.AdventureBoard).player(me)
+          this.material(game, MaterialType.CharacterTile).player(me).location(LocationType.PlayerHand)
         ],
+        staticItems: [meBoardStaticItem],
         margin: {
           top: 7
         }
@@ -220,8 +230,8 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       focus: (game) => ({
         materials: [
           this.material(game, MaterialType.CharacterTile).player(me)
-          //this.material(game, MaterialType.AdventureBoard).player(me)
         ],
+        staticItems: [meBoardStaticItem],
         locations: [
           this.location(LocationType.BoardEffect).player(me).location
         ],

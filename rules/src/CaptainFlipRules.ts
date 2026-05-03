@@ -138,10 +138,10 @@ TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<Playe
 
   getTieBreaker(tieBreaker: number, playerId: PlayerId): number | undefined {
     if (tieBreaker === 1) {
-      const gunner = this.getPlayerGunners(playerId)
-      if (gunner === 3) return 0
-      const treasureMap = this.material(MaterialType.TreasureMapToken).player(playerId)
-      return treasureMap.length
+      // Match the score-zero condition (>= 3 bombs) so 4+ bombs aren't
+      // tie-broken as if they had positive coins.
+      if (this.getPlayerGunners(playerId) >= 3) return 0
+      return this.material(MaterialType.TreasureMapToken).player(playerId).length
     }
 
     return

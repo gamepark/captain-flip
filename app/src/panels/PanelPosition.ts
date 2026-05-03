@@ -148,10 +148,6 @@ export function getMiniBoardTablePosition(slot: number, playerCount: number) {
   return { x: panel.x, y: panelBottom + miniHalf + 0.5 }
 }
 
-export function getPanelHeight(_slot = 0, playerCount = 2): number {
-  return panelTableHeight(playerCount)
-}
-
 /** Mini-board scale exposed for the locator. */
 export function getCurrentMiniScale(playerCount: number): number {
   return getMiniScale(playerCount)
@@ -161,20 +157,12 @@ export function getPanelSlot(playerIndex: number, viewedIndex: number, playerCou
   if (playerCount <= 2) return playerIndex
   if (playerIndex === viewedIndex) return 1
 
-  const leftIndex  = (viewedIndex - 1 + playerCount) % playerCount
-  const rightIndex = (viewedIndex + 1) % playerCount
-
-  if (playerIndex === leftIndex) return 0
-  if (playerCount === 3) {
-    if (playerIndex === rightIndex) return 2
-    return 0
-  }
-  if (playerIndex === rightIndex) return 3
-
-  if (playerCount === 5) {
-    const acrossNear = (viewedIndex + 2) % playerCount
-    if (playerIndex === acrossNear) return 2
-    return 4 // across-far floats bottom-right
-  }
-  return 2
+  // Turn-order layout around the viewed player:
+  //   slot 0 = prev (turn-order predecessor of viewed)
+  //   slot 1 = viewed
+  //   slot 2 = next, slot 3 = next-next, ...
+  // For 5p the last slot (4) floats below the rightmost top-row mini.
+  const offset = (playerIndex - viewedIndex + playerCount) % playerCount
+  if (offset === playerCount - 1) return 0
+  return offset + 1
 }

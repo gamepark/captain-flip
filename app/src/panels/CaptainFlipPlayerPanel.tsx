@@ -5,7 +5,7 @@ import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { CoinHelper } from '@gamepark/captain-flip/rules/helper/CoinHelper'
 import { Player } from '@gamepark/react-client'
-import { Avatar, PlayerTimer, usePlayerName, usePlay } from '@gamepark/react-game'
+import { Avatar, PlayerTimer, usePlayerName } from '@gamepark/react-game'
 import { getRelativePlayerIndex, useMaterialContext, useAnimations, useRules, MaterialContext } from '@gamepark/react-game'
 import { isCreateItemType, isDeleteItemType } from '@gamepark/rules-api'
 import { FC, HTMLAttributes, useCallback, useEffect, useState } from 'react'
@@ -133,11 +133,6 @@ const panelCss = css`
 
 const multiPanelCss = (fontSize: number) => css`
   font-size: ${fontSize}em;
-`
-
-const reducedPanelCss = css`
-  transform-origin: top center;
-  transform: translateZ(100em) scale(0.92);
 `
 
 const clickableCss = css`
@@ -310,19 +305,6 @@ const mapsCss = css`
   display: flex;
   align-items: center;
   gap: 0.2em;
-`
-
-const neighborStripCss = css`
-  position: relative;
-  z-index: 2;
-  background: linear-gradient(90deg, #d4a828, #c09020, #d4a828);
-  padding: 0.15em 0.5em;
-  text-align: center;
-  font-size: 1.1em;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.4);
-  border-radius: 0 0 1em 1em;
 `
 
 const mapImgCss = css`

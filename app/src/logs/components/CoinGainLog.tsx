@@ -71,9 +71,9 @@ export const CoinGainLog: FC<Props> = ({ move, context }) => {
   let trailing: ReactElement | undefined
   let onClick: (() => void) | undefined
   if (isCharacterRule) {
-    const placedIndex = (context.game as any).memory?.[Memory.PlacedCard] as number | undefined
+    const placedIndex = rules.remind<number>(Memory.PlacedCard)
     const placedItem = placedIndex !== undefined
-      ? context.game.items[MaterialType.CharacterTile]?.[placedIndex]
+      ? rules.material(MaterialType.CharacterTile).getItem(placedIndex)
       : undefined
     const character = placedItem ? getCharacter(placedItem) : undefined
     if (character !== undefined) {
@@ -84,7 +84,7 @@ export const CoinGainLog: FC<Props> = ({ move, context }) => {
     // Board-effect icon — not clickable.
     const effectMemory = (rule as any).effect as { effect: BoardSpaceEffect } | undefined
     const effect = effectMemory?.effect
-    const board = (context.game as any).memory?.[Memory.Board] as BoardType | undefined
+    const board = rules.remind<BoardType>(Memory.Board)
     if (effect && board !== undefined) {
       trailing = <EffectIcon board={board} effect={effect}/>
     }

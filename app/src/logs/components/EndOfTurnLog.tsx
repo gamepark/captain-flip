@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { TreasureMapType } from '@gamepark/captain-flip/material/TreasureMapType'
 import { TreasureMapHelper } from '@gamepark/captain-flip/rules/helper/TreasureMapHelper'
 import { Memory } from '@gamepark/captain-flip/rules/Memory'
@@ -49,9 +50,13 @@ export const EndOfTurnLog: FC<Props> = ({ move, context }) => {
 
   const hasGambler = playerMaps.some((m) => m.id === TreasureMapType.Gambler)
   const hasKraken = playerMaps.some((m) => m.id === TreasureMapType.Kraken)
-  // Gambler bonus only fires when the player earned 0 coins this turn.
-  const coinsGainedThisTurn = (game as any).memory?.[Memory.CoinsGainedThisTurn] ?? 0
-  const gamblerTriggered = hasGambler && coinsGainedThisTurn === 0
+  // Gambler bonus fires when the player has not gained any coin this
+  // turn. Memory holds the wallet snapshot at the start of the turn,
+  // so we compare against the current wallet (this log renders before
+  // the EndOfTurn move is applied, so the wallet doesn't include any
+  // end-of-turn bonus yet).
+  const coinsAtStart = new CaptainFlipRules(game).remind<number>(Memory.CoinsAtStartOfTurn) ?? 0
+  const gamblerTriggered = hasGambler && mapsHelper.getPlayerCoins() <= coinsAtStart
 
   // Kraken: find the richest opponent and check if the steal triggers.
   const krakenCoins = mapsHelper.getKrakenCoins()
@@ -124,8 +129,10 @@ export const shouldShowEndOfTurnLog = (game: MaterialGame, playerId: number): bo
   const hasKraken = playerMaps.some((m) => m.id === TreasureMapType.Kraken)
   if (hasKraken) return true
   const hasGambler = playerMaps.some((m) => m.id === TreasureMapType.Gambler)
-  const coinsGainedThisTurn = (game as any).memory?.[Memory.CoinsGainedThisTurn] ?? 0
-  if (hasGambler && coinsGainedThisTurn === 0) return true
+  if (hasGambler) {
+    const coinsAtStart = new CaptainFlipRules(game).remind<number>(Memory.CoinsAtStartOfTurn) ?? 0
+    if (mapsHelper.getPlayerCoins() <= coinsAtStart) return true
+  }
   return false
 }
 

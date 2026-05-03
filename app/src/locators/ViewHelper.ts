@@ -1,6 +1,5 @@
 import { PlayerId } from '@gamepark/captain-flip/PlayerId'
-import { ItemContext, MaterialContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { MaterialContext } from '@gamepark/react-game'
 
 /**
  * Captain Flip stores the currently viewed player id in `game.view`
@@ -23,11 +22,4 @@ export function getViewedPlayer(context: MaterialContext): PlayerId {
 /** True when the layout uses one centred viewed board + minis. */
 export function isMiniLayout(context: MaterialContext): boolean {
   return context.rules.players.length >= 3
-}
-
-/** Visibility helper for items located under a player's board.
- *  - 2p: both players' items always visible.
- *  - 3+: every player's items are still visible (minis show them too). */
-export function isPlayerVisible(_item: MaterialItem, _context: ItemContext): boolean {
-  return true
 }
