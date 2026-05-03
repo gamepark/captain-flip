@@ -2,6 +2,7 @@ import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
 import { getRelativePlayerIndex, isItemContext, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { getPanelTablePosition, getPanelHeight } from '../panels/PanelPosition'
+import { clothBagLocator } from './ClothBagLocator'
 
 /** Panel locators are shared by CharacterTile (boolean rotation =
  *  flip face/dos → rotateY(180)) and TreasureMapToken (numeric
@@ -58,7 +59,10 @@ class BelowPlayerPanelLocator extends Locator {
 }
 
 class OnTopOfBagLocator extends Locator {
-  coordinates = { x: 0, y: 12, z: 1 }
+  getCoordinates(_location: Location, context: MaterialContext) {
+    const { x, y } = clothBagLocator.getCoordinates({} as Location, context)
+    return { x, y: y - 8, z: 1 }
+  }
 
   getRotateZ(location: Location, context: MaterialContext) {
     return getZRotationDegrees(location, context)

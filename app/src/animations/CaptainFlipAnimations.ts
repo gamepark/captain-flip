@@ -253,7 +253,8 @@ captainFlipAnimations
     }
   })
 
-// Pioche towards a VIEWED player: rise above bag then to hand
+// Pioche towards the viewed player: rise above the bag, then glide
+// to the current hand position.
 captainFlipAnimations
   .configure((move, context) => {
     if (!isMoveItemType(MaterialType.CharacterTile)(move)) return false
@@ -262,7 +263,18 @@ captainFlipAnimations
     return item.location.type === LocationType.ClothBag && move.location.type === LocationType.PlayerHand
   })
   .duration(1200)
-  .trajectory(() => ({ elevation: false }))
+  .trajectory((_context, move) => {
+    const dest = (move as any).location
+    return {
+      elevation: false,
+      waypoints: [
+        // Slide flat to the top of the bag, no elevation yet…
+        { at: 0.35, locator: onTopOfBagLocator, location: () => ({ rotation: dest.rotation }), elevation: 0 },
+        // …then immediately rise to elevation 10 before flying to the hand.
+        { at: 0.36, locator: onTopOfBagLocator, location: () => ({ rotation: dest.rotation }), elevation: 10 }
+      ]
+    }
+  })
 
 // Flip in hand for a NON-VIEWED player: the tile drops out of the panel
 // (scaling up from 0.001), pauses, flips, pauses again, then goes back up
