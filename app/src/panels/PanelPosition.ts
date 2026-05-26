@@ -14,8 +14,13 @@ const TABLE_Y_MIN = -5
 // the row exactly fills the table width.
 const BOARD_FULL_WIDTH = 24
 const BOARD_GAP = 1.5
-// Side margin: boards never touch the table edge.
+// Side margin: boards never touch the table edge. Used as-is for 2p/3p;
+// the 4-panel row (4p/5p) derives a wider margin — see getSideMargin.
 const TABLE_SIDE_MARGIN = 0.2
+// Clear gap we want between the outermost panel edge and the table edge in
+// the 4-panel row, where the panels are slightly wider than the minis they
+// sit on (so the panel — not the mini — is the binding outer element).
+const TABLE_EDGE_GAP = 0.6
 
 // Buffer between the top row's mini bottom and the floating panel.
 const FLOATING_BUFFER = 0
@@ -32,6 +37,25 @@ function topRowCount(playerCount: number): number {
   return 4
 }
 
+/** Side margin between the top row and each table edge.
+ *
+ *  2p/3p sit well inside the table and keep the flat TABLE_SIDE_MARGIN.
+ *
+ *  The 4-panel row (4p & 5p) packs the central board + 3 minis edge-to-edge,
+ *  but each player PANEL is a touch WIDER than the mini board it floats on,
+ *  so the two outer panels would spill past the table edge. We reserve a side
+ *  margin equal to that panel overhang plus TABLE_EDGE_GAP. Solving the
+ *  margin -> miniWidth -> overhang fixpoint gives the mini width directly:
+ *  the outer panel edge then lands exactly TABLE_EDGE_GAP inside the table. */
+function getSideMargin(playerCount: number): number {
+  if (playerCount <= 3) return TABLE_SIDE_MARGIN
+  const minis = topRowCount(playerCount) - 1
+  const panelWidth = PANEL_WIDTH_EM * PANEL_FONT_SIZE_2P
+  const tableWidth = TABLE_X_MAX - TABLE_X_MIN
+  const mini = (tableWidth - 2 * TABLE_EDGE_GAP - panelWidth - BOARD_FULL_WIDTH - minis * BOARD_GAP) / (minis - 1)
+  return TABLE_EDGE_GAP + (panelWidth - mini) / 2
+}
+
 /** Mini-board scale: derived per player count so a row of (1 central +
  *  N minis) with uniform `BOARD_GAP` fills the table width. Smaller
  *  player counts get bigger minis. 3p shrinks slightly — at full fill
@@ -39,7 +63,7 @@ function topRowCount(playerCount: number): number {
 function getMiniScale(playerCount: number): number {
   if (playerCount <= 2) return 1
   const n = topRowCount(playerCount)
-  const tableWidth = TABLE_X_MAX - TABLE_X_MIN - 2 * TABLE_SIDE_MARGIN
+  const tableWidth = TABLE_X_MAX - TABLE_X_MIN - 2 * getSideMargin(playerCount)
   const minisCount = n - 1
   const remaining = tableWidth - BOARD_FULL_WIDTH - (n - 1) * BOARD_GAP
   const scale = (remaining / minisCount) / BOARD_FULL_WIDTH
@@ -56,7 +80,7 @@ function miniWidth(playerCount: number): number {
 function rowGap(playerCount: number): number {
   if (playerCount <= 2) return BOARD_GAP
   const n = topRowCount(playerCount)
-  const tableWidth = TABLE_X_MAX - TABLE_X_MIN - 2 * TABLE_SIDE_MARGIN
+  const tableWidth = TABLE_X_MAX - TABLE_X_MIN - 2 * getSideMargin(playerCount)
   return (tableWidth - BOARD_FULL_WIDTH - (n - 1) * miniWidth(playerCount)) / (n - 1)
 }
 
@@ -96,7 +120,7 @@ function topRowSlotX(slot: number, playerCount: number): number {
   const m = miniWidth(playerCount)
   const gap = rowGap(playerCount)
   // Walk from the left margin, accumulating widths and gaps.
-  let cursor = TABLE_X_MIN + TABLE_SIDE_MARGIN
+  let cursor = TABLE_X_MIN + getSideMargin(playerCount)
   let result = 0
   for (let i = 0; i < n; i++) {
     const w = i === 1 ? BOARD_FULL_WIDTH : m
