@@ -5,9 +5,10 @@ import { getCharacter } from '@gamepark/captain-flip/rules/GetCharacter'
 import { RuleId } from '@gamepark/captain-flip/rules/RuleId'
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons/faRotateRight'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { CardDescription, ItemContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/captain-flip/material/MaterialType'
+import { FlipMenuButton } from '../theme/FlipMenuButton'
 import Carpenter from '../images/characters/Carpenter.jpg'
 import Cartographer from '../images/characters/Cartographer.jpg'
 import Cook from '../images/characters/Cook.jpg'
@@ -60,7 +61,7 @@ export class CharacterTileDescription extends CardDescription {
       move.location.rotation !== item.location.rotation
     )
     if (!flipMove) return
-    return <ItemMenuButton move={flipMove} label="Flip" labelPosition="right" angle={45} radius={3} css={flipButtonCss}><FontAwesomeIcon icon={faRotateRight} /></ItemMenuButton>
+    return <FlipMenuButton move={flipMove} label="Flip" labelPosition="right" angle={45} radius={3}><FontAwesomeIcon icon={faRotateRight} /></FlipMenuButton>
   }
 
   getHoverTransform(item: MaterialItem, context: ItemContext) {
@@ -85,10 +86,6 @@ export const characterTileDescription = new CharacterTileDescription()
 
 const noPointer = css`
   pointer-events: none;
-`
-
-const flipButtonCss = css`
-  font-size: 0.8em;
 `
 
 const highlightCharactersCss = css`
