@@ -1,5 +1,6 @@
-import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
+import { PlayerId } from '@gamepark/captain-flip/PlayerId'
 import { getCurrentMiniScale, getMiniBoardTablePosition, getPanelSlot, getPanelTablePosition } from '../panels/PanelPosition'
 import { getViewedPlayer, isMiniLayout } from './ViewHelper'
 
@@ -17,11 +18,12 @@ class AdventureBoardLocator extends Locator {
       const slot = getPanelSlot(playerIndex, viewedIndex, players.length)
       return getMiniBoardTablePosition(slot, players.length)
     }
-    // 2 players: first player on the left, second on the right.
-    const players = context.rules.players
-    const playerIndex = players.indexOf(location.player as number)
-    if (playerIndex === 0) return { x: -19, y: 13 }
-    if (playerIndex === 1) return { x: 19, y: 13 }
+    // 2 players: the connected player is always shown on the left, the
+    // opponent on the right. Spectators fall back to turn order (player[0]
+    // left). Uses the me-relative index so panel and board match.
+    const relativeIndex = getRelativePlayerIndex(context, location.player as PlayerId)
+    if (relativeIndex === 0) return { x: -19, y: 13 }
+    if (relativeIndex === 1) return { x: 19, y: 13 }
     return { x: 0, y: 13 }
   }
 
