@@ -1,8 +1,19 @@
-import { getEnumValues, OptionsSpec } from '@gamepark/rules-api'
+import { getEnumValues, OptionsSpec, OptionsValidationError } from '@gamepark/rules-api'
 import { BoardType, boardTypes } from './material/board/Board'
 import { TreasureMapType } from './material/TreasureMapType'
 
 export const treasureMapTypes = getEnumValues(TreasureMapType)
+
+/**
+ * Expansion boards that cannot be played with the Base Treasure Map:
+ * they require one of the advanced Treasure Map variants.
+ */
+export const boardsForbiddenWithBaseTreasureMap = [
+  BoardType.BoardF,
+  BoardType.BoardG,
+  BoardType.BoardH,
+  BoardType.BoardI
+]
 
 /**
  * This is the type of object that the game receives when a new game is started.
@@ -39,6 +50,15 @@ export const CaptainFlipOptionsSpec: OptionsSpec<CaptainFlipOptions> = {
       subscriberRequired: type !== TreasureMapType.Base,
       competitiveDisabled: true
     })
+  },
+  validate(options, t) {
+    if (
+      options.treasureMap === TreasureMapType.Base &&
+      options.board !== undefined &&
+      boardsForbiddenWithBaseTreasureMap.includes(options.board)
+    ) {
+      throw new OptionsValidationError(t('base-map.forbidden'), ['board', 'treasureMap'])
+    }
   }
 }
 
