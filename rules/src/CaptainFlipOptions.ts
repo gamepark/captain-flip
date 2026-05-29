@@ -48,8 +48,8 @@ export const CaptainFlipOptionsSpec: OptionsSpec<CaptainFlipOptions> = {
       label: t => t(getTreasureMapTypeTitle(type)),
       help: t => t(getTreasureMapTypeHelp(type)),
       subscriberRequired: type !== TreasureMapType.Base,
-      competitiveDisabled: true
-    })
+    }),
+    competitiveDisabled: true
   },
   validate(options, t) {
     if (
