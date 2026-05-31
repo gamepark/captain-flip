@@ -73,6 +73,13 @@ export class BoardHelper extends MaterialRulesPart {
     return count >= 4
   }
 
+  isBoardFull(playerId: PlayerId) {
+    for (let x = 0; x < this.columnCount; x++) {
+      if (!this.isColumnFull(playerId, x)) return false
+    }
+    return true
+  }
+
   get columnCount() {
     return maxBy(this.places, (place) => place.x)!.x + 1
   }

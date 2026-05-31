@@ -1,12 +1,14 @@
 import { ItemMove } from '@gamepark/rules-api'
 import { LocationType } from '../../../material/LocationType'
 import { MaterialType } from '../../../material/MaterialType'
+import { BoardHelper } from '../../helper/BoardHelper'
 import { PlaceTileHelper } from '../../helper/PlaceTileHelper'
 import { BaseBoardEffect } from './BaseBoardEffect'
 
 export class BoardEffectPlayFromCellRule extends BaseBoardEffect {
   onRuleStart() {
     if (this.cellTiles.length === 0) return [this.goNext()]
+    if (new BoardHelper(this.game).isBoardFull(this.player)) return [this.goNext()]
     return []
   }
 

@@ -9,7 +9,7 @@ import { BaseBoardEffect } from './BaseBoardEffect'
 
 export class BoardEffectReplayIfAllDifferentRule extends BaseBoardEffect {
   onRuleStart() {
-    if (this.isBoardFull) return [this.goNext()]
+    if (new BoardHelper(this.game).isBoardFull(this.player)) return [this.goNext()]
     const characters = this.effectColumnTiles
     const countDifferent = uniqBy(characters, (item) => getCharacter(item))?.length ?? 0
     if (countDifferent !== characters.length) return [this.goNext()]
@@ -17,15 +17,6 @@ export class BoardEffectReplayIfAllDifferentRule extends BaseBoardEffect {
     const moves: MaterialMove[] = []
     moves.push(this.startRule(RuleId.DrawCharacterTile))
     return moves
-  }
-
-  get isBoardFull() {
-    const helper = new BoardHelper(this.game)
-    let fullColumn = 0
-    for (let x = 0; x < helper.columnCount; x++) {
-      if (helper.isColumnFull(this.player, x)) fullColumn++
-    }
-    return fullColumn === helper.columnCount
   }
 
   get effectColumnTiles() {

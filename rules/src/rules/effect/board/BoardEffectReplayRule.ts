@@ -13,7 +13,7 @@ type BoardEffectReplay = { type: BoardSpaceType, isAllSame?: boolean }
 export class BoardEffectReplayRule extends BaseBoardEffect<BoardEffectReplay> {
   onRuleStart() {
     const moves: MaterialMove[] = []
-    if (this.isBoardFull) return [this.goNext()]
+    if (new BoardHelper(this.game).isBoardFull(this.player)) return [this.goNext()]
     if (this.effect.effect.isAllSame) {
       const characters = this.effectColumnTiles
       const countDifferent = uniqBy(characters, (item) => getCharacter(item))?.length ?? 0
@@ -22,16 +22,6 @@ export class BoardEffectReplayRule extends BaseBoardEffect<BoardEffectReplay> {
 
     moves.push(this.startRule(RuleId.DrawCharacterTile))
     return moves
-  }
-
-  get isBoardFull() {
-    const helper = new BoardHelper(this.game)
-    let fullColumn = 0
-    for (let x = 0; x < helper.columnCount; x++) {
-      if (helper.isColumnFull(this.player, x)) fullColumn++
-    }
-
-    return fullColumn === helper.columnCount
   }
 
   get effectColumnTiles() {
