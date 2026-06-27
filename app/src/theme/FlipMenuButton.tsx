@@ -32,11 +32,16 @@ const flipMenuButtonCss = (labelPosition: 'left' | 'right') => css`
     inset 0 0.08em 0.18em rgba(255, 232, 170, 0.6),
     inset 0 -0.1em 0.2em rgba(0, 0, 0, 0.45);
   font-size: 0.8em;
-  transition: margin-top 0.15s, filter 0.15s;
+  transition: margin-top 0.15s, background 0.15s;
 
+  /* NB: do not use filter/opacity on hover here. They flatten the 3D
+   * context (transform-style: preserve-3d) that the base component uses
+   * to tuck the label ribbon behind the medallion via translateZ, which
+   * would make the cartouche pop in front of the button. Brighten via
+   * the background gradient instead. */
   &:hover:not(:disabled) {
     margin-top: -0.15em;
-    filter: brightness(1.08);
+    background: radial-gradient(circle at 35% 30%, ${brassHi} 0%, ${brass} 45%, ${brassDk} 100%);
   }
 
   > span {
