@@ -63,13 +63,13 @@ abstract class BoardEffectStealRule extends BaseBoardEffect<BoardEffectSteal> {
   }
 }
 
-// Captain Flip convention: "left neighbor" is the player who plays
-// right after the active player (= next in turn order, myIndex + 1).
-// "Right neighbor" is the previous player (myIndex - 1).
+// Captain Flip convention: the player to your LEFT (shown on the left of
+// the screen) is the PREVIOUS player in turn order (myIndex - 1); the
+// player to your RIGHT is the NEXT player (myIndex + 1).
 export class BoardEffectStealLeftRule extends BoardEffectStealRule {
-  get direction() { return 1 }
+  get direction() { return -1 }
 }
 
 export class BoardEffectStealRightRule extends BoardEffectStealRule {
-  get direction() { return -1 }
+  get direction() { return 1 }
 }

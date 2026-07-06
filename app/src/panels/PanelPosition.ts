@@ -181,17 +181,15 @@ export function getPanelSlot(playerIndex: number, viewedIndex: number, playerCou
   if (playerCount <= 2) return playerIndex
   if (playerIndex === viewedIndex) return 1
 
-  // Turn-order layout around the viewed player, mirrored to match a
-  // top-down view of the table from the viewer's POV: the "left
-  // neighbor" (next in turn order — plays right after me) sits on
-  // the player's LEFT at the table, which the camera renders on the
-  // visual RIGHT of the screen.
-  //   slot 0 = prev-prev / farthest predecessor
+  // Turn order reads left-to-right on screen: the viewed player sits
+  // at slot 1, the players who come AFTER them in turn order extend to
+  // the right, and the player right BEFORE them wraps to the far left.
+  //   slot 0 = previous (farthest to the left)
   //   slot 1 = viewed
-  //   slot 2 = next (left neighbor at the table, screen-right of viewed)
+  //   slot 2 = next
   //   slot 3 = next-next, ...
   // For 5p the last slot (4) floats below the rightmost top-row mini.
-  const offset = (viewedIndex - playerIndex + playerCount) % playerCount
+  const offset = (playerIndex - viewedIndex + playerCount) % playerCount
   if (offset === playerCount - 1) return 0
   return offset + 1
 }

@@ -11,15 +11,16 @@ export const PassTreasureMapHeader = () => {
   const itsMe = player && activePlayer === player
   const name = usePlayerName(activePlayer)
   const legalMoves = useLegalMoves()
-  const passLeft = legalMoves.find(isCustomMoveType(CustomMoveType.PassLeft))
-  const passRight = legalMoves.find(isCustomMoveType(CustomMoveType.PassRight))
+  // On-screen "left" is the previous player, "right" the next player.
+  const passPrevious = legalMoves.find(isCustomMoveType(CustomMoveType.PassPrevious))
+  const passNext = legalMoves.find(isCustomMoveType(CustomMoveType.PassNext))
 
   if (itsMe) {
     return (
       <Trans i18nKey="header.pass-map.you"
         components={{
-          left: <PlayMoveButton move={passLeft!} />,
-          right: <PlayMoveButton move={passRight!} />
+          left: <PlayMoveButton move={passPrevious!} />,
+          right: <PlayMoveButton move={passNext!} />
         }}
       />
     )

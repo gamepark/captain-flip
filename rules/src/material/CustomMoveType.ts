@@ -1,4 +1,4 @@
 export enum CustomMoveType {
-  PassLeft = 1,
-  PassRight
+  PassPrevious = 1,
+  PassNext
 }

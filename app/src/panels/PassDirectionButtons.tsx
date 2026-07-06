@@ -12,22 +12,26 @@ export const PassDirectionButtons: FC = () => {
   const playerId = usePlayerId()
   const { t } = useTranslation()
   const legalMoves = useLegalMoves()
-  const passLeft = legalMoves.find(isCustomMoveType(CustomMoveType.PassLeft))
-  const passRight = legalMoves.find(isCustomMoveType(CustomMoveType.PassRight))
+  // Screen layout maps the previous player to the left and the next player
+  // to the right, so the "← Pass left" button plays PassPrevious and the
+  // "Pass right →" button plays PassNext. The rule itself stays turn-order
+  // based (see BoardEffectPassTreasureMapRule).
+  const passPrevious = legalMoves.find(isCustomMoveType(CustomMoveType.PassPrevious))
+  const passNext = legalMoves.find(isCustomMoveType(CustomMoveType.PassNext))
 
   if (rules.game.rule?.id !== RuleId.BoardEffectPassTreasureMap) return null
   if (!playerId || playerId !== rules.game.rule?.player) return null
-  if (!passLeft || !passRight) return null
+  if (!passPrevious || !passNext) return null
 
   return (
     <>
       <div css={[buttonWrapCss, leftButtonCss]}>
-        <PlayMoveButton move={passLeft} css={directionButtonCss}>
+        <PlayMoveButton move={passPrevious} css={directionButtonCss}>
           ← {t('pass.left', 'Pass left')}
         </PlayMoveButton>
       </div>
       <div css={[buttonWrapCss, rightButtonCss]}>
-        <PlayMoveButton move={passRight} css={directionButtonCss}>
+        <PlayMoveButton move={passNext} css={directionButtonCss}>
           {t('pass.right', 'Pass right')} →
         </PlayMoveButton>
       </div>

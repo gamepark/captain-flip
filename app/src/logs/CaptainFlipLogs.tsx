@@ -171,12 +171,12 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
     }
 
     /* ---------- Custom moves (pass treasure map direction) ---------- */
-    if (isCustomMoveType(CustomMoveType.PassLeft)(move)) {
+    if (isCustomMoveType(CustomMoveType.PassPrevious)(move)) {
       const kind = getBonusKind(context.game, move)
       const Component = kind ? withBonusBadge(PassMapLeftLog, kind) : PassMapLeftLog
       return { Component, depth: 1, css: depthTint }
     }
-    if (isCustomMoveType(CustomMoveType.PassRight)(move)) {
+    if (isCustomMoveType(CustomMoveType.PassNext)(move)) {
       const kind = getBonusKind(context.game, move)
       const Component = kind ? withBonusBadge(PassMapRightLog, kind) : PassMapRightLog
       return { Component, depth: 1, css: depthTint }
