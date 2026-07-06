@@ -18,7 +18,7 @@ export const GameDisplay: FC<GameDisplayProps> = () => {
       xMin={-32}
       xMax={32}
       yMin={-5}
-      css={{ border: '1px solid #ccc' }}
+      css={isDev && { border: '1px solid #ccc' }}
       yMax={26}
       margin={{ top: 7, left: 0, right: 0, bottom: 0 }}
     >
