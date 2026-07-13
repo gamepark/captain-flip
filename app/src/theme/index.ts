@@ -1,4 +1,5 @@
 import { BottomBarNavigation } from '@gamepark/react-game'
+import BackgroundImage from '../images/background.jpg'
 import {
   chatBarCss,
   historyEntryCss,
@@ -31,6 +32,16 @@ import { tutorialContainerCss, tutorialContentCss } from './tutorial'
  * through a single 200-line blob.
  * ================================================================== */
 export const captainFlipTheme = {
+  root: {
+    /* Full-viewport game background — our own parchment/sea artwork
+     * instead of the framework's generic cover. The overlay darkens
+     * it slightly so the parchment cards and panels layered on top
+     * stay readable. */
+    background: {
+      image: BackgroundImage,
+      overlay: 'rgba(0, 0, 0, 0.7)'
+    }
+  },
   dialog: {
     backgroundColor: paper,
     color: ink,
