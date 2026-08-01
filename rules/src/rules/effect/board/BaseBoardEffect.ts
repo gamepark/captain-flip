@@ -35,6 +35,5 @@ export class BaseBoardEffect<E extends BoardSpaceEffect = BoardSpaceEffect> exte
 
   onRuleEnd(_move: RuleMove) {
     this.removeFirst()
-    return []
   }
 }

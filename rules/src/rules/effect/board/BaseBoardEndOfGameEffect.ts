@@ -49,6 +49,5 @@ export abstract class BaseBoardEndOfGameEffect<E extends BoardSpaceEffect = Boar
     if (nextPlayer === this.game.players[0]) {
       this.removeFirst()
     }
-    return []
   }
 }

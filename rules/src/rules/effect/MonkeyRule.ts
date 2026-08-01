@@ -63,8 +63,4 @@ export class MonkeyRule extends CoinRule {
   get monkey() {
     return this.material(MaterialType.CharacterTile).getItem(this.remind(Memory.PlacedCard))
   }
-
-  onRuleEnd() {
-    return []
-  }
 }

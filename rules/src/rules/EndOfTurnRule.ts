@@ -97,6 +97,5 @@ export class EndOfTurnRule extends CoinRule {
     this.forget(Memory.PlacedCard)
     this.forget(Memory.BoardEffect)
     this.forget(Memory.CoinsAtStartOfTurn)
-    return []
   }
 }

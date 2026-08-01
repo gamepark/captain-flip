@@ -1,4 +1,4 @@
-import { getEnumValues, OptionsSpec, OptionsValidationError } from '@gamepark/rules-api'
+import { getEnumValues, OptionsSpec, OptionsSpecV2, OptionsValidationError } from '@gamepark/rules-api'
 import { BoardType, boardTypes } from './material/board/Board'
 import { TreasureMapType } from './material/TreasureMapType'
 
@@ -26,8 +26,47 @@ export type CaptainFlipOptions = {
 }
 
 /**
- * This object describes all the options a game can have, and will be used by GamePark website to create automatically forms for you game
- * (forms for friendly games, or forms for matchmaking preferences, for instance).
+ * What Captain Flip is: one adventure board and one treasure map, and four of
+ * the boards that the Base map cannot support.
+ *
+ * The cross rule is written the way `validate` was — Base map *and* one of those
+ * boards is what the game refuses — rather than as a `requires` on each of the
+ * four boards. Both express the same set of legal pairs, but this one names Base
+ * once: adding a treasure map later must not mean revisiting four boards to say
+ * they tolerate it too.
+ *
+ * The subscription gates that `valueSpec` carried on the later boards and on
+ * every non-Base map are not here. They are the platform's call, held in its
+ * database so they can change without releasing Captain Flip again — as are the
+ * labels, which live in the game's own presentation document.
+ */
+export const CaptainFlipOptionsSpecV2: OptionsSpecV2 = {
+  specVersion: 2,
+  players: { min: 2, max: 5 },
+  options: {
+    board: { kind: 'enum', values: boardTypes },
+    treasureMap: { kind: 'enum', values: treasureMapTypes }
+  },
+  rules: [
+    {
+      type: 'forbidden-combination',
+      when: [
+        { option: 'treasureMap', values: [TreasureMapType.Base] },
+        { option: 'board', values: boardsForbiddenWithBaseTreasureMap }
+      ],
+      message: 'base-map.forbidden'
+    }
+  ]
+}
+
+/**
+ * The legacy declaration, superseded by `CaptainFlipOptionsSpecV2`.
+ *
+ * Kept exported only because a few platform screens still read the v1 spec for
+ * its labels; nothing here should be edited any more, and the whole object goes
+ * once those screens have moved. `validate` is dead code for game creation
+ * already: the platform generates from the v2 spec, whose cross rule the search
+ * honours, so it can no longer produce a pair this function would refuse.
  */
 export const CaptainFlipOptionsSpec: OptionsSpec<CaptainFlipOptions> = {
   board: {

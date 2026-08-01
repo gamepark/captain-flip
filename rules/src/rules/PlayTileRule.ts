@@ -48,6 +48,5 @@ export class PlayTileRule extends CoinRule {
 
   onRuleEnd() {
     this.forget(Memory.Flipped)
-    return []
   }
 }
