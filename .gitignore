@@ -40,9 +40,3 @@ tmpclaude-*
 
 # Visual Studio Code
 .vscode
-
-# Working mockups and design drafts
-/mockups/
-/mockup-player-panels.html
-/app/player-panels-layouts.html
-/app/player-panels-mockup.html

@@ -1,4 +1,4 @@
-import { CaptainFlipOptionsSpec } from '@gamepark/captain-flip/CaptainFlipOptions'
+import { CaptainFlipOptionsSpecV2 } from '@gamepark/captain-flip/CaptainFlipOptions'
 import { CaptainFlipRules } from '@gamepark/captain-flip/CaptainFlipRules'
 import { CaptainFlipSetup } from '@gamepark/captain-flip/CaptainFlipSetup'
 import { GameProvider } from '@gamepark/react-game'
@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="captain-flip"
       Rules={CaptainFlipRules}
-      optionsSpec={CaptainFlipOptionsSpec}
+      optionsSpec={CaptainFlipOptionsSpecV2}
       GameSetup={CaptainFlipSetup}
       material={Material}
       locators={Locators}

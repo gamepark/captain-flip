@@ -1,4 +1,4 @@
-import { getEnumValues, OptionsSpec, OptionsSpecV2, OptionsValidationError } from '@gamepark/rules-api'
+import { getEnumValues, OptionsSpecV2 } from '@gamepark/rules-api'
 import { BoardType, boardTypes } from './material/board/Board'
 import { TreasureMapType } from './material/TreasureMapType'
 
@@ -59,48 +59,6 @@ export const CaptainFlipOptionsSpecV2: OptionsSpecV2 = {
   ]
 }
 
-/**
- * The legacy declaration, superseded by `CaptainFlipOptionsSpecV2`.
- *
- * Kept exported only because a few platform screens still read the v1 spec for
- * its labels; nothing here should be edited any more, and the whole object goes
- * once those screens have moved. `validate` is dead code for game creation
- * already: the platform generates from the v2 spec, whose cross rule the search
- * honours, so it can no longer produce a pair this function would refuse.
- */
-export const CaptainFlipOptionsSpec: OptionsSpec<CaptainFlipOptions> = {
-  board: {
-    label: t => t('Adventure board'),
-    help: t => t('board.help'),
-    values: boardTypes,
-    valueSpec: board => ({
-      label: t => t(getBoardTitle(board)),
-      help: board === BoardType.BoardH ? (t => t('board.observatory.help')) : undefined,
-      subscriberRequired: board >= BoardType.BoardE
-    })
-  },
-  treasureMap: {
-    label: t => t('treasure-map.option'),
-    help: t => t('treasure-map.option.help'),
-    values: treasureMapTypes,
-    valueSpec: type => ({
-      label: t => t(getTreasureMapTypeTitle(type)),
-      help: t => t(getTreasureMapTypeHelp(type)),
-      subscriberRequired: type !== TreasureMapType.Base,
-    }),
-    competitiveDisabled: true
-  },
-  validate(options, t) {
-    if (
-      options.treasureMap === TreasureMapType.Base &&
-      options.board !== undefined &&
-      boardsForbiddenWithBaseTreasureMap.includes(options.board)
-    ) {
-      throw new OptionsValidationError(t('base-map.forbidden'), ['board', 'treasureMap'])
-    }
-  }
-}
-
 export const getTreasureMapTypeHelp = (type: TreasureMapType) => {
   switch (type) {
     case TreasureMapType.Base:
@@ -157,4 +115,3 @@ export const getBoardTitle = (board: BoardType) => {
       return 'board.isla-bomba'
   }
 }
-
