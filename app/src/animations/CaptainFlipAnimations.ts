@@ -8,26 +8,22 @@ export const captainFlipAnimations = new MaterialGameAnimations()
 
 // Coin create/delete: short
 captainFlipAnimations
-  .when()
-  .move((move) => isCreateItemType(MaterialType.Coin)(move) || isDeleteItemType(MaterialType.Coin)(move))
-  .duration(1)
+  .configure((move) => isCreateItemType(MaterialType.Coin)(move) || isDeleteItemType(MaterialType.Coin)(move))
+  .duration(1000)
 
 // Coin transfer (moveMoney)
 captainFlipAnimations
-  .when()
-  .move(isMoveItemType(MaterialType.Coin))
-  .duration(0.8)
+  .configure(isMoveItemType(MaterialType.Coin))
+  .duration(800)
 
 // Treasure map move
 captainFlipAnimations
-  .when()
-  .move(isMoveItemType(MaterialType.TreasureMapToken))
-  .duration(0.5)
+  .configure(isMoveItemType(MaterialType.TreasureMapToken))
+  .duration(500)
 
 // Flip in hand or on board
 captainFlipAnimations
-  .when()
-  .move((move, context) => {
+  .configure((move, context) => {
     if (!isMoveItemType(MaterialType.CharacterTile)(move)) return false
     const item = context.rules.material(MaterialType.CharacterTile).getItem(move.itemIndex)
     return (
@@ -35,7 +31,7 @@ captainFlipAnimations
       (item.location.type === LocationType.AdventureBoardCharacterTile && move.location.type === LocationType.AdventureBoardCharacterTile)
     )
   })
-  .duration(0.6)
+  .duration(600)
 
 // Tile placement (2-3p): flat trajectory. Boards sit side-by-side with
 // the bag below, no obstacle to fly over.
