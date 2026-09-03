@@ -74,7 +74,7 @@ export const CaptainFlipPlayerPanel: FC<CaptainFlipPlayerPanelProps> = (props) =
               <div css={activeRingInnerCss} />
             </div>
           )}
-          <Avatar playerId={player.id} css={avatarCss} />
+          <Avatar playerId={player.id} css={avatarCss} speechBubble />
         </div>
         <div css={infoCss}>
           <div css={topRowCss}>
@@ -181,6 +181,7 @@ const activeRingInnerCss = css`
 `
 
 const avatarCss = css`
+  position: relative;
   width: 4.5em;
   height: 4.5em;
   border-radius: 50%;
