@@ -153,6 +153,7 @@ const getEffects = (description: BoardDescription) => {
 
 const EffectExplaination: FC<EffectExplainationProps> = (props) => {
   const { board, effect } = props
+  const rules = useRules<CaptainFlipRules>()!
   const image = getEffectImage(board, effect)
   return (
     <div css={effectCardCss}>
@@ -160,13 +161,13 @@ const EffectExplaination: FC<EffectExplainationProps> = (props) => {
         {image && <Picture src={image}/>}
       </div>
       <div css={effectTextCss}>
-        {getEffectDesc(effect)}
+        {getEffectDesc(effect, rules.players.length)}
       </div>
     </div>
   )
 }
 
-const getEffectDesc = (effect: BoardSpaceEffect) => {
+const getEffectDesc = (effect: BoardSpaceEffect, playersCount: number) => {
   switch (effect.type) {
     case BoardSpaceType.CoinsX:
       return (
@@ -285,8 +286,10 @@ const getEffectDesc = (effect: BoardSpaceEffect) => {
         </Trans>
       )
     case BoardSpaceType.PassTreasureMap:
+      // With 2 players both directions lead to the same opponent: the
+      // maps are simply swapped, with no direction to choose.
       return (
-        <Trans i18nKey="effect.pass-map">
+        <Trans i18nKey={playersCount === 2 ? 'effect.pass-map.two-players' : 'effect.pass-map'}>
           <strong/>
         </Trans>
       )

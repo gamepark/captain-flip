@@ -15,12 +15,18 @@ export const PassTreasureMapHeader = () => {
   const passPrevious = legalMoves.find(isCustomMoveType(CustomMoveType.PassPrevious))
   const passNext = legalMoves.find(isCustomMoveType(CustomMoveType.PassNext))
 
-  if (itsMe) {
+  // 2 players: no direction to choose, the maps are swapped automatically
+  // and this rule resolves itself (see BoardEffectPassTreasureMapRule).
+  if (rules.players.length === 2) {
+    return <Trans i18nKey="header.pass-map.swap"/>
+  }
+
+  if (itsMe && passPrevious && passNext) {
     return (
       <Trans i18nKey="header.pass-map.you"
         components={{
-          left: <PlayMoveButton move={passPrevious!} />,
-          right: <PlayMoveButton move={passNext!} />
+          left: <PlayMoveButton move={passPrevious} />,
+          right: <PlayMoveButton move={passNext} />
         }}
       />
     )

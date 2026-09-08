@@ -10,6 +10,7 @@ import { BoardEffectCoinPerDifferentRule } from '@gamepark/captain-flip/rules/ef
 import { BoardEffectCoinPerFullColumnRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectCoinPerFullColumnRule'
 import { BoardEffectCoinPerTreasureMapRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectCoinPerTreasureMapRule'
 import { BoardEffectCoinXRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectCoinXRule'
+import { BoardEffectPassTreasureMapRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectPassTreasureMapRule'
 import { BoardEffectXIfRowSameRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectXIfRowSameRule'
 import { BoardEffectFirstFlipThenYRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectFirstFlipThenYRule'
 import { BoardEffectFirstXThenYRowRule } from '@gamepark/captain-flip/rules/effect/board/BoardEffectFirstXThenYRowRule'
@@ -39,6 +40,7 @@ import { EndOfTurnLog, shouldShowEndOfTurnLog } from './components/EndOfTurnLog'
 import { FlipOnBoardLog } from './components/FlipOnBoardLog'
 import { PassMapLeftLog } from './components/PassMapLeftLog'
 import { PassMapRightLog } from './components/PassMapRightLog'
+import { PassMapSwapLog } from './components/PassMapSwapLog'
 import { PlaceTileLog } from './components/PlaceTileLog'
 import { PlayerScoreBreakdownLog } from './components/PlayerScoreBreakdownLog'
 import { RotateTreasureMapLog } from './components/RotateTreasureMapLog'
@@ -150,12 +152,23 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
         return { Component: EndOfTurnLog, depth: 0, css: endTurnCardCss }
       }
 
+      // 2 players: BoardEffectPassTreasureMap resolves itself without any
+      // player choice, so the StartRule is the only place left to narrate
+      // the swap (the resulting token moves are silenced below).
+      if (id === RuleId.BoardEffectPassTreasureMap) {
+        const rule = new BoardEffectPassTreasureMapRule(context.game)
+        if (!rule.isAutomaticSwap || rule.getPassMoves(1).length === 0) return undefined
+        const kind = getBonusKind(context.game, move)
+        const Component = kind ? withBonusBadge(PassMapSwapLog, kind) : PassMapSwapLog
+        return { Component, depth: 1, css: depthTint }
+      }
+
       // Every StartRule that maps to a CoinRule is logged ONLY if it
       // produces coins. Steal rules go through the same gate — this is
       // the only place where we silence them when the victim is broke
       // or has no matching characters. Visual-only effects (Flip,
-      // FlipCell, PassTreasureMap, …) are absent from the map and fall
-      // through to `return undefined`.
+      // FlipCell, …) are absent from the map and fall through to
+      // `return undefined`.
       const RuleClass = coinRuleForId[id as RuleId]
       if (!RuleClass) return undefined
       const rule = new RuleClass(context.game)
@@ -237,6 +250,10 @@ export class CaptainFlipLogs implements LogDescription<MaterialMove> {
       // us drop the redundant Cartographer / BoardEffectTreasureMap
       // start-rule entries.
       if (move.location.type === LocationType.PlayerTreasureMapToken) {
+        // Maps handed over by the PassTreasureMap effect are already
+        // narrated by the pass / swap entry — don't add a "takes a
+        // Treasure Map" line for each of them.
+        if (context.game.rule?.id === RuleId.BoardEffectPassTreasureMap) return undefined
         // AllDirections rotation: source AND destination are the same
         // player's PlayerTreasureMapToken slot — only the rotation
         // changes. Render a dedicated "rotates one notch" log instead

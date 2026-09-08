@@ -5,11 +5,20 @@ import { MaterialType } from '../../../material/MaterialType'
 import { BaseBoardEffect } from './BaseBoardEffect'
 
 export class BoardEffectPassTreasureMapRule extends BaseBoardEffect {
+  /** With only 2 players, "left" and "right" designate the same opponent:
+   *  both directions swap the two players' maps. There is nothing to
+   *  choose, so the exchange is applied automatically. */
+  get isAutomaticSwap() {
+    return this.game.players.length === 2
+  }
+
   onRuleStart() {
-    return []
+    if (!this.isAutomaticSwap) return []
+    return [...this.getPassMoves(1), this.goNext()]
   }
 
   getPlayerMoves() {
+    if (this.isAutomaticSwap) return []
     return [
       this.customMove(CustomMoveType.PassPrevious),
       this.customMove(CustomMoveType.PassNext)
@@ -23,31 +32,34 @@ export class BoardEffectPassTreasureMapRule extends BaseBoardEffect {
       // player (myIndex - 1). Which on-screen button triggers which is a
       // front-end concern (see PassDirectionButtons).
       const direction = isCustomMoveType(CustomMoveType.PassNext)(move) ? 1 : -1
-      const moves: MaterialMove[] = []
-      const players = this.game.players
-
-      // Capture refs BEFORE mutating locations — otherwise subsequent
-      // queries would pick up maps that just moved. Same pattern as
-      // the "passing cards" guidance in CLAUDE.md.
-      const byPlayer = players.map((player) => ({
-        player,
-        neighbor: players[(players.indexOf(player) + direction + players.length) % players.length],
-        maps: this.material(MaterialType.TreasureMapToken)
-          .location(LocationType.PlayerTreasureMapToken)
-          .player(player)
-      }))
-
-      for (const { maps, neighbor } of byPlayer) {
-        if (maps.length === 0) continue
-        moves.push(...maps.moveItems({
-          type: LocationType.PlayerTreasureMapToken,
-          player: neighbor
-        }))
-      }
-
-      moves.push(this.goNext())
-      return moves
+      return [...this.getPassMoves(direction), this.goNext()]
     }
     return []
+  }
+
+  getPassMoves(direction: number): MaterialMove[] {
+    const moves: MaterialMove[] = []
+    const players = this.game.players
+
+    // Capture refs BEFORE mutating locations — otherwise subsequent
+    // queries would pick up maps that just moved. Same pattern as
+    // the "passing cards" guidance in CLAUDE.md.
+    const byPlayer = players.map((player) => ({
+      player,
+      neighbor: players[(players.indexOf(player) + direction + players.length) % players.length],
+      maps: this.material(MaterialType.TreasureMapToken)
+        .location(LocationType.PlayerTreasureMapToken)
+        .player(player)
+    }))
+
+    for (const { maps, neighbor } of byPlayer) {
+      if (maps.length === 0) continue
+      moves.push(...maps.moveItems({
+        type: LocationType.PlayerTreasureMapToken,
+        player: neighbor
+      }))
+    }
+
+    return moves
   }
 }
