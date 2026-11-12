@@ -24,8 +24,7 @@ class CellLocator extends Locator {
   }
 
   getHoverTransform(item: MaterialItem, _context: ItemContext) {
-    const sign = item.location.rotation ? 1 : -1
-    return [`rotateZ(${sign * this.getRotateZ(item.location)}deg)`]
+    return [`rotateZ(${-this.getRotateZ(item.location)}deg)`]
   }
 }
 
